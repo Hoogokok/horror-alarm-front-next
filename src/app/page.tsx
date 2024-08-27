@@ -14,99 +14,134 @@ export default async function Home() {
   const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing', { cache: 'force-cache' }).then(res => res.json());
   const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired', { cache: 'force-cache' }).then(res => res.json());
   const streaming = await fetch(process.env.MOVIE_API + '/api/streaming/netflix', { cache: 'force-cache' }).then(res => res.json());
+
   return (
     <main className={styles.main}>
-      <nav className={styles.navigation}>
-        <ul className={styles.list}>
-          <li className={styles.menu}>
-            <Link href="/upcoming">
-              개봉 예정
-            </Link>
-          </li>
-          <li className={styles.menu}>
-            <Link href="/now-playing">
-              상영중
-            </Link>
-          </li>
-          <li className={styles.menu}>
-            <Link href="/streaming">
-              스트리밍 종료 예정
-            </Link>
-          </li>
-          <li className={styles.menu}>
-            <Link href="/top-rated">
-              인기 영화
-            </Link>
-          </li>
-          <li className={styles.menu}>
-            로그인 / 회원가입
-          </li>
-        </ul>
-      </nav>
-      <section className={styles.imagesection}>
-        <Suspense fallback={<Loading />}>
-          <div className={styles.imagesectionTitle}>개봉 예정</div>
-          {
-            upcoming.length ? <div className={styles.content}>
-              {upcoming.map((movie: any) => (
-                <Image
-                  key={movie.id}
-                  alt={movie.title}
-                  src={process.env.POSTER_URL + movie.posterPath}
-                  width={250}
-                  height={300}
-                  style={imageStyle}
-                />
-              ))}
-            </div> : <div className={styles.content}>개봉 예정인 영화가 없습니다.</div>
-          }
-          <div className={styles.imagesectionTitle}>상영중</div>
-          {
-            nowPlaying.length ? <div className={styles.content}>
-              {nowPlaying.map((movie: any) => (
-                <Image
-                  key={movie.id}
-                  alt={movie.title}
-                  src={process.env.POSTER_URL + movie.posterPath}
-                  width={250}
-                  height={300}
-                  style={imageStyle}
-                />
-              ))}
-            </div> : <div className={styles.content}>상영중인 영화가 없습니다.</div>
-          }
-          {
-            streamingExpiring.length ? <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
-              : <div className={styles.imagesectionTitle}>넷플릭스 호러</div>
-          }
-          {
-            streamingExpiring.length ? <div className={styles.content}>
-              {streamingExpiring.map((movie: any) => (
-                console.log(movie),
-                <Image
-                  key={movie.id}
-                  alt={movie.title}
-                  src={process.env.POSTER_URL + movie.posterPath}
-                  width={250}
-                  height={300}
-                  style={imageStyle}
-                />
-              ))}
-            </div> : <div className={styles.content}>
-              {streaming.map((movie: any) => (
-                <Image
-                  key={movie.id}
-                  alt={movie.title}
-                  src={process.env.POSTER_URL + movie.poster_path}
-                  width={250}
-                  height={300}
-                  style={imageStyle}
-                />
-              ))}
-            </div>
-          }
-        </Suspense>
-      </section>
+      <div className={styles.header}>
+        <input className={styles.sidemenuToggle} type="checkbox" id='sidemenu-toggle' />
+        <label className={styles.hamb}>
+          <span className={styles.hambline}>
+          </span>
+        </label>
+        <nav className={styles.sidenav}>
+          <ul className={styles.sidelist}>
+            <li className={styles.sidemenuItem}>
+              <Link href="/upcoming">
+                개봉 예정
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              <Link href="/now-playing">
+                상영중
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              <Link href="/streaming">
+                스트리밍
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              <Link href="/top-rated">
+                인기 영화
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              로그인 / 회원가입
+            </li>
+            </ul>
+        </nav>
+      </div>
+        <nav className={styles.navigation}>
+          <ul className={styles.list}>
+            <li className={styles.menu}>
+              <Link href="/upcoming">
+                개봉 예정
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/now-playing">
+                상영중
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/streaming">
+                스트리밍
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/top-rated">
+                인기 영화
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              로그인 / 회원가입
+            </li>
+          </ul>
+        </nav>
+        <section className={styles.imagesection}>
+          <Suspense fallback={<Loading />}>
+            <div className={styles.imagesectionTitle}>개봉 예정</div>
+            {
+              upcoming.length ? <div className={styles.content}>
+                {upcoming.map((movie: any) => (
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.posterPath}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div> : <div className={styles.content}>개봉 예정인 영화가 없습니다.</div>
+            }
+            <div className={styles.imagesectionTitle}>상영중</div>
+            {
+              nowPlaying.length ? <div className={styles.content}>
+                {nowPlaying.map((movie: any) => (
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.posterPath}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div> : <div className={styles.content}>상영중인 영화가 없습니다.</div>
+            }
+            {
+              streamingExpiring.length ? <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
+                : <div className={styles.imagesectionTitle}>넷플릭스 호러</div>
+            }
+            {
+              streamingExpiring.length ? <div className={styles.content}>
+                {streamingExpiring.map((movie: any) => (
+                  console.log(movie),
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.posterPath}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div> : <div className={styles.content}>
+                {streaming.map((movie: any) => (
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.poster_path}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div>
+            }
+          </Suspense>
+        </section>
     </main>
   );
 }
