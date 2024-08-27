@@ -1,95 +1,147 @@
-import Image from "next/image";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Suspense } from "react";
+import Loading from "./loading";
 import styles from "./page.module.css";
 
-export default function Home() {
+const imageStyle = {
+  padding: '10px',
+  borderRadius: '20px',
+}
+
+export default async function Home() {
+  const upcoming = await fetch(process.env.MOVIE_API + '/api/upcoming', { cache: 'force-cache', next: { revalidate: 7200 } }).then(res => res.json());
+  const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing', { cache: 'force-cache' }).then(res => res.json());
+  const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired', { cache: 'force-cache' }).then(res => res.json());
+  const streaming = await fetch(process.env.MOVIE_API + '/api/streaming/netflix', { cache: 'force-cache' }).then(res => res.json());
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+      <div className={styles.header}>
+        <input className={styles.sidemenuToggle} type="checkbox" id='sidemenu-toggle' />
+        <label className={styles.hamb}>
+          <span className={styles.hambline}>
+          </span>
+        </label>
+        <nav className={styles.sidenav}>
+          <ul className={styles.sidelist}>
+            <li className={styles.sidemenuItem}>
+              <Link href="/upcoming">
+                개봉 예정
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              <Link href="/now-playing">
+                상영중
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              <Link href="/streaming">
+                스트리밍
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              <Link href="/top-rated">
+                인기 영화
+              </Link>
+            </li>
+            <li className={styles.sidemenuItem}>
+              로그인 / 회원가입
+            </li>
+            </ul>
+        </nav>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+        <nav className={styles.navigation}>
+          <ul className={styles.list}>
+            <li className={styles.menu}>
+              <Link href="/upcoming">
+                개봉 예정
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/now-playing">
+                상영중
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/streaming">
+                스트리밍
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/top-rated">
+                인기 영화
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              로그인 / 회원가입
+            </li>
+          </ul>
+        </nav>
+        <section className={styles.imagesection}>
+          <Suspense fallback={<Loading />}>
+            <div className={styles.imagesectionTitle}>개봉 예정</div>
+            {
+              upcoming.length ? <div className={styles.content}>
+                {upcoming.map((movie: any) => (
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.posterPath}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div> : <div className={styles.content}>개봉 예정인 영화가 없습니다.</div>
+            }
+            <div className={styles.imagesectionTitle}>상영중</div>
+            {
+              nowPlaying.length ? <div className={styles.content}>
+                {nowPlaying.map((movie: any) => (
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.posterPath}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div> : <div className={styles.content}>상영중인 영화가 없습니다.</div>
+            }
+            {
+              streamingExpiring.length ? <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
+                : <div className={styles.imagesectionTitle}>넷플릭스 호러</div>
+            }
+            {
+              streamingExpiring.length ? <div className={styles.content}>
+                {streamingExpiring.map((movie: any) => (
+                  console.log(movie),
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.posterPath}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div> : <div className={styles.content}>
+                {streaming.map((movie: any) => (
+                  <Image
+                    key={movie.id}
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.poster_path}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                ))}
+              </div>
+            }
+          </Suspense>
+        </section>
     </main>
   );
 }
