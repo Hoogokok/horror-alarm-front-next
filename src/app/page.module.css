@@ -1,11 +1,24 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d1313;
+  position: relative;
+}
+
+
 .main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
   min-height: 100vh;
   background-color: #0d1313;
+}
+
+.sidemenuToggle {
+  display: none;
 }
 
 .navigation {
@@ -17,7 +30,7 @@
   max-width: var(--max-width);
   background-color: transparent;
   border-radius: 20px;
-  font-family:  ui-serif;
+  font-family: ui-serif;
 }
 
 .menu {
@@ -26,11 +39,11 @@
   padding: 1rem;
   background-color: transparent;
   border-radius: 10px;
-  font-family:  ui-serif;
+  font-family: ui-serif;
 }
 
 .menu:hover {
- text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0ff, 0 0 80px #0ff, 0 0 160px #0ff;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #0ff, 0 0 80px #0ff, 0 0 160px #0ff;
 }
 
 .imagesection {
@@ -50,17 +63,21 @@
 .list {
   display: flex;
   justify-content: space-around;
-  gap: 36px;
+  gap: 16px;
   list-style-type: none;
 }
 
 .content {
-  border: 4px;
+  border: 3px;
   display: flex;
   justify-content: space-around;
   transition: transform 0.3s ease;
   overflow-x: scroll;
   overflow-y: hidden;
+}
+
+.empty.content {
+  border: 3px;
 }
 
 .content::-webkit-scrollbar {
@@ -86,8 +103,55 @@
   right: 10px;
 }
 
+.hamb {
+  cursor: pointer;
+  float: right;
+  padding: 40px 20px;
+}
+
+/* Style label tag */
+
+
+.hambline {
+  background: transparent;
+  display: block;
+  height: 2px;
+  position: relative;
+  width: 24px;
+
+}
+
+/* Style span tag */
+
+.hambline::before,
+.hambline::after {
+  background: transparent;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  transition: all .2s ease-out;
+  width: 100%;
+}
+
+.hambline::before {
+  top: 5px;
+}
+
+.hambline::after {
+  top: -5px;
+}
+
+.sidemenuItem {
+  display: none;
+}
+
+/* Hide checkbox */
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
+
+
   .card:hover {
     background: rgba(var(--card-rgb), 0.1);
     border: 1px solid rgba(var(--card-border-rgb), 0.15);
@@ -106,74 +170,128 @@
 
 /* Mobile */
 @media (max-width: 700px) {
-  .content {
-    padding: 4rem;
+  .header {
+    flex-direction: row;
+    float: left;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
-    margin-bottom: 120px;
-    max-width: 320px;
-    text-align: center;
-  }
-
-  .card {
-    padding: 1rem 2.5rem;
-  }
-
-  .card h2 {
-    margin-bottom: 0.5rem;
-  }
-
-  .center {
-    padding: 8rem 0 6rem;
-  }
-
-  .center::before {
-    transform: none;
-    height: 300px;
-  }
-
-  .description {
-    font-size: 0.8rem;
-  }
-
-  .description a {
-    padding: 1rem;
-  }
-
-  .description p,
-  .description div {
+  .main {
+    position: relative;
     display: flex;
-    justify-content: center;
-    position: fixed;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0d1313;
+
+  }
+
+  .navigation {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    width: 100%;
+    max-width: var(--max-width);
+    background-color: transparent;
+    border-radius: 20px;
+    font-family: ui-serif;
+  }
+
+  .list {
+    justify-content: space-around;
+    gap: 16px;
+    list-style-type: none;
+  }
+
+  .menu {
+    /* 글자 크기 조절*/
+    font-size: 0.8rem;
+    /* 글자 가로 정렬 *로고와 메뉴 사이의 간격 조절*/
+    justify-content: space-between;
+  }
+
+  .hamb {
+    /* 햄버거 버튼 위치 조절 */
+    /* 왼쪽으로 이동 */
+    display: flex;
+    float: left;
+  }
+
+  /* Style label tag */
+
+
+  .hambline {
+    background: rebeccapurple;
+    display: flex;
+    height: 2px;
+    position: relative;
+    width: 24px;
+
+  }
+
+  /* Style span tag */
+
+  .hambline::before,
+  .hambline::after {
+    background: rebeccapurple;
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    transition: all .2s ease-out;
     width: 100%;
   }
 
-  .description p {
-    align-items: center;
-    inset: 0 0 auto;
-    padding: 2rem 1rem 1.4rem;
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid rgba(var(--callout-border-rgb), 0.25);
-    background: linear-gradient(to bottom,
-        rgba(var(--background-start-rgb), 1),
-        rgba(var(--callout-rgb), 0.5));
-    background-clip: padding-box;
-    backdrop-filter: blur(24px);
+  .hambline::before {
+    top: 5px;
   }
 
-  .description div {
-    align-items: flex-end;
-    pointer-events: none;
-    inset: auto 0 0;
-    padding: 2rem;
-    height: 200px;
-    background: linear-gradient(to bottom,
-        transparent 0%,
-        rgb(var(--background-end-rgb)) 40%);
-    z-index: 1;
+  .hambline::after {
+    top: -5px;
+  }
+
+  .imagesection {
+    font-family: ui-serif;
+    margin-top: 120px;
+    padding: 3rem;
+  }
+
+  .sidenav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 250px;
+    height: 100%;
+    background-color: #f1f1f1;
+    transition: 0.3s;
+  }
+
+  .sidemenuToggle:checked ~ .sidelist {
+    max-height: 100%;
+
+  }
+
+  .sidemenu:checked~.hamb .hamb-line {
+    background: transparent;
+  }
+
+  .sidemenu:checked~.hamb .hamb-line::before {
+    transform: rotate(-45deg);
+    top: 0;
+  }
+
+  .sidemenu:checked~.hamb .hamb-line::after {
+    transform: rotate(45deg);
+    top: 0;
+  }
+
+  main:has(.sidemenu:checked) {
+    overflow: hidden;
   }
 }
 
