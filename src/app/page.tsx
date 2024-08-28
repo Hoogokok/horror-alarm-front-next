@@ -13,7 +13,7 @@ export default async function Home() {
   const upcoming = await fetch(process.env.MOVIE_API + '/api/upcoming', { cache: 'force-cache', next: { revalidate: 7200 } }).then(res => res.json());
   const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing', { cache: 'force-cache' }).then(res => res.json());
   const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired', { cache: 'force-cache' }).then(res => res.json());
-  const streaming = await fetch(process.env.MOVIE_API + '/api/streaming/netflix').then(res => res.json());
+  const streaming = await fetch(process.env.MOVIE_API + '/api/streaming/netflix', {cache: "force-cache"}).then(res => res.json());
 
   return (
     <main className={styles.main}>
