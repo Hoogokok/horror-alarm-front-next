@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Link from "next/link";
+import styles from "./page.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -15,8 +16,71 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html>
+      <body className={inter.className}>
+        <div className={styles.header}>
+          <label className={styles.hamb}>
+            <span className={styles.hambline}>
+              <input className={styles.sidemenuToggle} type="checkbox" id='sidemenu-toggle' />
+            </span>
+          </label>
+          <nav className={styles.sidenav}>
+            <ul className={styles.sidelist}>
+              <li className={styles.sidemenuItem}>
+                <Link href="/upcoming">
+                  개봉 예정
+                </Link>
+              </li>
+              <li className={styles.sidemenuItem}>
+                <Link href="/now-playing">
+                  상영중
+                </Link>
+              </li>
+              <li className={styles.sidemenuItem}>
+                <Link href="/streaming">
+                  스트리밍
+                </Link>
+              </li>
+              <li className={styles.sidemenuItem}>
+                <Link href="/top-rated">
+                  인기 영화
+                </Link>
+              </li>
+              <li className={styles.sidemenuItem}>
+                로그인 / 회원가입
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <nav className={styles.navigation}>
+          <ul className={styles.list}>
+            <li className={styles.menu}>
+              <Link href="/upcoming">
+                개봉 예정
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/now-playing">
+                상영중
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/streaming">
+                스트리밍
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              <Link href="/top-rated">
+                인기 영화
+              </Link>
+            </li>
+            <li className={styles.menu}>
+              로그인 / 회원가입
+            </li>
+          </ul>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }
