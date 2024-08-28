@@ -1,0 +1,25 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0d1313;
+  }
+
+  .title {
+    color: #fff;
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .image{
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  .overview {
+    color: #fff;
+    font-size: 1rem;
+    margin: 3rem 0;
+    justify-content: center;
+  }
