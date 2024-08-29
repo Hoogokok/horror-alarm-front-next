@@ -5,6 +5,26 @@ import styles from "./components.module.css";
 
 export default function Tabs({ movie }: { movie: any }) {
   const [activeTab, setActiveTab] = useState('overview');
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 5;
+
+  const reviews = [
+    "이 영화는 너무 재미있어요.",
+    "이 영화는 너무 무섭습니다.",
+    "이 영화는 너무 지루합니다.",
+    "이 영화는 너무 감동적입니다.",
+    "이 영화는 너무 재미없습니다.",
+    "이 영화는 너무 재미있어요.",
+    "이 영화는 너무 무섭습니다.",
+    "이 영화는 너무 지루합니다.",
+    "이 영화는 너무 감동적입니다.",
+    "이 영화는 너무 재미없습니다.",
+    "이 영화는 너무 재미있어요."
+  ];
+
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -12,13 +32,27 @@ export default function Tabs({ movie }: { movie: any }) {
         return <div>{movie.overview}</div>;
       case 'reviews':
         return (
-          <div>
-            <li> 이 영화는 너무 재미있어요. </li>
-            <li> 이 영화는 너무 무섭습니다. </li>
-            <li> 이 영화는 너무 지루합니다. </li>
-            <li> 이 영화는 너무 감동적입니다. </li>
-            <li> 이 영화는 너무 재미없습니다. </li>
-            <li> 이영화는 너무 재미있어요. </li>
+          <div className={styles.review}>
+            <ul>
+              {currentReviews.map((review, index) => (
+                <li key={index}>{review}</li>
+              ))}
+            </ul>
+            <div className={styles.pagination}>
+              <button
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                이전
+              </button>
+              <span>{currentPage}</span>
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={indexOfLastReview >= reviews.length}
+              >
+                다음
+              </button>
+            </div>
           </div>
         );
       case 'ratings':
