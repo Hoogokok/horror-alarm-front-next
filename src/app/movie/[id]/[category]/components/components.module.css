@@ -1,5 +1,6 @@
 .tabs {
     display: flex;
+    flex-direction: row;
     gap: 10px;
     margin-bottom: 20px;
   }
@@ -7,9 +8,11 @@
   .tabs button {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: #232020;
     border: none;
     border-radius: 5px;
+    min-width: 100px;
+    white-space: nowrap;
   }
   
   .tabs button:hover {
@@ -17,5 +20,6 @@
   }
   
   .tabContent {
+    flex-direction: column;
     margin-top: 20px;
   }

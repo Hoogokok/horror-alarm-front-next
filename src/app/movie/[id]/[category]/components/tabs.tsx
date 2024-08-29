@@ -13,8 +13,12 @@ export default function Tabs({ movie }: { movie: any }) {
       case 'reviews':
         return (
           <div>
-            <p>이 영화는 정말 재미있었습니다! - 사용자1</p>
-            <p>스토리가 조금 아쉬웠어요. - 사용자2</p>
+            <li> 이 영화는 너무 재미있어요. </li>
+            <li> 이 영화는 너무 무섭습니다. </li>
+            <li> 이 영화는 너무 지루합니다. </li>
+            <li> 이 영화는 너무 감동적입니다. </li>
+            <li> 이 영화는 너무 재미없습니다. </li>
+            <li> 이영화는 너무 재미있어요. </li>
           </div>
         );
       case 'ratings':
@@ -26,7 +30,7 @@ export default function Tabs({ movie }: { movie: any }) {
       case 'releaseDate':
         return <div>{movie.releaseDate}</div>;
       case 'watch':
-        return <div>{movie.theaters.join(', ')}</div>;
+        return <div>{movie.providers.join(', ')}</div>;
       default:
         return null;
     }
