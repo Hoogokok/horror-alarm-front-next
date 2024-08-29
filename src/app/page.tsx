@@ -23,14 +23,18 @@ export default async function Home() {
           {
             upcoming.length ? <div className={styles.content}>
               {upcoming.map((movie: any) => (
-                <Image
-                  key={movie.id}
-                  alt={movie.title}
-                  src={process.env.POSTER_URL + movie.posterPath}
-                  width={250}
-                  height={300}
-                  style={imageStyle}
-                />
+                <div key={movie.id} className={styles.movieItem}>
+                  <Image
+                    alt={movie.title}
+                    src={process.env.POSTER_URL + movie.posterPath}
+                    width={250}
+                    height={300}
+                    style={imageStyle}
+                  />
+                  <Link href={`/movie/${movie.id}/${"upcoming"}`}>
+                    {movie.title}
+                  </Link>
+                </div>
               ))}
             </div> : <div className={styles.content}>개봉 예정인 영화가 없습니다.</div>
           }
