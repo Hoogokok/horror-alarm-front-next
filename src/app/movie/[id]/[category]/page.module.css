@@ -70,25 +70,3 @@
 .infoTitle {
     color: #fff;
 }
-
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .tabs button:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .tabContent {
-    margin-top: 20px;
-  }
