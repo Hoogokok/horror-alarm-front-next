@@ -1,0 +1,48 @@
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.tabs button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.tabs button:hover {
+    background-color: #555;
+}
+
+.tabs .activeTab {
+    background-color: #222;
+}
+
+.imageGallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.imageItem {
+    margin: 0.5rem;
+    text-align: center;
+}
+
+.image {
+    width: 150px;
+    height: 225px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imageTitle {
+    margin-top: 0.5rem;
+    color: #fff;
+    font-size: 1rem;
+}
