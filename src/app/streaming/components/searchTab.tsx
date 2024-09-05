@@ -1,4 +1,5 @@
 'use client';
+import styls from './components.module.css';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -20,11 +21,11 @@ export default function SearchTab() {
     , 300);
 
     return (
-        <div>
+        <div className={styls.buttonsection}>
             <button
                 onClick={() => handleClick("all")}
             >
-                all
+                All
             </button>
             <button
                 onClick={() => handleClick("netflix")}

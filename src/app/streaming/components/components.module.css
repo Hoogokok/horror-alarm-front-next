@@ -1,14 +1,40 @@
 .imagesection {
-  display: flex;
-  justify-content:center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  background-color: #000;
-  position: relative;
-  overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
 }
 
-.image{
- margin: 2rem; 
+.image {
+    margin: 2rem;
+}
+
+.buttonsection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.buttonsection button {
+    margin: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    cursor: pointer;
+}
+
+.buttonsection button:hover {
+    background-color: #fff;
+    color: #000;
 }
