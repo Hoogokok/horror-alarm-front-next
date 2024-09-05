@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import styls from './components.module.css';
+import Link from 'next/link';
 
 
 export default async function ImageTabs({ query, page }: { query: string, page: string }) {
@@ -10,7 +11,9 @@ export default async function ImageTabs({ query, page }: { query: string, page: 
         <div key={movie.id} className={styls.image}>
           <Image src={process.env.POSTER_URL + movie.posterPath} alt={movie.title} width={263} height={394}
           ></Image>
-          <p>{movie.title}</p>
+          <Link href={`/movie/${movie.id}/${"streaming"}`}>
+            {movie.title}
+          </Link>
         </div>
       ))}
     </div>
