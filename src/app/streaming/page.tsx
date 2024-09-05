@@ -1,19 +1,30 @@
 import Image from 'next/image';
-import styles from "../[slug]/page.module.css";
+import styles from "../page.module.css";
 import { Suspense } from "react";
-import ImageTabs from './components/imageTabs';
+import Images from './components/image';
+import SearchTab from './components/searchTab';
+import Pagination from './components/pagnation';
 
-export default async function StreamingPage({ params }: { params: { slug: string } }) {
-    const netflix = await fetch(process.env.MOVIE_API + '/api/streaming/1', { cache: "force-cache" }).then(res => res.json());
-    const diseney = await fetch(process.env.MOVIE_API + '/api/streaming/2', { cache: "force-cache" }).then(res => res.json());
-    const movies = netflix.map((movie: any) => { return { ...movie, platform: 'netflix' } }
-    ).concat(diseney.map((movie: any) => { return { ...movie, platform: 'disney' } })).filter((movie: any) => movie.posterPath);
+export const experimental_ppr = true;
+
+export default async function StreamingPage({ searchParams }: {
+    searchParams?: {
+        query?: string;
+        page?: string;
+    }
+}) {
+    const query = searchParams?.query || "all" // default query is all
+    const page = searchParams?.page || "1" // default page is 1
+    const url = `${process.env.MOVIE_API}/api/streaming?query=${query}`;
+    const totalPages = await fetch(url).then(res => res.json());
     return (
         <div>
+            <SearchTab />
             <h1 className={styles.title}>스트리밍</h1>
             <Suspense fallback={<div>Loading...</div>}>
-                <ImageTabs initialMovies={movies} />
+                <Images query={query} page={page} /> 
             </Suspense>
+            <Pagination totalPages={totalPages} />
         </div>
     );
 }
