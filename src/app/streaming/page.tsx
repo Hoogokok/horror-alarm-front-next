@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Images from './components/image';
 import SearchTab from './components/searchTab';
 import Pagination from './components/pagnation';
-
+import ImageSkeleton from './components/imageskeleton';
 export const experimental_ppr = true;
 
 export default async function StreamingPage({ searchParams }: {
@@ -21,8 +21,12 @@ export default async function StreamingPage({ searchParams }: {
         <div>
             <SearchTab />
             <h1 className={styles.title}>스트리밍</h1>
-            <Suspense fallback={<div>Loading...</div>}>
-                <Images query={query} page={page} /> 
+            <Suspense
+                key={query + page}
+                fallback={
+                    <ImageSkeleton />
+                }>
+                <Images query={query} page={page} />
             </Suspense>
             <Pagination totalPages={totalPages} />
         </div>

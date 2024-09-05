@@ -80,3 +80,14 @@
     color: black;
     text-decoration: none;
 }
+
+.skeleton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+}
