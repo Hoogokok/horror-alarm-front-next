@@ -3,7 +3,7 @@ import styls from './components.module.css';
 
 
 export default async function ImageTabs({ query, page }: { query: string, page: string }) {
-  const data = await fetch(`${process.env.MOVIE_API}/api/streaming/page?query=${query}&page=${page}`).then(res => res.json());
+  const data = await fetch(`${process.env.MOVIE_API}/api/streaming/page?query=${query}&page=${page}`, { cache: 'force-cache' }).then(res => res.json());
   return (
     <div className={styls.imagesection}>
       {data.map((movie: any) => (
