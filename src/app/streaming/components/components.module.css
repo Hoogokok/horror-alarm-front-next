@@ -1,0 +1,93 @@
+.imagesection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.image {
+    margin: 2rem;
+}
+
+.buttonsection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+}
+
+.buttonsection button {
+    margin: 2rem;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    cursor: pointer;
+}
+
+.buttonsection button:hover {
+    background-color: #fff;
+    color: #000;
+}
+.pagenation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+    font-size: 1.5rem;
+}
+
+.middle {
+    margin: 0 5px;
+    padding: 5px 10px;
+}
+
+.pageActive {
+    margin: 2px;
+    padding: 5px 10px;
+    background-color: gray;
+    color: white;
+    border: 1px solid white;
+}
+
+.pageNumber {
+    margin: 0 10px; /* 숫자 간격을 추가 */
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgb(65, 44, 44);
+    color: black;
+    text-decoration: none;
+}
+
+.pageNumberActive {
+    margin: 0 10px; /* 숫자 간격을 추가 */
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgb(199, 216, 221);
+    color: black;
+    text-decoration: none;
+}
+
+.skeleton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+    position: relative;
+    overflow: hidden;
+}
