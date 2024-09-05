@@ -11,9 +11,9 @@
   "dependencies": {
     "@tanstack/react-query": "^5.52.1",
     "@tanstack/react-query-devtools": "^5.52.1",
-    "next": "14.2.6",
-    "react": "^18",
-    "react-dom": "^18"
+    "next": "15.0.0-rc.0",
+    "react": "19.0.0-rc-4f604941-20240830",
+    "react-dom": "19.0.0-rc-4f604941-20240830"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.52.0",
@@ -21,7 +21,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.6",
+    "eslint-config-next": "15.0.0-rc.0",
     "typescript": "^5"
   }
 }
