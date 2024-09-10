@@ -47,7 +47,9 @@ export default function RootLayout({
                 </Link>
               </li>
               <li className={styles.sidemenuItem}>
-                로그인 / 회원가입
+                <Link href="/login">
+                  로그인 / 회원가입
+                </Link>
               </li>
             </ul>
           </nav>
@@ -70,7 +72,9 @@ export default function RootLayout({
               </Link>
             </li>
             <li className={styles.menu}>
-              로그인 / 회원가입
+              <Link href="/login">
+                로그인 / 회원가입
+              </Link>
             </li>
           </ul>
         </nav>
