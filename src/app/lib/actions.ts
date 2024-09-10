@@ -54,7 +54,16 @@ export async function login(prevState: LoginState, formData: FormData) {
   redirect('/')
 }
 
-export async function signup(formData: FormData) {
+export type SignupState = {
+    error?: {
+        email?: string[]
+        password?: string[]
+        name?: string[]
+    }
+    message?: string
+};
+
+export async function signup(prevState: SignupState, formData: FormData) {
     const validation = signupSchema.safeParse({
         email: formData.get('email') as string,
         password: formData.get('password') as string,
