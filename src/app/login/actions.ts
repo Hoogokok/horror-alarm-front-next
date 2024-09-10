@@ -15,7 +15,16 @@ const signupSchema = z.object({
   name: z.string().min(1, "이름은 최소 1자 이상이어야 합니다"),
 })
 
-export async function login(formData: FormData) {
+export type LoginState = {
+    error?: {
+        email?: string[]
+        password?: string[]
+    }
+    message?: string
+
+};
+
+export async function login(prevState: LoginState, formData: FormData) {
   const supabase = createClient()
 
   const validation = loginSchema.safeParse({
