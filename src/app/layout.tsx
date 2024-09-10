@@ -31,13 +31,8 @@ export default async function RootLayout({
           <nav className={styles.sidenav}>
             <ul className={styles.sidelist}>
               <li className={styles.sidemenuItem}>
-                <Link href="/upcoming">
-                  개봉 예정
-                </Link>
-              </li>
-              <li className={styles.sidemenuItem}>
-                <Link href="/now-playing">
-                  상영중
+                <Link href="/">
+                  홈
                 </Link>
               </li>
               <li className={styles.sidemenuItem}>
@@ -51,7 +46,7 @@ export default async function RootLayout({
                 </Link>
               </li>
               {
-                data ? (
+                data.user ? (
                   <li className={styles.sidemenuItem}>
                     <Link href="/profile">
                       프로필
@@ -85,7 +80,7 @@ export default async function RootLayout({
                 인기 영화
               </Link>
             </li>
-           {data ? (
+           {data.user ? (
               <li className={styles.menu}>
                 <Link href="/profile">
                   프로필
