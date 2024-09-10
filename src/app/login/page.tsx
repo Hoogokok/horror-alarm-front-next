@@ -18,9 +18,9 @@ export default function LoginPage() {
   return (
     <div className={styles.container}>
       <form action={formAction} className={styles.form}>
-        <input type="email" name="email" className={styles.input} />
+        <input type="email" name="email" className={styles.input} placeholder="이메일을 입력하세요" />
         {state.error.email && <p className={styles.error}>{state.error.email[0]}</p>}
-        <input type="password" name="password" className={styles.input} />
+        <input type="password" name="password" className={styles.input} placeholder="비밀번호를 입력하세요" />
         {state.error.password && <p className={styles.error}>{state.error.password[0]}</p>}
         <button type="submit" className={styles.button}>로그인</button>
       </form>
