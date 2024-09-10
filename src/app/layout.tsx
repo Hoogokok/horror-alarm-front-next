@@ -55,13 +55,8 @@ export default function RootLayout({
         <nav className={styles.navigation}>
           <ul className={styles.list}>
             <li className={styles.menu}>
-              <Link href="/upcoming">
-                개봉 예정
-              </Link>
-            </li>
-            <li className={styles.menu}>
-              <Link href="/now-playing">
-                상영중
+              <Link href="/">
+                홈
               </Link>
             </li>
             <li className={styles.menu}>
