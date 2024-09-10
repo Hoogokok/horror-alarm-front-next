@@ -47,7 +47,7 @@ export async function login(prevState: LoginState, formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    redirect('/error')
+    redirect('/login')
   }
 
   revalidatePath('/', 'layout')
@@ -90,9 +90,17 @@ export async function signup(prevState: SignupState, formData: FormData) {
   })
 
   if (error) {
-    redirect('/error')
+    redirect('/signup')
   }
 
   revalidatePath('/', 'layout')
   redirect('/')
+}
+
+
+export async function logout() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    revalidatePath('/', 'layout')
+    redirect('/')
 }
