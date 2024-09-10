@@ -40,6 +40,7 @@ export default async function Home() {
                     width={250}
                     height={300}
                     style={imageStyle}
+                    priority={true}
                   />
                   <Link href={`/movie/${movie.id}/${"upcoming"}`}>
                     {movie.title}
