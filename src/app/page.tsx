@@ -23,9 +23,8 @@ export default async function Home() {
   const upcoming = await fetch(process.env.MOVIE_API + '/api/upcoming', { cache: 'force-cache', next: { revalidate: 7200 } }).then(res => res.json());
   const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing', { cache: 'force-cache' }).then(res => res.json());
   const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired', { cache: 'force-cache' }).then(res => res.json());
-  const streaming = await fetch(process.env.MOVIE_API + '/api/streaming/1', {cache: "force-cache"}).then(res => res.json());
   const expiredList = streamingExpiring?.expiredMovies
-
+  
   return (
     <main className={styles.main}>
       <section className={styles.imagesection}>
@@ -73,8 +72,7 @@ export default async function Home() {
             )
           }
           {
-            expiredList.length ? <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
-              : <div className={styles.imagesectionTitle}>넷플릭스 호러</div>
+           <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
           }
           {
             expiredList.length ? <div className={styles.content}>
@@ -95,22 +93,7 @@ export default async function Home() {
                 ))}
               </div>
             </div> : <div className={styles.content}>
-            <div className={styles.content}>
-                {streaming.map((movie: any) => (
-                  <div key={movie.id} className={styles.movieItem}>
-                    <Image
-                      alt={movie.title}
-                      src={process.env.POSTER_URL + movie.poster_path}
-                      width={250}
-                      height={300}
-                      style={imageStyle}
-                    />
-                    <Link href={`/movie/${movie.id}/${"streaming"}`}>
-                      {movie.title}
-                    </Link>
-                  </div>
-                ))}
-              </div>
+               스트리밍 종료 예정인 영화가 없습니다.
             </div>
           }
         </Suspense>
