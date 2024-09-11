@@ -1,5 +1,5 @@
 'use client';
-import { logout } from "../lib/actions";
+import { logout } from "../auth/lib/actions";
 
 export default function Page() {
   return (

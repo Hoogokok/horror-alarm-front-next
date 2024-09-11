@@ -107,3 +107,10 @@ export async function logout() {
     revalidatePath('/', 'layout')
     redirect('/')
 }
+
+export async function getUser() {
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.getUser()
+   
+    return data
+}
