@@ -23,3 +23,20 @@
     flex-direction: column;
     margin-top: 20px;
   }
+
+  .pagination {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .pagination button {
+    cursor: pointer;
+    background-color: #232020;
+    border: none;
+    border-radius: 5px;
+    min-width: 50px;
+    white-space: nowrap;
+  }
+  
