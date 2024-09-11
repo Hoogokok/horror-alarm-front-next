@@ -15,6 +15,8 @@ export default function Tabs({ movie, user, category }: { movie: any, user: any,
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 5;
   const isLogin = user.user ? true : false;
+  const [rating, setRating] = useState(0);
+
   const reviews = [
     "이 영화는 너무 재미있어요.",
     "이 영화는 너무 무섭습니다.",
@@ -69,13 +71,13 @@ export default function Tabs({ movie, user, category }: { movie: any, user: any,
             {isLogin && (
               <div>
                <form action={formAction} className={styles.form}>
-                <input type="number" min="0" max="5" name="rating" />
+                <StarRating rating={rating} setRating={setRating} />
                 <input type="hidden" name="user_id" value={user.user.id} />
                 <input type="hidden" name="movie_id" value={movie.id} />
                 <input type="hidden" name="category" value={category} />
                 <button>평점 남기기</button>
                </form>
-               
+               {state.error && <p>{state.message}</p>}
               </div>
             )}
           </div>
@@ -104,3 +106,27 @@ export default function Tabs({ movie, user, category }: { movie: any, user: any,
     </div>
   );
 }
+
+const StarRating = ({ rating, setRating }: { rating: number, setRating: (rating: number) => void }) => {
+  return (
+    <div className={styles.starRating}>
+    {[1, 2, 3, 4, 5].map((star) => (
+      <label key={star}>
+        <input
+          type="radio"
+          name="rating"
+          value={star}
+          checked={rating === star}
+          onChange={() => setRating(star)}
+          style={{ display: 'none' }}
+        />
+        <span
+          style={{ cursor: 'pointer', color: star <= rating ? 'gold' : 'gray' }}
+        >
+          ★
+        </span>
+      </label>
+    ))}
+  </div>
+  );
+};
