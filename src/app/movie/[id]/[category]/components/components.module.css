@@ -39,4 +39,10 @@
     min-width: 50px;
     white-space: nowrap;
   }
+
+  .rated {
+    color: #e0e0e0;
+    font-size: 12px;
+    margin-top: 10px;
+  }
   
