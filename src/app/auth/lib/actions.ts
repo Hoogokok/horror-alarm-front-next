@@ -132,3 +132,16 @@ export async function getUser() {
         movieIds: movieIds,
     }
 }
+
+export async function getProfile() {
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.getUser()
+    if (error) {
+        console.log(error)
+    }
+    const { data: profileData, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id)
+    if (profileError) {
+        console.log(profileError)
+    }
+    return profileData?.[0]
+}
