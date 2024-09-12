@@ -1,0 +1,96 @@
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 40px auto;
+}
+
+.profileImage {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profileImagePlaceholder {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 64px;
+    color: #adb5bd;
+    border: 4px solid #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imageUpload {
+    margin-top: 24px;
+    padding: 10px;
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.imageUpload:hover {
+    border-color: #6c757d;
+}
+
+.profileEditLink {
+    margin-top: 24px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.profileEditLink:hover {
+    color: #0056b3;
+}
+
+.logoutButton {
+    margin-top: 24px;
+    background-color: #6c757d;  /* 회색 계열 */
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.logoutButton:hover {
+    background-color: #5a6268;  /* 호버 시 더 어두운 회색 */
+}
+
+.profileNickname {
+    margin-top: 16px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+    padding: 8px 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.profileNickname:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
