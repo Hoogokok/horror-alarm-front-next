@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import {login} from '../lib/actions'
+import { login } from '../auth/lib/actions'
 import { useActionState } from 'react';
 import styles from './login.module.css'
 

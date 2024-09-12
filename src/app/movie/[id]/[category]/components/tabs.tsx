@@ -1,12 +1,23 @@
 'use client';
 
 import { useState } from 'react';
+import { useActionState } from 'react';
+import { rate } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
+import Link from 'next/link';
 
-export default function Tabs({ movie }: { movie: any }) {
+export default function Tabs({ movie, user, movieIds, category }: { movie: any, user: any, movieIds: string[], category: string }) {
+  const initialState = {
+    error: {},
+    message: ""
+  }
+  const [state, formAction] = useActionState(rate, initialState)
   const [activeTab, setActiveTab] = useState('overview');
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 5;
+  const isLogin = user ? true : false;
+  const [rating, setRating] = useState(0);
+  const isRated = movieIds.includes(movie.id)
 
   const reviews = [
     "이 영화는 너무 재미있어요.",
@@ -58,7 +69,21 @@ export default function Tabs({ movie }: { movie: any }) {
       case 'ratings':
         return (
           <div>
-            <p>평균: 3.75/5</p>
+            <p>평점: {movie.voteAverage ? movie.voteAverage : 0}</p>
+            {isLogin && !isRated && (
+              <div>
+               <form action={formAction} className={styles.form}>
+                <StarRating rating={rating} setRating={setRating} />
+                <input type="hidden" name="user_id" value={user.user.id} />
+                <input type="hidden" name="movie_id" value={movie.id} />
+                <input type="hidden" name="category" value={category} />
+                <button>평점 남기기</button>
+               </form>
+               {state.error && <p>{state.message}</p>}
+              </div>
+            )}
+            {isRated && <p className={styles.rated}>이미 평점을 매겼습니다.</p>}
+            {!isLogin && <Link href="/login" className={styles.rated}>로그인 후 이용해주세요.</Link>}
           </div>
         );
       case 'releaseDate':
@@ -85,3 +110,27 @@ export default function Tabs({ movie }: { movie: any }) {
     </div>
   );
 }
+
+const StarRating = ({ rating, setRating }: { rating: number, setRating: (rating: number) => void }) => {
+  return (
+    <div className={styles.starRating}>
+    {[1, 2, 3, 4, 5].map((star) => (
+      <label key={star}>
+        <input
+          type="radio"
+          name="rating"
+          value={star}
+          checked={rating === star}
+          onChange={() => setRating(star)}
+          style={{ display: 'none' }}
+        />
+        <span
+          style={{ cursor: 'pointer', color: star <= rating ? 'gold' : 'gray' }}
+        >
+          ★
+        </span>
+      </label>
+    ))}
+  </div>
+  );
+};

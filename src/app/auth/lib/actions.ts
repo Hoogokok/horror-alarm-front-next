@@ -107,3 +107,28 @@ export async function logout() {
     revalidatePath('/', 'layout')
     redirect('/')
 }
+
+export async function getUser() {
+    const supabase = createClient()
+    const { data, error } = await supabase.auth.getUser()
+   
+    //로그인 하지 않았을 때
+    if (!data.user) {
+        return {
+            user: null,
+            movieIds: [],
+        }
+    }
+    const { data: rateData, error: rateError } = await supabase.from('rate').select('rate_movie_id')
+    if (rateError) {
+        console.log(rateError)
+    }
+    let movieIds: string[] = []
+    if (rateData) {
+        movieIds = rateData.map((rate: any) => rate.rate_movie_id)
+    }
+    return {
+        user: data.user,
+        movieIds: movieIds,
+    }
+}

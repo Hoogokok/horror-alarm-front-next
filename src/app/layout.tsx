@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import styles from "./page.module.css";
-import { createClient } from '@/app/utils/supabase/server'
+import { getUser } from '@/app/auth/lib/actions'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,8 +17,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient()
-  const { data, error } = await supabase.auth.getUser()
+  const data = await getUser()
   return (
     <html>
       <body className={inter.className}>
