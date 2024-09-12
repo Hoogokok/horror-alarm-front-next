@@ -111,13 +111,12 @@ export async function logout() {
 export async function getUser() {
     const supabase = createClient()
     const { data, error } = await supabase.auth.getUser()
-    if (error) {
-        redirect('/error')
-    }
+   
     //로그인 하지 않았을 때
     if (!data.user) {
         return {
             user: null,
+            movieIds: [],
         }
     }
     const { data: rateData, error: rateError } = await supabase.from('rate').select('rate_movie_id')

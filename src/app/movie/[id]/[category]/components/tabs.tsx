@@ -4,8 +4,9 @@ import { useState } from 'react';
 import { useActionState } from 'react';
 import { rate } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
+import Link from 'next/link';
 
-export default function Tabs({ movie, user, movieIds, category }: { movie: any, user: any, movieIds: any, category: string }) {
+export default function Tabs({ movie, user, movieIds, category }: { movie: any, user: any, movieIds: string[], category: string }) {
   const initialState = {
     error: {},
     message: ""
@@ -14,10 +15,10 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
   const [activeTab, setActiveTab] = useState('overview');
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 5;
-  const isLogin = user.user ? true : false;
+  const isLogin = user ? true : false;
   const [rating, setRating] = useState(0);
   const isRated = movieIds.includes(movie.id)
-  console.log(movieIds)
+
   const reviews = [
     "이 영화는 너무 재미있어요.",
     "이 영화는 너무 무섭습니다.",
@@ -82,6 +83,7 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
               </div>
             )}
             {isRated && <p className={styles.rated}>이미 평점을 매겼습니다.</p>}
+            {!isLogin && <Link href="/login" className={styles.rated}>로그인 후 이용해주세요.</Link>}
           </div>
         );
       case 'releaseDate':
