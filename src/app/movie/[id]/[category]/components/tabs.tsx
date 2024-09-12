@@ -5,7 +5,7 @@ import { useActionState } from 'react';
 import { rate } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
 
-export default function Tabs({ movie, user, category }: { movie: any, user: any, category: string }) {
+export default function Tabs({ movie, user, movieIds, category }: { movie: any, user: any, movieIds: any, category: string }) {
   const initialState = {
     error: {},
     message: ""
@@ -16,7 +16,8 @@ export default function Tabs({ movie, user, category }: { movie: any, user: any,
   const reviewsPerPage = 5;
   const isLogin = user.user ? true : false;
   const [rating, setRating] = useState(0);
-
+  const isRated = movieIds.includes(movie.id)
+  console.log(movieIds)
   const reviews = [
     "이 영화는 너무 재미있어요.",
     "이 영화는 너무 무섭습니다.",
@@ -68,7 +69,7 @@ export default function Tabs({ movie, user, category }: { movie: any, user: any,
         return (
           <div>
             <p>평점: {movie.voteAverage ? movie.voteAverage : 0}</p>
-            {isLogin && (
+            {isLogin && !isRated && (
               <div>
                <form action={formAction} className={styles.form}>
                 <StarRating rating={rating} setRating={setRating} />
@@ -80,6 +81,7 @@ export default function Tabs({ movie, user, category }: { movie: any, user: any,
                {state.error && <p>{state.message}</p>}
               </div>
             )}
+            {isRated && <p className={styles.rated}>이미 평점을 매겼습니다.</p>}
           </div>
         );
       case 'releaseDate':
