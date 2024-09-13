@@ -6,8 +6,7 @@ import { getProfile } from "../auth/lib/actions";
 
 export default async function Page() {
   const profile = await getProfile()
-  const profileImage = null;
-
+  const profileImage = profile?.image_url
   return (
     <div className={styles.profileContainer}>
       {profileImage ? (
@@ -18,7 +17,7 @@ export default async function Page() {
         </div>
       )}
       <div className={styles.profileNickname}>{profile.name}</div>
-      <Link href="/edit-profile" className={styles.profileEditLink}>
+      <Link href={`/profile/edit`} className={styles.profileEditLink}>
         프로필 변경
       </Link>
       <form action={logout}>
