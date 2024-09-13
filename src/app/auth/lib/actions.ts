@@ -140,8 +140,90 @@ export async function getProfile() {
         console.log(error)
     }
     const { data: profileData, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id)
+
     if (profileError) {
         console.log(profileError)
     }
-    return profileData?.[0]
+    const fileName = `user-${profileData?.[0].id}.jpeg`
+    const filePath = `${profileData?.[0].id}/${fileName}`
+    const { data: profileImageData } = await supabase.storage.from('profile-image').getPublicUrl(filePath)
+    console.log(profileImageData)
+    const imageUrl = `${profileImageData.publicUrl}`
+    return {
+        ...profileData?.[0],
+        image_url: imageUrl,
+        id: profileData?.[0].id,
+    }
+}
+const uploadProfileImageSchema = z.object({
+    image: z.instanceof(File).refine((file) => ['image/jpeg'].includes(file.type), {
+        message: "jpeg 파일만 업로드 할 수 있습니다.",
+    }),
+    name: z.string().min(1, "이름은 최소 1자 이상이어야 합니다"),
+    id: z.string().min(1, "id는 최소 1자 이상이어야 합니다"),
+})
+export type UploadProfileImageState = {
+    error?: string
+    message?: string
+    imageUrl?: string
+    name?: string
+    isPending?: boolean
+    id: string
+}
+
+export async function uploadProfileImage(prevState: UploadProfileImageState, formData: FormData) {
+
+    const supabase = createClient()
+    const validation = uploadProfileImageSchema.safeParse({
+        image: formData.get('image') as File,
+        name: formData.get('name') as string,
+        id: formData.get('id') as string,
+    })
+    if (!validation.success) {
+      console.log(validation.error.message)
+        return {
+            error: validation.error.message,
+            message: "jpeg 파일만 업로드 할 수 있습니다.",
+            isPending: false,
+            name: prevState.name,
+            imageUrl: prevState.imageUrl,
+            id: prevState.id,
+        }
+    }
+    const { data: userData, error: userError } = await supabase.from('profiles').update({
+        name: validation.data.name,
+    }).eq('id', validation.data.id)
+  
+    if (userError) {
+        console.log(userError)
+        return {
+            error: userError.message,
+            message: "별명 변경 실패",
+            isPending: false,
+            name: prevState.name,
+            imageUrl: prevState.imageUrl,
+            id: prevState.id,
+        }
+    }
+    const file = validation.data.image as File
+    const fileExt = file.name.split('.').pop()
+    const fileName = `user-${validation.data.id}.${fileExt}`
+    const filePath = `${validation.data.id}/${fileName}`
+    const { data, error } = await supabase.storage.from('profile-image').upload(filePath, file,{
+      cacheControl: '3600',
+      upsert: true,
+    })
+    if (error) {
+      console.log(error)
+      return {
+        error: error.message,
+        message: "프로필 이미지 업로드 실패",
+        isPending: false,
+        name: prevState.name,
+        imageUrl: prevState.imageUrl,
+        id: prevState.id,
+      }
+    }
+    revalidatePath('/profile', 'page')
+    redirect('/profile')
 }
