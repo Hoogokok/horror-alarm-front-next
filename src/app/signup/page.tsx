@@ -4,7 +4,7 @@ import { signup } from '../auth/lib/actions'
 import { useActionState } from 'react';
 import styles from '@/app/login/login.module.css'
 
-export default function LoginPage() {
+export default function SignupPage() {
   const initialState = {
     error: {
         email: undefined as string[] | undefined,
