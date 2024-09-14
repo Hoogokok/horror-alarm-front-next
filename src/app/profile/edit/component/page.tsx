@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { useActionState } from 'react';
 import { uploadProfileImage, UploadProfileImageState } from '@/app/auth/lib/actions';
 import styles from '../../profile.module.css';
-import { useRouter } from 'next/navigation'
 
 interface ProfileEditProps {
   initialNickname: string;
