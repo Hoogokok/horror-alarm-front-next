@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { login, LoginState, signup, SignupState } from '@/app/auth/lib/actions'
+import { login, LoginState, signup, SignupState, getUser } from '@/app/auth/lib/actions'
 import { createClient } from '@/app/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
@@ -10,7 +10,14 @@ vi.mock('@/app/utils/supabase/server', () => ({
       auth: {
         signUp: vi.fn(),
         signInWithPassword: vi.fn(),
+        getUser: vi.fn(),
       },
+      from: vi.fn(() => ({
+        select: vi.fn().mockReturnValue({
+          data: [],
+          error: null,
+        }),
+      })),
     })),
   }))
 
@@ -177,3 +184,67 @@ describe('login', () => {
     expect(redirect).toHaveBeenCalledWith('/login')
   })
 })
+
+describe('getUser', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('로그인한 사용자의 정보를 반환해야 합니다', async () => {
+    const mockUser = { id: '123', email: 'test@example.com' }
+    const mockRateData = [{ rate_movie_id: 'movie1' }, { rate_movie_id: 'movie2' }]
+
+    vi.mocked(createClient).mockReturnValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
+      },
+      from: vi.fn(() => ({
+        select: vi.fn().mockResolvedValue({ data: mockRateData, error: null }),
+      })),
+    } as any)
+
+    const result = await getUser()
+
+    expect(result).toEqual({
+      user: mockUser,
+      movieIds: ['movie1', 'movie2'],
+    })
+  })
+
+  it('로그인하지 않은 경우 null user와 빈 movieIds를 반환해야 합니다', async () => {
+    vi.mocked(createClient).mockReturnValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+      },
+      from: vi.fn(() => ({
+        select: vi.fn().mockResolvedValue({ data: null, error: null }),
+      })),
+    } as any)
+
+    const result = await getUser()
+
+    expect(result).toEqual({
+      user: null,
+      movieIds: [],
+    })
+  })
+
+  it('Supabase 에러 발생 시 콘솔에 로그를 출력해야 합니다', async () => {
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+    const mockError = new Error('Supabase error')
+
+    vi.mocked(createClient).mockReturnValue({
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: { id: '123' } }, error: null }),
+      },
+      from: vi.fn(() => ({
+        select: vi.fn().mockResolvedValue({ data: null, error: mockError }),
+      })),
+    } as any)
+
+    await getUser()
+
+    expect(consoleSpy).toHaveBeenCalledWith(mockError)
+    consoleSpy.mockRestore()
+  })
+})      
