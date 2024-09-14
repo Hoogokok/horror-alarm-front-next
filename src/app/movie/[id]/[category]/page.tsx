@@ -2,7 +2,6 @@ import Image from 'next/image';
 import styles from "./page.module.css";
 import Tabs from "./components/tabs";
 import { getUser } from "@/app/auth/lib/actions";
-import supabase from "@/app/utils/supabase/client";
 
 export default async function MovieDetail({ params }: { params: { id: string, category: string } }) {
   const url = `${process.env.MOVIE_API}/api/movie/${params.id}?category=${params.category}`;
