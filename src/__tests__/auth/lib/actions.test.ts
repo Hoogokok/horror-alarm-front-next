@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { login, LoginState, signup, SignupState, getUser, logout, getProfile } from '@/app/auth/lib/actions'
+import { login, LoginState, signup, SignupState, getUser, logout, getProfile, uploadProfileImage, UploadProfileImageState } from '@/app/auth/lib/actions'
 import { createClient } from '@/app/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
@@ -22,14 +22,20 @@ vi.mock('@/app/utils/supabase/server', () => ({
         data: [],
         error: null,
       }),
+      update: vi.fn().mockReturnValue({
+        data: [],
+        error: null,
+      }),
     })),
     storage: {
       from: vi.fn(() => ({
         getPublicUrl: vi.fn(),
+        upload: vi.fn(),
       })),
     },
   })),
 }))
+
 
 // Next.js 함수 모킹
 vi.mock('next/navigation', () => ({
@@ -360,7 +366,7 @@ describe('getProfile', () => {
     const mockUser = { id: '123', email: 'test@example.com' }
     const mockError = new Error('Profile fetch error')
     const mockPublicUrl = "error"
-    
+
     const mockSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
@@ -385,3 +391,109 @@ describe('getProfile', () => {
     consoleSpy.mockRestore()
   })
 })
+
+describe('uploadProfileImage', () => {
+    let mockSupabase: any
+    let prevState: UploadProfileImageState
+    let formData: FormData
+
+    beforeEach(() => {
+        vi.clearAllMocks()
+        mockSupabase = {
+          from: vi.fn(() => ({
+            update: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockResolvedValue({ data: {}, error: null }),
+            select: vi.fn().mockResolvedValue({ data: {}, error: null }),
+          })),
+          storage: {
+            from: vi.fn(() => ({
+              upload: vi.fn().mockResolvedValue({ data: {}, error: null }),
+            })),
+          },
+        }
+        vi.mocked(createClient).mockReturnValue(mockSupabase)
+    
+        prevState = {
+          error: undefined,
+          message: undefined,
+          imageUrl: 'old-image-url',
+          name: 'Old Name',
+          isPending: false,
+          id: '123',
+        }
+    
+        formData = new FormData()
+        formData.append('image', new File([''], 'test.jpeg', { type: 'image/jpeg' }))
+        formData.append('name', 'New Name')
+        formData.append('id', '123')
+      })
+
+      it('성공적으로 프로필 이미지를 업로드해야 합니다', async () => {
+        const result = await uploadProfileImage(prevState, formData)
+        expect(mockSupabase.from).toHaveBeenCalledWith('profiles')
+        expect(mockSupabase.storage.from).toHaveBeenCalledWith('profile-image')
+        expect(revalidatePath).toHaveBeenCalledWith('/profile', 'page')
+        expect(redirect).toHaveBeenCalledWith('/profile')
+      })
+
+      it('유효성 검사 실패 시(jpeg 파일만 업로드 할 수 있습니다) 에러를 반환해야 합니다', async () => {
+        formData.set('image', new File([''], 'test.png', { type: 'image/png' }))
+        const result = await uploadProfileImage(prevState, formData)
+        expect(result).toEqual({
+            error: expect.stringContaining('jpeg 파일만 업로드 할 수 있습니다'),
+            message: "jpeg 파일만 업로드 할 수 있습니다.",
+            isPending: false,
+            name: prevState.name,
+            imageUrl: prevState.imageUrl,
+            id: prevState.id,
+        })
+    })
+
+    it('유효성 검사 실패 시(이름은 최소 1자 이상이어야 합니다) 에러를 반환해야 합니다', async () => {
+        formData.set('name', '')
+        const result = await uploadProfileImage(prevState, formData)
+        expect(result).toEqual({
+            error: expect.stringContaining('이름은 최소 1자 이상이어야 합니다'),
+            message: "이름은 최소 1자 이상이어야 합니다",
+            isPending: false,
+            name: prevState.name,
+            imageUrl: prevState.imageUrl,
+            id: prevState.id,
+        })
+    })
+
+    it('Supabase storage 에러 발생 시 콘솔에 로그를 출력합니다.', async () => {
+        const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+        const mockFormData = new FormData();
+        mockFormData.append('image', new File(['test'], 'test.jpeg', { type: 'image/jpeg' }));
+        mockFormData.append('name', '테스트 이름');
+        mockFormData.append('id', 'test-id');
+    
+        const prevState = {
+          name: '이전 이름',
+          imageUrl: '이전 이미지 URL',
+          id: 'test-id',
+        };
+    
+        mockSupabase.from.mockReturnValue({
+          update: vi.fn().mockReturnThis(),
+          eq: vi.fn().mockResolvedValue({ data: {}, error: null }),
+        });
+    
+        mockSupabase.storage.from.mockReturnValue({
+          upload: vi.fn().mockResolvedValue({ data: null, error: { message: '업로드 실패' } }),
+        });
+    
+        const result = await uploadProfileImage(prevState, mockFormData);
+    
+        expect(result).toEqual({
+          error: '업로드 실패',
+          message: '프로필 이미지 업로드 실패',
+          isPending: false,
+          name: '이전 이름',
+          imageUrl: '이전 이미지 URL',
+          id: 'test-id',
+        });
+        consoleSpy.mockRestore()
+    });
+})        
