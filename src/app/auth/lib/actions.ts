@@ -160,7 +160,9 @@ const uploadProfileImageSchema = z.object({
     image: z.instanceof(File).refine((file) => ['image/jpeg'].includes(file.type), {
         message: "jpeg 파일만 업로드 할 수 있습니다.",
     }),
-    name: z.string().min(1, "이름은 최소 1자 이상이어야 합니다"),
+    name: z.string().refine((name) => name.length >= 1, {
+        message: "이름은 최소 1자 이상이어야 합니다",
+    }),
     id: z.string().min(1, "id는 최소 1자 이상이어야 합니다"),
 })
 export type UploadProfileImageState = {
@@ -182,9 +184,10 @@ export async function uploadProfileImage(prevState: UploadProfileImageState, for
     })
     if (!validation.success) {
       console.log(validation.error.message)
+      const errorMessage = validation.error.flatten().fieldErrors.name?.[0] ?? validation.error.flatten().fieldErrors.image?.[0] ?? "알 수 없는 오류가 발생했습니다"
         return {
             error: validation.error.message,
-            message: "jpeg 파일만 업로드 할 수 있습니다.",
+            message: errorMessage,
             isPending: false,
             name: prevState.name,
             imageUrl: prevState.imageUrl,
