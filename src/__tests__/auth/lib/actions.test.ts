@@ -1,36 +1,44 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { login, LoginState, signup, SignupState, getUser, logout } from '@/app/auth/lib/actions'
+import { login, LoginState, signup, SignupState, getUser, logout, getProfile } from '@/app/auth/lib/actions'
 import { createClient } from '@/app/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
 // Supabase 클라이언트 모킹
 vi.mock('@/app/utils/supabase/server', () => ({
-    createClient: vi.fn(() => ({
-      auth: {
-        signUp: vi.fn(),
-        signInWithPassword: vi.fn(),
-        getUser: vi.fn(),
-        signOut: vi.fn(),
-      },
-      from: vi.fn(() => ({
-        select: vi.fn().mockReturnValue({
-          data: [],
-          error: null,
-        }),
-      })),
+  createClient: vi.fn(() => ({
+    auth: {
+      signUp: vi.fn(),
+      signInWithPassword: vi.fn(),
+      getUser: vi.fn(),
+      signOut: vi.fn(),
+    },
+    from: vi.fn(() => ({
+      select: vi.fn().mockReturnValue({
+        data: [],
+        error: null,
+      }),
+      eq: vi.fn().mockReturnValue({
+        data: [],
+        error: null,
+      }),
     })),
-  }))
+    storage: {
+      from: vi.fn(() => ({
+        getPublicUrl: vi.fn(),
+      })),
+    },
+  })),
+}))
 
-
-  // Next.js 함수 모킹
+// Next.js 함수 모킹
 vi.mock('next/navigation', () => ({
-    redirect: vi.fn(),
-  }))
+  redirect: vi.fn(),
+}))
 
 vi.mock('next/cache', () => ({
-    revalidatePath: vi.fn(),
-  }))
+  revalidatePath: vi.fn(),
+}))
 
 describe('signup', () => {
   let prevState: SignupState
@@ -280,4 +288,100 @@ describe('getUser', () => {
     expect(consoleSpy).toHaveBeenCalledWith(mockError)
     consoleSpy.mockRestore()
   })
-})      
+})
+
+describe('getProfile', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('사용자 프로필 정보를 반환해야 합니다', async () => {
+    const mockUser = { id: '123', email: 'test@example.com' }
+    const mockProfileData = [{ id: '123', name: 'Test User' }]
+    const mockPublicUrl = 'https://example.com/profile-image.jpg'
+
+    const mockSupabase = {
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
+      },
+      from: vi.fn(() => ({
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockResolvedValue({ data: mockProfileData, error: null }),
+      })),
+      storage: {
+        from: vi.fn(() => ({
+          getPublicUrl: vi.fn().mockReturnValue({ data: { publicUrl: mockPublicUrl } }),
+        })),
+      },
+    }
+
+    vi.mocked(createClient).mockReturnValue(mockSupabase as any)
+
+    const result = await getProfile()
+
+    expect(result).toEqual({
+      ...mockProfileData[0],
+      image_url: mockPublicUrl,
+    })
+  })
+
+  it('사용자 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 리다이렉트해야 합니다', async () => {
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+    const mockError = new Error('User fetch error')
+    const mockUser = { id: '123', email: 'test@example.com' }
+    const mockProfileData = [{ id: '', name: 'Test User' }]
+
+    const mockSupabase = {
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: mockUser }, error: mockError }),
+      },
+      from: vi.fn(() => ({
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockResolvedValue({ data: mockProfileData, error: null }),
+      })),
+      storage: {
+        from: vi.fn(() => ({
+          getPublicUrl: vi.fn().mockReturnValue({ data: { publicUrl: '' } }),
+        })),
+      },
+    }
+
+    vi.mocked(createClient).mockReturnValue(mockSupabase as any)
+
+    await getProfile()
+
+    expect(consoleSpy).toHaveBeenCalledWith(mockError)
+    expect(redirect).toHaveBeenCalledWith('/error')
+    consoleSpy.mockRestore()
+  })
+
+  it('프로필 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 리다이렉트해야 합니다', async () => {
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+    const mockUser = { id: '123', email: 'test@example.com' }
+    const mockError = new Error('Profile fetch error')
+    const mockPublicUrl = "error"
+    
+    const mockSupabase = {
+      auth: {
+        getUser: vi.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
+      },
+      from: vi.fn(() => ({
+        select: vi.fn().mockReturnThis(),
+        eq: vi.fn().mockResolvedValue({ data: null, error: mockError }),
+      })),
+      storage: {
+        from: vi.fn(() => ({
+          getPublicUrl: vi.fn().mockReturnValue({ data: { publicUrl: mockPublicUrl } }),
+        })),
+      },
+    }
+
+    vi.mocked(createClient).mockReturnValue(mockSupabase as any)
+
+    await getProfile()
+
+    expect(consoleSpy).toHaveBeenCalledWith(mockError)
+    expect(redirect).toHaveBeenCalledWith('/error')
+    consoleSpy.mockRestore()
+  })
+})
