@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { login, LoginState, signup, SignupState, getUser } from '@/app/auth/lib/actions'
+import { login, LoginState, signup, SignupState, getUser, logout } from '@/app/auth/lib/actions'
 import { createClient } from '@/app/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
@@ -11,6 +11,7 @@ vi.mock('@/app/utils/supabase/server', () => ({
         signUp: vi.fn(),
         signInWithPassword: vi.fn(),
         getUser: vi.fn(),
+        signOut: vi.fn(),
       },
       from: vi.fn(() => ({
         select: vi.fn().mockReturnValue({
@@ -182,6 +183,38 @@ describe('login', () => {
     await login(prevState, formData)
 
     expect(redirect).toHaveBeenCalledWith('/login')
+  })
+})
+
+describe('logout', () => {
+  it('로그아웃을 성공적으로 수행해야 합니다', async () => {
+    const mockSignOut = vi.fn().mockResolvedValue({ error: null })
+    vi.mocked(createClient).mockReturnValue({
+      auth: {
+        signOut: mockSignOut,
+      },
+    } as any)
+
+    await logout()
+
+    expect(mockSignOut).toHaveBeenCalled()
+    expect(revalidatePath).toHaveBeenCalledWith('/', 'layout')
+    expect(redirect).toHaveBeenCalledWith('/')
+  })
+
+  it('Supabase 에러 발생 시 콘솔에 로그를 출력해야 합니다', async () => {
+    const mockSignOut = vi.fn().mockResolvedValue({ error: new Error('Supabase error') })
+
+    vi.mocked(createClient).mockReturnValue({
+      auth: {
+        signOut: mockSignOut,
+      },
+    } as any)
+
+    await logout()
+
+    expect(mockSignOut).toHaveBeenCalled()
+    expect(redirect).toHaveBeenCalledWith('/error')
   })
 })
 
