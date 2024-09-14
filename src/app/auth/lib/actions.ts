@@ -138,16 +138,17 @@ export async function getProfile() {
     const { data, error } = await supabase.auth.getUser()
     if (error) {
         console.log(error)
+        redirect('/error')
     }
     const { data: profileData, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id)
 
     if (profileError) {
         console.log(profileError)
+        redirect('/error')
     }
     const fileName = `user-${profileData?.[0].id}.jpeg`
     const filePath = `${profileData?.[0].id}/${fileName}`
     const { data: profileImageData } = await supabase.storage.from('profile-image').getPublicUrl(filePath)
-    console.log(profileImageData)
     const imageUrl = `${profileImageData.publicUrl}`
     return {
         ...profileData?.[0],
