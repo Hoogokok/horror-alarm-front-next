@@ -20,7 +20,6 @@ export default async function StreamingPage({ searchParams }: {
     return (
         <div>
             <SearchTab />
-            <h1 className={styles.title}>스트리밍</h1>
             <Suspense
                 key={query + page}
                 fallback={
