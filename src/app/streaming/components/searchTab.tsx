@@ -2,6 +2,13 @@
 import styls from './components.module.css';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
+import { Do_Hyeon } from "next/font/google";
+
+const doHyeon = Do_Hyeon({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export default function SearchTab() {
     const searchParams = useSearchParams();
@@ -20,9 +27,9 @@ export default function SearchTab() {
 
     return (
         <div className={styls.searchTab}>
-            <button onClick={() => handleClick("all")} className={styls.searchButton}>모든 서비스</button>
-            <button onClick={() => handleClick("netflix")} className={styls.searchButton}>넷플릭스</button>
-            <button onClick={() => handleClick("disney")} className={styls.searchButton}>디즈니+</button>
+            <button onClick={() => handleClick("all")} className={`${styls.searchButton} ${doHyeon.className}`}>모든 서비스</button>
+            <button onClick={() => handleClick("netflix")} className={`${styls.searchButton} ${doHyeon.className}`}>넷플릭스</button>
+            <button onClick={() => handleClick("disney")} className={`${styls.searchButton} ${doHyeon.className}`}>디즈니+</button>
         </div>
     );
 }
