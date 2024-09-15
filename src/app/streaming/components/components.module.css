@@ -22,6 +22,7 @@
     background-color: #000;
     position: relative;
     overflow: hidden;
+    margin-bottom: 6rem;
 }
 
 .buttonsection button {
@@ -42,8 +43,15 @@
     display: flex;
     justify-content: center;
     gap: 10px;
-    margin-top: 20px;
     font-size: 1.5rem;
+    padding: 2rem 0;
+    margin-top: 1rem; /* 영화 목록과의 간격 */
+}
+
+@media (min-width: 768px) {
+    .pagenation {
+        padding: 3rem 0;
+    }
 }
 
 .middle {
@@ -90,36 +98,43 @@
 .searchTab {
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 15px; /* 버튼 사이의 간격 증가 */
+    margin-bottom: 2rem;
     overflow-x: auto;
-    padding: 10px 0;
+    padding: 15px 0; /* 상하 패딩 증가 */
+    margin-top: 1.5rem;
 }
 
 .searchButton {
     background-color: #333;
     color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
+    padding: 12px 20px; /* 패딩 증가 */
+    border-radius: 25px; /* 더 둥근 모서리 */
     cursor: pointer;
     white-space: nowrap;
+    font-size: 18px; /* 글자 크기 증가 */
+    font-weight: 500; /* 약간의 두께 추가 */
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 .searchButton:hover {
     background-color: #555;
+    transform: scale(1.05); /* 호버 시 약간 확대 */
 }
 
 .movieList {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 30px; /* 간격 증가 */
     justify-content: center;
+    margin-bottom: 1rem; /* 페이지네이션과의 간격 */
 }
 
 .movieItem {
     width: 100%;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .moviePosterContainer {
@@ -128,6 +143,7 @@
     padding-top: 150%; /* 2:3 비율 유지 */
     overflow: hidden;
     border-radius: 8px;
+    margin-bottom: 80px; /* 포스터와 제목 사이 간격 */
 }
 
 .moviePoster {
@@ -146,21 +162,31 @@
 
 .movieTitle {
     display: block;
-    margin-top: 8px;
-    font-size: 16px;
+    font-size: 20px; /* 기본 폰트 크기 */
     color: #fff;
     text-decoration: none;
     text-align: center;
+    line-height: 1.2;
+    margin-top: 10px; /* 포스터와 제목 사이 간격 */
+    font-weight: 1000; /* 약간 두껍게 */
+    white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
 }
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     .movieList {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 20px; /* 모바일에서 간격 조정 */
     }
     
     .movieTitle {
-        font-size: 14px;
+        font-size: 16px; /* 모바일에서 글자 크기 조정 */
+    }
+
+    .moviePosterContainer {
+        margin-bottom: 10px; /* 모바일에서 간격 조정 */
     }
 }
 
@@ -170,7 +196,7 @@
     }
     
     .movieTitle {
-        font-size: 18px;
+        font-size: 27px; /* 큰 화면에서 글자 크기 더 증가 */
     }
 }
 

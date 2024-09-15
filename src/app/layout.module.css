@@ -65,6 +65,21 @@
   display: none;
 }
 
+.mobileHeader {
+    display: none;
+    background-color: #1f1f1f;
+    padding: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  .mobileNav {
+    display: none;
+  }
+
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
@@ -74,7 +89,12 @@
     display: none;
   }
 
+  .mobileHeader {
+    display: block;
+  }
+
   .content {
+    padding-top: 70px; /* 모바일 헤더의 높이만큼 상단 패딩 추가 */
     padding-bottom: 70px;
   }
 
