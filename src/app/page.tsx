@@ -47,7 +47,7 @@ export default async function Home() {
                   </Link>
                 </div>
               ))}
-            </div> : <div className={styles.content}>개봉 예정인 영화가 없습니다.</div>
+            </div> : <div className={styles.content}>개봉 예정인 영화가 없어요!</div>
           }
           <div className={styles.imagesectionTitle}>상영중</div>
           {
@@ -69,7 +69,7 @@ export default async function Home() {
                 ))}
               </div>
             ) : (
-              <div className={styles.content}>상영중인 영화가 없습니다.</div>
+              <div className={styles.content}>상영중인 영화가 없어요!</div>
             )
           }
           {
@@ -94,7 +94,7 @@ export default async function Home() {
                 ))}
               </div>
             </div> : <div className={styles.content}>
-               스트리밍 종료 예정인 영화가 없습니다.
+               스트리밍 종료 예정인 영화가 없어요!
             </div>
           }
         </Suspense>
