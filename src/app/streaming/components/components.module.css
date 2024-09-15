@@ -122,10 +122,21 @@
     margin-bottom: 20px;
 }
 
-.moviePoster {
+.moviePosterContainer {
+    position: relative;
     width: 100%;
-    height: auto;
+    padding-top: 150%; /* 2:3 비율 유지 */
+    overflow: hidden;
     border-radius: 8px;
+}
+
+.moviePoster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: transform 0.3s ease;
 }
 

@@ -15,13 +15,15 @@ export default async function ImageTabs({ query, page }: { query: string, page: 
     <div className={styls.movieList}>
       {data.map((movie: Movie) => (
         <div key={movie.id} className={styls.movieItem}>
-          <Image 
-            src={process.env.POSTER_URL + movie.posterPath} 
-            alt={movie.title} 
-            width={150} 
-            height={225} 
-            className={styls.moviePoster} 
-          />
+          <div className={styls.moviePosterContainer}>
+            <Image 
+              src={process.env.POSTER_URL + movie.posterPath} 
+              alt={movie.title} 
+              layout="fill"
+              objectFit="cover"
+              className={styls.moviePoster} 
+            />
+          </div>
           <Link href={`/movie/${movie.id}/${"streaming"}`} className={styls.movieTitle}>
             {movie.title}
           </Link>
