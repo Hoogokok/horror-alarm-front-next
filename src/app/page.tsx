@@ -39,8 +39,8 @@ export default async function Home() {
                     src={process.env.POSTER_URL + movie.posterPath}
                     width={250}
                     height={300}
-                    style={imageStyle}
                     priority={true}
+                    className={styles.movieImage}
                   />
                   <Link href={`/movie/${movie.id}/${"upcoming"}`}>
                     {movie.title}
@@ -60,7 +60,7 @@ export default async function Home() {
                       src={process.env.POSTER_URL + movie.posterPath}
                       width={250}
                       height={300}
-                      style={imageStyle}
+                      className={styles.movieImage}
                     />
                     <Link href={`/movie/${movie.id}/${"upcoming"}`}>
                       {movie.title}
@@ -85,7 +85,7 @@ export default async function Home() {
                       src={process.env.POSTER_URL + movie.posterPath}
                       width={250}
                       height={300}
-                      style={imageStyle}
+                      className={styles.movieImage}
                     />
                     <Link href={`/movie/${movie.id}/${"streaming"}`}>
                       {movie.title}
