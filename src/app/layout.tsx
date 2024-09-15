@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Black_Han_Sans } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import styles from "./layout.module.css";
@@ -7,6 +7,11 @@ import { getUser } from '@/app/auth/lib/actions'
 import Image from 'next/image';
 
 const inter = Inter({ subsets: ["latin"] });
+const blackHanSans = Black_Han_Sans({ 
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: "Spooky Town",
@@ -21,7 +26,7 @@ export default async function RootLayout({
   const data = await getUser()
   return (
     <html lang="ko">
-      <body className={inter.className}>
+      <body className={inter.className} style={{ fontFamily: blackHanSans.style.fontFamily }}>
         <div className={styles.container}>
           <nav className={styles.sidebar}>
             <div className={styles.logo}>Spooky Town</div>
