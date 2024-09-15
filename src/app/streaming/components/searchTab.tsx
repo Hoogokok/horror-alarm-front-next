@@ -9,7 +9,6 @@ export default function SearchTab() {
     const { replace } = useRouter();
     const handleClick = useDebouncedCallback((query: string) => {
        const params = new URLSearchParams(searchParams);
-       // Handle search
        params.set('page', '1');
        if (query) {
          params.set('query', query);
@@ -17,26 +16,13 @@ export default function SearchTab() {
          params.delete('query');
        }
        replace(`${pathname}?${params.toString()}`);
-    }
-    , 300);
+    }, 300);
 
     return (
-        <div className={styls.buttonsection}>
-            <button
-                onClick={() => handleClick("all")}
-            >
-                All
-            </button>
-            <button
-                onClick={() => handleClick("netflix")}
-            >
-                Netflix
-            </button>
-            <button
-                onClick={() => handleClick("disney")}
-            >
-                Disney+
-            </button>
+        <div className={styls.searchTab}>
+            <button onClick={() => handleClick("all")} className={styls.searchButton}>모든 서비스</button>
+            <button onClick={() => handleClick("netflix")} className={styls.searchButton}>넷플릭스</button>
+            <button onClick={() => handleClick("disney")} className={styls.searchButton}>디즈니+</button>
         </div>
     );
 }

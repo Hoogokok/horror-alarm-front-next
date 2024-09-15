@@ -41,16 +41,13 @@
 .pagenation {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    background-color: #000;
-    position: relative;
-    overflow: hidden;
+    gap: 10px;
+    margin-top: 20px;
     font-size: 1.5rem;
 }
 
 .middle {
+    color: #999;
     margin: 0 5px;
     padding: 5px 10px;
 }
@@ -64,21 +61,19 @@
 }
 
 .pageNumber {
-    margin: 0 10px; /* 숫자 간격을 추가 */
     padding: 5px 10px;
     border-radius: 5px;
-    background-color: rgb(65, 44, 44);
-    color: black;
     text-decoration: none;
+    background-color: #333;
+    color: white;
 }
 
 .pageNumberActive {
-    margin: 0 10px; /* 숫자 간격을 추가 */
     padding: 5px 10px;
     border-radius: 5px;
-    background-color: rgb(199, 216, 221);
-    color: black;
     text-decoration: none;
+    background-color: #e50914;
+    color: white;
 }
 
 .skeleton {
@@ -91,3 +86,92 @@
     position: relative;
     overflow: hidden;
 }
+
+.searchTab {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.searchButton {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.searchButton:hover {
+    background-color: #555;
+}
+
+.movieList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+.movieItem {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.moviePosterContainer {
+    position: relative;
+    width: 100%;
+    padding-top: 150%; /* 2:3 비율 유지 */
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.moviePoster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movieItem:hover .moviePoster {
+    transform: scale(1.05);
+}
+
+.movieTitle {
+    display: block;
+    margin-top: 8px;
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .movieList {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .movieTitle {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .movieList {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    .movieTitle {
+        font-size: 18px;
+    }
+}
+
+/* 기존의 다른 스타일들은 그대로 유지 */
