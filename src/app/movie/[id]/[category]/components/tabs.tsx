@@ -74,7 +74,7 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
               <div>
                <form action={formAction} className={styles.form}>
                 <StarRating rating={rating} setRating={setRating} />
-                <input type="hidden" name="user_id" value={user.user.id} />
+                <input type="hidden" name="user_id" value={user.id} />
                 <input type="hidden" name="movie_id" value={movie.id} />
                 <input type="hidden" name="category" value={category} />
                 <button>평점 남기기</button>

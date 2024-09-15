@@ -1,28 +1,17 @@
-import { logout } from "../auth/lib/actions";
-import Image from 'next/image';
-import Link from 'next/link';
-import styles from "./profile.module.css"
-import { getProfile } from "../auth/lib/actions";
+import { getProfile } from "@/app/auth/lib/actions";
+import ProfileEdit from "./edit/page";
+import styles from '@/app/profile/profile.module.css';
 
-export default async function Page() {
-  const profile = await getProfile()
-  const profileImage = profile?.image_url
+export default async function EditProfilePage() {
+    const profile = await getProfile()
   return (
     <div className={styles.profileContainer}>
-      {profileImage ? (
-        <Image src={profileImage} alt="프로필 이미지" width={200} height={200} className={styles.profileImage} />
-      ) : (
-        <div className={styles.profileImagePlaceholder}>
-          ?
-        </div>
-      )}
-      <div className={styles.profileNickname}>{profile.name}</div>
-      <Link href={`/profile/edit`} className={styles.profileEditLink}>
-        프로필 변경
-      </Link>
-      <form action={logout}>
-        <button type="submit" className={styles.logoutButton}>로그아웃</button>
-      </form>
+      <h1 className={styles.title}>프로필 수정</h1>
+      <ProfileEdit
+        initialImageUrl={profile?.image_url}
+        initialNickname={profile?.name}
+        initialId={profile?.id}
+      />
     </div>
   );
 }

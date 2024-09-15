@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
+        domains: [process.env.POSTER_HOSTNAME, process.env.NEXT_PUBLIC_SUPABASE_NOTHOST],
         remotePatterns: [
             {
                 protocol: 'https',
@@ -9,7 +10,7 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: process.env.NEXT_PUBLIC_SUPABASE_URL,
+                hostname: process.env.NEXT_PUBLIC_SUPABASE_NOTHOST,
                 port: '',
             },
         ],

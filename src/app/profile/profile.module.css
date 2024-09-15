@@ -1,196 +1,169 @@
 .profileContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px;
-    background-color: #f8f9fa;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 40px auto;
+    max-width: 600px;
+    margin: 3rem auto 0; /* 상단 여백을 3rem으로 설정 */
+    padding: 2rem;
+    color: #fff;
+    border-radius: 8px; /* 선택적: 컨테이너에 둥근 모서리 추가 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 선택적: 그림자 효과 추가 */
 }
 
-.profileImage {
-    width: 200px;
-    height: 200px;
-    border-radius: 20px; /* 더 작은 라디우스 값 */
-    object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
-.profileImagePlaceholder {
-    width: 200px;
-    height: 200px;
-    border-radius: 20px; /* 더 작은 라디우스 값 */
-    background-color: #e9ecef;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: #adb5bd;
+.profileContent {
+    max-width: 800px;
     margin: 0 auto;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.imageUpload {
-    margin-top: 24px;
-    padding: 10px;
-    border: 2px dashed #ced4da;
-    border-radius: 8px;
-    background-color: #ffffff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.imageUpload:hover {
-    border-color: #6c757d;
-}
-
-.profileEditLink {
-    margin-top: 24px;
-    color: #007bff;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.profileEditLink:hover {
-    color: #0056b3;
-}
-
-.logoutButton {
-    margin-top: 24px;
-    background-color: #6c757d;  /* 회색 계열 */
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-}
-
-.logoutButton:hover {
-    background-color: #5a6268;  /* 호버 시 더 어두운 회색 */
-}
-
-.profileNickname {
-    margin-top: 16px;
-    font-size: 28px;
-    font-weight: 700;
-    color: #333;
-    text-align: center;
-    letter-spacing: 0.5px;
-    text-transform: capitalize;
-    padding: 8px 16px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-}
-
-.profileNickname:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.label {
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    text-align: center;
-    letter-spacing: 0.5px;
-    padding: 8px 16px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+    padding: 2rem;
 }
 
 .form {
-    max-width: 400px;
-    margin: 5rem auto;
-    padding: 2rem;
-    background: #c7ccd1;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
-.imageContainer {
-    text-align: center;
-    margin-bottom: 2rem;
+.profileLayout {
+    display: flex;
+    gap: 2rem;
 }
 
-.profileImage {
-    border-radius: 20%;
+.imageSection {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profileImage, .profileImagePlaceholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
 }
 
 .profileImagePlaceholder {
-    width: 200px;
-    height: 200px;
-    border-radius: 20px; /* 더 작은 라디우스 값 */
-    background-color: #e9ecef;
+    background-color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
-    color: #adb5bd;
-    margin: 0 auto;
-    border: 3px solid #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 4rem;
+    color: #fff;
 }
 
-.imageInput {
-    margin-top: 1rem;
+.changeImageButton {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+}
+
+.changeImageButton:hover {
+    background-color: #f40612;
+}
+
+.infoSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .inputGroup {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    color: #495057;
 }
 
 .input {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ced4da;
+    padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1rem;
+    font-size: 16px;
 }
 
-.submitButton {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #007bff;
-    color: white;
+.inputDescription {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cancelButton, .saveButton {
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    font-size: 16px;
 }
 
-.submitButton:hover {
-    background-color: #0056b3;
-}
-
-.submitButton:disabled {
+.cancelButton {
     background-color: #6c757d;
-    cursor: not-allowed;
+    color: white;
+}
+
+.saveButton {
+    background-color: #fb2d64;
+    color: white;
+}
+
+.imageInput {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .profileContainer {
+        margin-top: 2rem; /* 모바일 화면에서는 상단 여백을 줄임 */
+        padding: 1.5rem;
+    }
+}
+
+.message, .error {
+    margin-top: 1rem;
+    padding: 10px;
+    border-radius: 4px;
 }
 
 .message {
-    margin-top: 1rem;
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.deleteImageButton {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
     text-align: center;
-    color: #28a745;
+}
+
+.deleteImageButton:hover {
+    background-color: #c82333;
 }
