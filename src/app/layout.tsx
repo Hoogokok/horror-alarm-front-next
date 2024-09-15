@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import styles from "./layout.module.css";
 import { getUser } from '@/app/auth/lib/actions'
+import Image from 'next/image';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +26,9 @@ export default async function RootLayout({
           <nav className={styles.sidebar}>
             <div className={styles.logo}>Spooky Town</div>
             <ul className={styles.menu}>
-              <li><Link href="/"><span className={styles.icon}>🏠</span>홈</Link></li>
+              <li><Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={24} height={24} className={styles.icon}/>
+              <span>홈</span>
+              </Link></li>
               <li><Link href="/streaming"><span className={styles.icon}>🎬</span>스트리밍</Link></li>
               <li><Link href="/streaming"><span className={styles.icon}>📺</span>웹툰</Link></li>
               <li><Link href="/streaming"><span className={styles.icon}>📚</span>책</Link></li>
@@ -41,7 +44,9 @@ export default async function RootLayout({
             {children}
           </main>
           <nav className={styles.mobileNav}>
-            <Link href="/"><span className={styles.icon}></span>홈</Link>
+            <Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={24} height={24} className={styles.icon}/>
+            <span>홈</span>
+            </Link>
             <Link href="/streaming"><span className={styles.icon}></span>스트리밍</Link>
             <Link href="/streaming"><span className={styles.icon}></span>웹툰</Link>
             <Link href="/streaming"><span className={styles.icon}></span>책</Link>

@@ -17,31 +17,42 @@
   font-weight: bold;
   margin-bottom: 30px;
   color: #e50914;
+  text-align: center;
 }
 
 .menu {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .menu li {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .menu a {
   color: #a5a5a5;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 14px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
+  width: 100%;
 }
 
 .menu a:hover {
   color: white;
 }
 
-.icon {
-  margin-right: 10px;
+.menu a img {
+  margin-bottom: 5px;
+}
+
+.menu a span {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 .content {
@@ -51,7 +62,7 @@
 }
 
 .mobileNav {
-  display: none; /* 기본적으로 모바일 네비게이션을 숨깁니다 */
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -60,19 +71,19 @@
   }
 
   .sidebar {
-    display: none; /* 모바일에서 사이드바를 숨깁니다 */
+    display: none;
   }
 
   .content {
-    padding-bottom: 70px; /* 모바일 네비게이션을 위한 여백 */
+    padding-bottom: 70px;
   }
 
   .mobileNav {
-    display: flex; /* 모바일에서만 네비게이션을 표시합니다 */
+    display: flex;
     justify-content: space-around;
     align-items: center;
     background-color: #1f1f1f;
-    padding: 10px;
+    padding: 10px 5px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -86,10 +97,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    width: 25%; /* 4개 항목을 균등하게 배치 */
   }
 
-  .mobileNav .icon {
-    font-size: 24px;
-    margin-bottom: 4px;
+  .mobileNav a img {
+    margin-bottom: 5px;
+  }
+
+  .mobileNav a span {
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 }
