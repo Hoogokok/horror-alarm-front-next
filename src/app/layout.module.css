@@ -5,15 +5,11 @@
 }
 
 .sidebar {
-  width: 200px; /* 기본 너비를 늘림 */
-  min-width: 200px; /* 최소 너비 설정 */
+  width: 200px;
   background-color: #1f1f1f;
   color: #a5a5a5;
-  padding: 20px 0;
-  transition: width 0.3s ease;
-  overflow-y: auto; /* 세로 스크롤 추가 */
-  height: 100vh; /* 전체 높이 설정 */
-  position: fixed; /* 사이드바 고정 */
+  padding: 20px;
+  display: block;
 }
 
 .logo {
@@ -22,42 +18,96 @@
   margin-bottom: 30px;
   color: #e50914;
   text-align: center;
-  padding: 0 10px;
 }
 
 .menu {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .menu li {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .menu a {
   color: #a5a5a5;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 20px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 10px 20px;
-  transition: color 0.3s ease;
+  text-align: center;
+  width: 100%;
 }
 
 .menu a:hover {
   color: white;
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.icon {
-  margin-right: 15px;
-  font-size: 18px;
+.menu a img {
+  margin-bottom: 5px;
+}
+
+.menu a span {
+  display: block;
+  width: 100%;
+  text-align: center;
 }
 
 .content {
   flex: 1;
   padding: 20px;
-  margin-left: 200px; /* 사이드바 너비만큼 여백 추가 */
   overflow-y: auto;
-  width: calc(100% - 200px); /* 사이드바를 제외한 너비 설정 */
+}
+
+.mobileNav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .content {
+    padding-bottom: 70px;
+  }
+
+  .mobileNav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1f1f1f;
+    padding: 10px 5px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .mobileNav a {
+    color: #a5a5a5;
+    text-decoration: none;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 25%; /* 4개 항목을 균등하게 배치 */
+  }
+
+  .mobileNav a img {
+    margin-bottom: 5px;
+  }
+
+  .mobileNav a span {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
 }
