@@ -3,7 +3,6 @@
     margin: 3rem auto 0; /* 상단 여백을 3rem으로 설정 */
     padding: 2rem;
     color: #fff;
-    background-color: #141414;
     border-radius: 8px; /* 선택적: 컨테이너에 둥근 모서리 추가 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 선택적: 그림자 효과 추가 */
 }
@@ -15,13 +14,22 @@
 }
 
 .profileContent {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.form {
+    width: 100%;
+}
+
+.profileLayout {
     display: flex;
     gap: 2rem;
-    align-items: flex-start;
 }
 
 .imageSection {
-    flex: 0 0 200px;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,38 +53,49 @@
 }
 
 .changeImageButton {
-    background-color: transparent;
-    border: 1px solid #fff;
-    color: #fff;
-    padding: 0.5rem 1rem;
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    margin-top: 1rem;
+    font-size: 14px;
+    text-align: center;
+}
+
+.changeImageButton:hover {
+    background-color: #f40612;
 }
 
 .infoSection {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .inputGroup {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
-.inputGroup label {
+.label {
     display: block;
     margin-bottom: 0.5rem;
+    font-weight: bold;
 }
 
 .input {
     width: 100%;
-    padding: 0.5rem;
-    background-color: #333;
-    border: none;
-    color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
 }
 
 .inputDescription {
     font-size: 0.8rem;
-    color: #999;
+    color: #666;
     margin-top: 0.5rem;
 }
 
@@ -84,24 +103,29 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .cancelButton, .saveButton {
-    padding: 0.5rem 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .cancelButton {
-    background-color: #333;
-    color: #fff;
-    border: none;
+    background-color: #6c757d;
+    color: white;
 }
 
 .saveButton {
-    background-color: #e50914;
-    color: #fff;
-    border: none;
+    background-color: #fb2d64;
+    color: white;
+}
+
+.imageInput {
+    display: none;
 }
 
 @media (max-width: 768px) {
@@ -109,4 +133,37 @@
         margin-top: 2rem; /* 모바일 화면에서는 상단 여백을 줄임 */
         padding: 1.5rem;
     }
+}
+
+.message, .error {
+    margin-top: 1rem;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.message {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.deleteImageButton {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.deleteImageButton:hover {
+    background-color: #c82333;
 }
