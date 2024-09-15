@@ -29,14 +29,26 @@ export default async function RootLayout({
               <li><Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={24} height={24} className={styles.icon}/>
               <span>홈</span>
               </Link></li>
-              <li><Link href="/streaming"><span className={styles.icon}>🎬</span>스트리밍</Link></li>
-              <li><Link href="/streaming"><span className={styles.icon}>📺</span>웹툰</Link></li>
-              <li><Link href="/streaming"><span className={styles.icon}>📚</span>책</Link></li>
-              <li><Link href="/streaming"><span className={styles.icon}>🔍</span>찾기</Link></li>
+              <li><Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={24} height={24} className={styles.icon}/>
+              <span>스트리밍</span>
+              </Link></li>
+              <li><Link href="/manga"><Image src={"/icons/manga.svg"} alt="만화" width={24} height={24} className={styles.icon}/>
+              <span>만화</span>
+              </Link></li>
+              <li><Link href="/game"><Image src={"/icons/game.svg"} alt="게임" width={24} height={24} className={styles.icon}/>
+              <span>게임</span>
+              </Link></li>
+              <li><Link href="/search"><Image src={"/icons/search.svg"} alt="찾기" width={24} height={24} className={styles.icon}/>
+              <span>찾기</span>
+              </Link></li>
               {data.user ? (
-                <li><Link href="/profile"><span className={styles.icon}>👤</span>프로필</Link></li>
+                <li><Link href="/profile"><Image src={"/icons/profile.svg"} alt="프로필" width={24} height={24} className={styles.icon}/>
+                <span>프로필</span>
+                </Link></li>
               ) : (
-                <li><Link href="/login"><span className={styles.icon}>🔑</span>로그인</Link></li>
+                <li><Link href="/login"><Image src={"/icons/login.svg"} alt="로그인" width={24} height={24} className={styles.icon}/>
+                <span>로그인</span>
+                </Link></li>
               )}
             </ul>
           </nav>
@@ -47,14 +59,26 @@ export default async function RootLayout({
             <Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={24} height={24} className={styles.icon}/>
             <span>홈</span>
             </Link>
-            <Link href="/streaming"><span className={styles.icon}></span>스트리밍</Link>
-            <Link href="/streaming"><span className={styles.icon}></span>웹툰</Link>
-            <Link href="/streaming"><span className={styles.icon}></span>책</Link>
-            <Link href="/search"><span className={styles.icon}></span>찾기</Link>
+            <Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={24} height={24} className={styles.icon}/>
+            <span>스트리밍</span>
+            </Link>
+            <Link href="/manga"><Image src={"/icons/manga.svg"} alt="만화" width={24} height={24} className={styles.icon}/>
+            <span>만화</span>
+            </Link>
+            <Link href="/game"><Image src={"/icons/game.svg"} alt="게임" width={24} height={24} className={styles.icon}/>
+            <span>게임</span>
+            </Link>
+            <Link href="/search"><Image src={"/icons/search.svg"} alt="찾기" width={24} height={24} className={styles.icon}/>
+            <span>찾기</span>
+            </Link>
             {data.user ? (
-              <Link href="/profile"><span className={styles.icon}></span>프로필</Link>
+              <Link href="/profile"><Image src={"/icons/profile.svg"} alt="프로필" width={24} height={24} className={styles.icon}/>
+              <span>프로필</span>
+              </Link>
             ) : (
-              <Link href="/login"><span className={styles.icon}></span>로그인</Link>
+              <Link href="/login"><Image src={"/icons/login.svg"} alt="로그인" width={24} height={24} className={styles.icon}/>
+              <span>로그인</span>
+              </Link>
             )}
           </nav>
         </div>
