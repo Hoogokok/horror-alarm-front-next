@@ -5,15 +5,11 @@
 }
 
 .sidebar {
-  width: 200px; /* 기본 너비를 늘림 */
-  min-width: 200px; /* 최소 너비 설정 */
+  width: 200px;
   background-color: #1f1f1f;
   color: #a5a5a5;
-  padding: 20px 0;
-  transition: width 0.3s ease;
-  overflow-y: auto; /* 세로 스크롤 추가 */
-  height: 100vh; /* 전체 높이 설정 */
-  position: fixed; /* 사이드바 고정 */
+  padding: 20px;
+  display: block;
 }
 
 .logo {
@@ -21,8 +17,6 @@
   font-weight: bold;
   margin-bottom: 30px;
   color: #e50914;
-  text-align: center;
-  padding: 0 10px;
 }
 
 .menu {
@@ -40,24 +34,62 @@
   font-size: 16px;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
-  transition: color 0.3s ease;
 }
 
 .menu a:hover {
   color: white;
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .icon {
-  margin-right: 15px;
-  font-size: 18px;
+  margin-right: 10px;
 }
 
 .content {
   flex: 1;
   padding: 20px;
-  margin-left: 200px; /* 사이드바 너비만큼 여백 추가 */
   overflow-y: auto;
-  width: calc(100% - 200px); /* 사이드바를 제외한 너비 설정 */
+}
+
+.mobileNav {
+  display: none; /* 기본적으로 모바일 네비게이션을 숨깁니다 */
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    display: none; /* 모바일에서 사이드바를 숨깁니다 */
+  }
+
+  .content {
+    padding-bottom: 70px; /* 모바일 네비게이션을 위한 여백 */
+  }
+
+  .mobileNav {
+    display: flex; /* 모바일에서만 네비게이션을 표시합니다 */
+    justify-content: space-around;
+    align-items: center;
+    background-color: #1f1f1f;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .mobileNav a {
+    color: #a5a5a5;
+    text-decoration: none;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobileNav .icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
 }

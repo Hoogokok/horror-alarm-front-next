@@ -40,6 +40,18 @@ export default async function RootLayout({
           <main className={styles.content}>
             {children}
           </main>
+          <nav className={styles.mobileNav}>
+            <Link href="/"><span className={styles.icon}></span>홈</Link>
+            <Link href="/streaming"><span className={styles.icon}></span>스트리밍</Link>
+            <Link href="/streaming"><span className={styles.icon}></span>웹툰</Link>
+            <Link href="/streaming"><span className={styles.icon}></span>책</Link>
+            <Link href="/search"><span className={styles.icon}></span>찾기</Link>
+            {data.user ? (
+              <Link href="/profile"><span className={styles.icon}></span>프로필</Link>
+            ) : (
+              <Link href="/login"><span className={styles.icon}></span>로그인</Link>
+            )}
+          </nav>
         </div>
       </body>
     </html>
