@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import styles from "../page.module.css";
+import styles from "@/app/streaming/page.module.css";
 import { Suspense } from "react";
 import Images from './components/image';
 import SearchTab from './components/searchTab';
@@ -18,16 +17,22 @@ export default async function StreamingPage({ searchParams }: {
     const url = `${process.env.MOVIE_API}/api/streaming?query=${query}`;
     const totalPages = await fetch(url, { cache: "force-cache" }).then(res => res.json());
     return (
-        <div>
-            <SearchTab />
-            <Suspense
-                key={query + page}
-                fallback={
-                    <ImageSkeleton />
-                }>
-                <Images query={query} page={page} />
-            </Suspense>
-            <Pagination totalPages={totalPages} />
+        <div className={styles.streamingContainer}>
+            <div className={styles.searchTabWrapper}>
+                <SearchTab />
+            </div>
+            <div className={styles.imageGalleryWrapper}>
+                <Suspense
+                    key={query + page}
+                    fallback={
+                        <ImageSkeleton />
+                    }>
+                    <Images query={query} page={page} />
+                </Suspense>
+            </div>
+            <div className={styles.paginationWrapper}>
+                <Pagination totalPages={totalPages} />
+            </div>
         </div>
     );
 }

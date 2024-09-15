@@ -1,8 +1,41 @@
-.main{
+.streamingContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.contentWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.imageGalleryWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    height: 100vh;
-    background-color: transparent;
+}
+
+.searchTabWrapper {
+    margin-bottom: 2rem; /* 검색 탭과 포스터 사이의 간격 */
+}
+
+.paginationWrapper {
+    margin-top: 2rem; /* 포스터 제목과 페이지네이션 사이의 간격 */
+}
+
+@media (min-width: 768px) {
+    .streamingContainer {
+        padding: 3rem 0;
     }
+
+    .searchTabWrapper {
+        margin-bottom: 3rem; /* 데스크톱에서 더 큰 간격 */
+    }
+
+    .paginationWrapper {
+        margin-top: 3rem; /* 데스크톱에서 더 큰 간격 */
+    }
+}
