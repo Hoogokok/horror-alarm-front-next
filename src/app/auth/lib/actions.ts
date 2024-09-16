@@ -138,18 +138,23 @@ export async function getUser() {
     }
 }
 
-export async function getProfile() {
+export type Profile = {
+  id: string;
+  image_url: string;
+}
+
+export async function getProfile() : Promise<Profile | null> {
   const supabase = createClient()
   const { data, error } = await supabase.auth.getUser()
   if (error) {
       console.log(error)
-      redirect('/login')
+      return null
   }
   const { data: profileData, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id)
 
   if (profileError) {
       console.log(profileError)
-      redirect('/login')
+      return null
   }
   const fileName = `user-${profileData?.[0].id}.jpeg`
   const filePath = `${profileData?.[0].id}/${fileName}`
