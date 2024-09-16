@@ -148,4 +148,9 @@
     height: 30px;
     border-radius: 50%;
   }
+
+  .logo {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
 }

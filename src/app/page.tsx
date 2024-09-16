@@ -3,11 +3,14 @@ import Link from 'next/link';
 import { Suspense } from "react";
 import Loading from "./loading";
 import styles from "./page.module.css";
+import { Do_Hyeon } from "next/font/google";
 
-const imageStyle = {
-  padding: '10px',
-  borderRadius: '20px',
-}
+const doHyeon = Do_Hyeon({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
+
 export interface NetflixResponses {
   expiredMovies: Array<NetflixResponse>;
 }
@@ -26,7 +29,7 @@ export default async function Home() {
   const expiredList = streamingExpiring?.expiredMovies
   
   return (
-    <main className={styles.main}>
+    <main className={styles.main} style={doHyeon.style}>
       <section className={styles.imagesection}>
         <Suspense fallback={<Loading />}>
           <div className={styles.imagesectionTitle}>개봉 예정</div>
@@ -42,7 +45,7 @@ export default async function Home() {
                     priority={true}
                     className={styles.movieImage}
                   />
-                  <Link href={`/movie/${movie.id}/${"upcoming"}`}>
+                  <Link href={`/movie/${movie.id}/${"upcoming"}`} className={styles.movieTitle}>
                     {movie.title}
                   </Link>
                 </div>
@@ -62,7 +65,7 @@ export default async function Home() {
                       height={300}
                       className={styles.movieImage}
                     />
-                    <Link href={`/movie/${movie.id}/${"upcoming"}`}>
+                    <Link href={`/movie/${movie.id}/${"upcoming"}`} className={styles.movieTitle}>
                       {movie.title}
                     </Link>
                   </div>
@@ -87,7 +90,7 @@ export default async function Home() {
                       height={300}
                       className={styles.movieImage}
                     />
-                    <Link href={`/movie/${movie.id}/${"streaming"}`}>
+                    <Link href={`/movie/${movie.id}/${"streaming"}`} className={styles.movieTitle}>
                       {movie.title}
                     </Link>
                   </div>

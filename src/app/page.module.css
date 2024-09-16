@@ -5,6 +5,7 @@
 
 .imagesection {
   margin-bottom: 40px;
+  position: relative;
 }
 
 .imagesectionTitle {
@@ -16,22 +17,45 @@
 .content {
   display: flex;
   overflow-x: auto;
-  gap: 20px;
-  padding-bottom: 20px;
+  gap: 40px; /* 20px에서 40px로 증가 */
+  padding: 0 20px 20px;
+  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scroll-snap-type: x mandatory;
+}
+
+.content::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+.content::before,
+.content::after {
+  content: '';
+  flex: 0 0 20px;
 }
 
 .movieItem {
   flex: 0 0 auto;
-  width: 200px;
-  text-align: center;
-  position: relative;
+  width: 180px; /* 200px에서 180px로 감소 */
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
 }
 
 .movieImage {
-  width: 100%;
-  height: auto;
+  width: 100%; /* 130%에서 100%로 변경 */
+  margin-bottom: 10px;
+  height: auto; /* 100%에서 auto로 변경 */
   border-radius: 8px;
+  /* 포스터 비율 유지 */
+  aspect-ratio: 2/3;
   transition: transform 0.3s ease;
+}
+
+.movieTitle {
+  font-size: 24px; /* 20px에서 24px로 증가 */
+  font-weight: 1000;
+  margin-bottom: 10px;
 }
 
 .movieItem:hover .movieImage {
@@ -43,7 +67,6 @@
   margin-top: 10px;
   color: white;
   text-decoration: none;
-  font-size: 14px;
 }
 
 .discountBadge {
@@ -56,4 +79,45 @@
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
+}
+
+@media (min-width: 768px) {
+  .content {
+    gap: 50px; /* 30px에서 50px로 증가 */
+    padding: 0 30px 20px;
+  }
+
+  .content::before,
+  .content::after {
+    flex: 0 0 30px;
+  }
+
+  .movieItem {
+    width: 200px; /* 220px에서 200px로 감소 */
+  }
+  
+  .movieTitle {
+    font-size: 20px; /* 18px에서 22px로 증가 */
+  }
+}
+
+@media (min-width: 1200px) {
+  .content {
+    gap: 60px; /* 새로 추가된 속성 */
+    padding: 0 40px 20px;
+    justify-content: flex-start; /* space-between에서 flex-start로 변경 */
+  }
+
+  .content::before,
+  .content::after {
+    flex: 0 0 40px;
+  }
+
+  .movieItem {
+    width: 220px; /* 250px에서 220px로 감소 */
+  }
+  
+  .movieTitle {
+    font-size: 24px; /* 20px에서 24px로 증가 */
+  }
 }
