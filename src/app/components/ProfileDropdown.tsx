@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../layout.module.css';
-import { logout } from '@/app/auth/lib/actions';
+import { logout, Profile } from '@/app/auth/lib/actions';
 import { Do_Hyeon } from "next/font/google";
 
 const doHyeon = Do_Hyeon({
@@ -14,10 +14,7 @@ const doHyeon = Do_Hyeon({
 });
 
 interface ProfileDropdownProps {
-  profile: {
-    id: string;
-    image_url: string;
-  };
+  profile: Profile;
   isMobile: boolean;
 }
 
