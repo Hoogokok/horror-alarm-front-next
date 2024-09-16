@@ -26,9 +26,9 @@ export default async function ImageTabs({ query, page }: { query: string, page: 
             <Image 
               src={process.env.POSTER_URL + movie.posterPath} 
               alt={movie.title} 
-              layout="fill"
-              objectFit="cover"
               className={styls.moviePoster} 
+              width={100}
+              height={100}
             />
           </div>
           <Link href={`/movie/${movie.id}/${"streaming"}`} className={`${styls.movieTitle} ${doHyeon.className}`}>
