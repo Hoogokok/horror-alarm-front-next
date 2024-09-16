@@ -47,7 +47,7 @@ export default async function RootLayout({
               <span>찾기</span>
               </Link></li>
               {profile.id ? (
-                <li><Link href="/profile"><Image src={profile.image_url} alt="프로필" width={30} height={30} className={styles.icon}/>
+                <li><Link href="/profile"><Image src={profile.image_url} alt="프로필" width={50} height={50} className={styles.profileIcon} unoptimized/>
                 <span>프로필</span>
                 </Link></li>
               ) : (
@@ -80,11 +80,11 @@ export default async function RootLayout({
             <span>찾기</span>
             </Link>
             {profile.id ? (
-              <Link href="/profile"><Image src={profile.image_url} alt="프로필" width={30} height={30} className={styles.icon}/>
+              <Link href="/profile"><Image src={profile.image_url} alt="프로필" width={50} height={50} className={styles.profileIcon} unoptimized/>
               <span>프로필</span>
               </Link>
             ) : (
-              <Link href="/login"><Image src={profile.image_url} alt="로그인" width={30} height={30} className={styles.icon}/>
+              <Link href="/login"><Image src={profile.image_url} alt="로그인" width={30} height={30} className={styles.icon} />
               <span>로그인</span>
               </Link>
             )}
