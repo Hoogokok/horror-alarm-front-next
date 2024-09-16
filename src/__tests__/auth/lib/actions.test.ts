@@ -449,12 +449,25 @@ describe('uploadProfileImage', () => {
         })
     })
 
-    it('유효성 검사 실패 시(이름은 최소 1자 이상이어야 합니다) 에러를 반환해야 합니다', async () => {
+    it('유효성 검사 실패 시(이름은 최소 2자 이상이어야 합니다) 에러를 반환해야 합니다', async () => {
         formData.set('name', '')
         const result = await uploadProfileImage(prevState, formData)
         expect(result).toEqual({
-            error: expect.stringContaining('이름은 최소 1자 이상이어야 합니다'),
-            message: "이름은 최소 1자 이상이어야 합니다",
+            error: expect.stringContaining('이름은 최소 2자 이상이어야 합니다'),
+            message: "이름은 최소 2자 이상이어야 합니다",
+            isPending: false,
+            name: prevState.name,
+            imageUrl: prevState.imageUrl,
+            id: prevState.id,
+        })
+    })
+
+    it('유효성 검사 실패 시(이름은 최대 20자 이하이어야 합니다) 에러를 반환해야 합니다', async () => {
+        formData.set('name', 'a'.repeat(21))
+        const result = await uploadProfileImage(prevState, formData)
+        expect(result).toEqual({
+            error: expect.stringContaining('이름은 최대 20자 이하이어야 합니다'),
+            message: "이름은 최대 20자 이하이어야 합니다",
             isPending: false,
             name: prevState.name,
             imageUrl: prevState.imageUrl,

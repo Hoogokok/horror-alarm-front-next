@@ -160,9 +160,7 @@ const uploadProfileImageSchema = z.object({
     image: z.instanceof(File).refine((file) => ['image/jpeg'].includes(file.type), {
         message: "jpeg 파일만 업로드 할 수 있습니다.",
     }),
-    name: z.string().refine((name) => name.length >= 1, {
-        message: "이름은 최소 1자 이상이어야 합니다",
-    }),
+    name: z.string().min(2, "이름은 최소 2자 이상이어야 합니다").max(20, "이름은 최대 20자 이하이어야 합니다"),
     id: z.string().min(1, "id는 최소 1자 이상이어야 합니다"),
 })
 export type UploadProfileImageState = {
