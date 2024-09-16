@@ -3,9 +3,9 @@ import { Inter, Black_Han_Sans, Do_Hyeon } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import styles from "./layout.module.css";
-import { getProfile } from '@/app/auth/lib/actions'
+import { getUser } from '@/app/auth/lib/actions'
 import Image from 'next/image';
-import ProfileDropdown from './components/ProfileDropdown';
+import ProfileDropdown from './components/profileDropdown';
 
 const inter = Inter({ subsets: ["latin"] });
 const blackHanSans = Black_Han_Sans({ 
@@ -29,7 +29,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const profile = await getProfile()
+  const result = await getUser()
+  const user = result.user
 
   return (
     <html lang="ko">
@@ -53,8 +54,8 @@ export default async function RootLayout({
                 <li><Link href="/inDevelopment"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
               <span>찾기</span>
               </Link></li>
-              {profile && profile.id ? (
-                <ProfileDropdown profile={profile} isMobile={false}/>
+              {user && user.id ? (
+                <ProfileDropdown isMobile={false}/>
               ) : (
                 <li><Link href="/login"><Image src={"/icons/login.svg"} alt="로그인" width={30} height={30} className={styles.icon}/>
                 <span>로그인</span>
@@ -73,8 +74,8 @@ export default async function RootLayout({
             <Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={30} height={30} className={styles.icon}/><span>스트리밍</span></Link>
             <Link href="/inDevelopment"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/><span>만화</span></Link>
             <Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/><span>게임</span></Link>
-            {profile && profile.id ? (
-              <ProfileDropdown profile={profile} isMobile={true} />
+            {user && user.id ? (
+              <ProfileDropdown isMobile={true} />
             ) : (
               <Link href="/login"><Image src={"/icons/login.svg"} alt="로그인" width={30} height={30} className={styles.icon} /><span>로그인</span></Link>
             )}
