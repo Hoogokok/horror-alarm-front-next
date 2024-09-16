@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { login, LoginState, signup, SignupState, getUser, logout, getProfile, uploadProfileImage, UploadProfileImageState } from '@/app/auth/lib/actions'
+import { login, LoginState, signup, SignupState, getUser, logout, getProfile, updateProfile, UploadProfileImageState } from '@/app/auth/lib/actions'
 import { createClient } from '@/app/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
@@ -392,7 +392,7 @@ describe('getProfile', () => {
   })
 })
 
-describe('uploadProfileImage', () => {
+describe('updateProfile', () => {
     let mockSupabase: any
     let prevState: UploadProfileImageState
     let formData: FormData
@@ -429,19 +429,34 @@ describe('uploadProfileImage', () => {
       })
 
       it('성공적으로 프로필 이미지를 업로드해야 합니다', async () => {
-        const result = await uploadProfileImage(prevState, formData)
+        const result = await updateProfile(prevState, formData)
         expect(mockSupabase.from).toHaveBeenCalledWith('profiles')
         expect(mockSupabase.storage.from).toHaveBeenCalledWith('profile-image')
         expect(revalidatePath).toHaveBeenCalledWith('/profile', 'page')
         expect(redirect).toHaveBeenCalledWith('/profile')
       })
 
-      it('유효성 검사 실패 시(jpeg 파일만 업로드 할 수 있습니다) 에러를 반환해야 합니다', async () => {
+      it('별명만 변경되어야 합니다', async () => {
+        formData.set('name', 'New Name')
+        const result = await updateProfile(prevState, formData)
+      
+        expect(revalidatePath).toHaveBeenCalledWith('/profile', 'page')
+        expect(redirect).toHaveBeenCalledWith('/profile')
+      })
+
+      it('이미지만 변경되어야 합니다', async () => {
+        formData.set('image', new File([''], 'test.jpeg', { type: 'image/jpeg' }))
+        const result = await updateProfile(prevState, formData)
+        expect(revalidatePath).toHaveBeenCalledWith('/profile', 'page')
+        expect(redirect).toHaveBeenCalledWith('/profile')
+      })
+
+      it('유효성 검사 실패 시(jpeg 파일만 업로드 가능합니다) 에러를 반환해야 합니다', async () => {
         formData.set('image', new File([''], 'test.png', { type: 'image/png' }))
-        const result = await uploadProfileImage(prevState, formData)
+        const result = await updateProfile(prevState, formData)
         expect(result).toEqual({
-            error: expect.stringContaining('jpeg 파일만 업로드 할 수 있습니다'),
-            message: "jpeg 파일만 업로드 할 수 있습니다.",
+            error: expect.stringContaining('jpeg 파일만 업로드 가능합니다'),
+            message: "jpeg 파일만 업로드 가능합니다",
             isPending: false,
             name: prevState.name,
             imageUrl: prevState.imageUrl,
@@ -451,7 +466,7 @@ describe('uploadProfileImage', () => {
 
     it('유효성 검사 실패 시(이름은 최소 2자 이상이어야 합니다) 에러를 반환해야 합니다', async () => {
         formData.set('name', '')
-        const result = await uploadProfileImage(prevState, formData)
+      const result = await updateProfile(prevState, formData)
         expect(result).toEqual({
             error: expect.stringContaining('이름은 최소 2자 이상이어야 합니다'),
             message: "이름은 최소 2자 이상이어야 합니다",
@@ -464,7 +479,7 @@ describe('uploadProfileImage', () => {
 
     it('유효성 검사 실패 시(이름은 최대 20자 이하이어야 합니다) 에러를 반환해야 합니다', async () => {
         formData.set('name', 'a'.repeat(21))
-        const result = await uploadProfileImage(prevState, formData)
+      const result = await updateProfile(prevState, formData)
         expect(result).toEqual({
             error: expect.stringContaining('이름은 최대 20자 이하이어야 합니다'),
             message: "이름은 최대 20자 이하이어야 합니다",
@@ -475,7 +490,7 @@ describe('uploadProfileImage', () => {
         })
     })
 
-    it('Supabase storage 에러 발생 시 콘솔에 로그를 출력합니다.', async () => {
+    it('Supabase storage 에러 발생 시 콘솔에 로그를 출력합니다. 별명 변경은 성공하지만 이미지 업로드는 실패합니다.', async () => {
         const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
         const mockFormData = new FormData();
         mockFormData.append('image', new File(['test'], 'test.jpeg', { type: 'image/jpeg' }));
@@ -497,16 +512,16 @@ describe('uploadProfileImage', () => {
           upload: vi.fn().mockResolvedValue({ data: null, error: { message: '업로드 실패' } }),
         });
     
-        const result = await uploadProfileImage(prevState, mockFormData);
+      const result = await updateProfile(prevState, mockFormData);
     
         expect(result).toEqual({
           error: '업로드 실패',
           message: '프로필 이미지 업로드 실패',
           isPending: false,
-          name: '이전 이름',
+          name: '테스트 이름',
           imageUrl: '이전 이미지 URL',
           id: 'test-id',
         });
         consoleSpy.mockRestore()
     });
-})        
+})       

@@ -1,10 +1,10 @@
 'use client';
 import Image from 'next/image';
 import { useActionState } from 'react';
-import { uploadProfileImage, UploadProfileImageState } from '@/app/auth/lib/actions';
+import { updateProfile, UploadProfileImageState } from '@/app/auth/lib/actions';
 import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback} from 'react';
 import { Do_Hyeon } from "next/font/google";
 
 const doHyeon = Do_Hyeon({
@@ -28,7 +28,7 @@ export default function ProfileEdit({ initialNickname, initialImageUrl, initialI
     isPending: false,
     id: initialId || '',
   }
-  const [state, formAction] = useActionState(uploadProfileImage, initialState);
+  const [state, formAction] = useActionState(updateProfile, initialState);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -50,9 +50,16 @@ export default function ProfileEdit({ initialNickname, initialImageUrl, initialI
     }
   };
 
+  const handleSubmit = useCallback((formData: FormData) => {
+    if (!previewImage && state.imageUrl) {
+      formData.set('image', state.imageUrl);
+    }
+    formAction(formData);
+  }, [formAction, previewImage, state.imageUrl]);
+
   return (
     <div className={`${styles.profileContent} ${doHyeon.className}`}>
-      <form className={styles.form} action={formAction}>
+      <form className={styles.form} action={handleSubmit}>
         <div className={styles.profileLayout}>
           <div className={styles.imageSection}>
             <input type="hidden" name="id" value={state.id} />
@@ -62,6 +69,7 @@ export default function ProfileEdit({ initialNickname, initialImageUrl, initialI
                 alt="프로필 이미지"
                 width={200}
                 height={200}
+                unoptimized
                 className={styles.profileImage}
               />
             ) : (
