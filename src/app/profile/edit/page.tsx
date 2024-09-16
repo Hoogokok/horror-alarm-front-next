@@ -5,6 +5,13 @@ import { uploadProfileImage, UploadProfileImageState } from '@/app/auth/lib/acti
 import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
+import { Do_Hyeon } from "next/font/google";
+
+const doHyeon = Do_Hyeon({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 interface ProfileEditProps {
   initialNickname: string;
@@ -44,7 +51,7 @@ export default function ProfileEdit({ initialNickname, initialImageUrl, initialI
   };
 
   return (
-    <div className={styles.profileContent}>
+    <div className={`${styles.profileContent} ${doHyeon.className}`}>
       <form className={styles.form} action={formAction}>
         <div className={styles.profileLayout}>
           <div className={styles.imageSection}>
@@ -93,7 +100,7 @@ export default function ProfileEdit({ initialNickname, initialImageUrl, initialI
             </div>
             <div className={styles.buttonGroup}>
               <Link href="/profile" className={styles.cancelButton}>취소</Link>
-              <button type="submit" className={styles.saveButton} disabled={state?.isPending}>
+              <button type="submit" className={`${styles.saveButton} ${doHyeon.className}`} disabled={state?.isPending}>
                 {state?.isPending ? '저장 중...' : '변경 저장'}
               </button>
             </div>
