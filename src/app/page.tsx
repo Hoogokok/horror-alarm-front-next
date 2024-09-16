@@ -45,7 +45,7 @@ export default async function Home() {
                     priority={true}
                     className={styles.movieImage}
                   />
-                  <Link href={`/movie/${movie.id}/${"upcoming"}`}>
+                  <Link href={`/movie/${movie.id}/${"upcoming"}`} className={styles.movieTitle}>
                     {movie.title}
                   </Link>
                 </div>
@@ -65,7 +65,7 @@ export default async function Home() {
                       height={300}
                       className={styles.movieImage}
                     />
-                    <Link href={`/movie/${movie.id}/${"upcoming"}`}>
+                    <Link href={`/movie/${movie.id}/${"upcoming"}`} className={styles.movieTitle}>
                       {movie.title}
                     </Link>
                   </div>
@@ -90,7 +90,7 @@ export default async function Home() {
                       height={300}
                       className={styles.movieImage}
                     />
-                    <Link href={`/movie/${movie.id}/${"streaming"}`}>
+                    <Link href={`/movie/${movie.id}/${"streaming"}`} className={styles.movieTitle}>
                       {movie.title}
                     </Link>
                   </div>
