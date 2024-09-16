@@ -157,12 +157,11 @@ export async function getProfile() {
     }
 }
 const uploadProfileImageSchema = z.object({
-    image: z.instanceof(File).refine((file) => ['image/jpeg'].includes(file.type), {
-        message: "jpeg 파일만 업로드 할 수 있습니다.",
-    }),
-    name: z.string().refine((name) => name.length >= 1, {
-        message: "이름은 최소 1자 이상이어야 합니다",
-    }),
+    image: z.union([
+        z.custom<File>((val) => val instanceof File && ['image/jpeg'].includes(val.type), "JPEG 파일만 업로드 가능합니다"),
+        z.string().url("유효한 이미지 URL이어야 합니다"),
+      ]).optional(),
+    name: z.string().min(2, "이름은 최소 2자 이상이어야 합니다").max(20, "이름은 최대 20자 이하이어야 합니다").optional(),
     id: z.string().min(1, "id는 최소 1자 이상이어야 합니다"),
 })
 export type UploadProfileImageState = {
@@ -174,8 +173,7 @@ export type UploadProfileImageState = {
     id: string
 }
 
-export async function uploadProfileImage(prevState: UploadProfileImageState, formData: FormData) {
-
+export async function updateProfile(prevState: UploadProfileImageState, formData: FormData) {
     const supabase = createClient()
     const validation = uploadProfileImageSchema.safeParse({
         image: formData.get('image') as File,
@@ -194,10 +192,15 @@ export async function uploadProfileImage(prevState: UploadProfileImageState, for
             id: prevState.id,
         }
     }
-    const { data: userData, error: userError } = await supabase.from('profiles').update({
-        name: validation.data.name,
-    }).eq('id', validation.data.id)
-  
+    const { image, name, id } = validation.data
+    let updatedName = prevState.name
+    let updatedImageUrl = prevState.imageUrl
+
+    //이름 변경
+    if(name && name !== prevState.name) {
+    const {error: userError } = await supabase.from('profiles').update({
+        name: name,
+    }).eq('id', id)
     if (userError) {
         console.log(userError)
         return {
@@ -209,25 +212,50 @@ export async function uploadProfileImage(prevState: UploadProfileImageState, for
             id: prevState.id,
         }
     }
-    const file = validation.data.image as File
-    const fileExt = file.name.split('.').pop()
-    const fileName = `user-${validation.data.id}.${fileExt}`
-    const filePath = `${validation.data.id}/${fileName}`
-    const { data, error } = await supabase.storage.from('profile-image').upload(filePath, file,{
-      cacheControl: '3600',
-      upsert: true,
-    })
-    if (error) {
-      console.log(error)
-      return {
-        error: error.message,
-        message: "프로필 이미지 업로드 실패",
-        isPending: false,
-        name: prevState.name,
-        imageUrl: prevState.imageUrl,
-        id: prevState.id,
-      }
+        updatedName = name
     }
+    //이미지 변경
+    if (image) {
+        if (image instanceof File) {
+          // 새 이미지 파일 업로드
+          const fileName = `user-${id}.jpeg`
+          const filePath = `${id}/${fileName}`
+          const { data, error } = await supabase.storage.from('profile-image').upload(filePath, image, {
+            contentType: 'image/jpeg',
+            cacheControl: '3600',
+            upsert: true,
+          })
+          if (error) {
+            console.log(error)
+            return {
+              error: error.message,
+              message: "프로필 이미지 업로드 실패",
+              isPending: false,
+              name: updatedName,
+              imageUrl: prevState.imageUrl,
+              id: prevState.id,
+            }
+          }
+          updatedImageUrl = data.path
+        } else if (typeof image === 'string' && image !== prevState.imageUrl) {
+          // 이미지 URL이 변경된 경우 (예: 이미지 삭제 또는 다른 URL로 변경)
+          updatedImageUrl = image
+          // 필요한 경우 여기에 프로필 이미지 URL 업데이트 로직 추가
+          const { error: updateError } = await supabase.from('profiles').update({ image_url: updatedImageUrl }).eq('id', id)
+          if (updateError) {
+            console.log(updateError)
+            return {
+              error: updateError.message,
+              message: "프로필 이미지 URL 업데이트 실패",
+              isPending: false,
+              name: updatedName,
+              imageUrl: prevState.imageUrl,
+              id: prevState.id,
+            }
+          }
+        }
+      }
+    
     revalidatePath('/profile', 'page')
     redirect('/profile')
 }
