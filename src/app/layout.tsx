@@ -5,6 +5,7 @@ import Link from "next/link";
 import styles from "./layout.module.css";
 import { getProfile } from '@/app/auth/lib/actions'
 import Image from 'next/image';
+import ProfileDropdown from './components/ProfileDropdown';
 
 const inter = Inter({ subsets: ["latin"] });
 const blackHanSans = Black_Han_Sans({ 
@@ -29,6 +30,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const profile = await getProfile()
+
   return (
     <html lang="ko">
       <body className={inter.className}>
@@ -51,10 +53,8 @@ export default async function RootLayout({
                 <li><Link href="/inDevelopment"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
               <span>찾기</span>
               </Link></li>
-              {profile.id ? (
-                <li><Link href="/profile"><Image src={profile.image_url} alt="프로필" width={50} height={50} className={styles.profileIcon} unoptimized/>
-                <span>프로필</span>
-                </Link></li>
+              {profile && profile.id ? (
+                <ProfileDropdown profile={profile} isMobile={false}/>
               ) : (
                 <li><Link href="/login"><Image src={"/icons/login.svg"} alt="로그인" width={30} height={30} className={styles.icon}/>
                 <span>로그인</span>
@@ -69,29 +69,14 @@ export default async function RootLayout({
             {children}
           </main>
           <nav className={styles.mobileNav}>
-            <Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={30} height={30} className={styles.icon}/>
-            <span>홈</span>
-            </Link>
-            <Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={30} height={30} className={styles.icon}/>
-            <span>스트리밍</span>
-            </Link>
-            <Link href="/inDevelopment"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/>
-            <span>만화</span>
-            </Link>
-            <Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/>
-            <span>게임</span>
-            </Link>
-            <Link href="/inDevelopment"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
-            <span>찾기</span>
-            </Link>
-            {profile.id ? (
-              <Link href="/profile"><Image src={profile.image_url} alt="프로필" width={50} height={50} className={styles.profileIcon} unoptimized/>
-              <span>프로필</span>
-              </Link>
+            <Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={30} height={30} className={styles.icon}/><span>홈</span></Link>
+            <Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={30} height={30} className={styles.icon}/><span>스트리밍</span></Link>
+            <Link href="/inDevelopment"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/><span>만화</span></Link>
+            <Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/><span>게임</span></Link>
+            {profile && profile.id ? (
+              <ProfileDropdown profile={profile} isMobile={true} />
             ) : (
-              <Link href="/login"><Image src={profile.image_url} alt="로그인" width={30} height={30} className={styles.icon} />
-              <span>로그인</span>
-              </Link>
+              <Link href="/login"><Image src={"/icons/login.svg"} alt="로그인" width={30} height={30} className={styles.icon} /><span>로그인</span></Link>
             )}
           </nav>
         </div>
