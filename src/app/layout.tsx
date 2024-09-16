@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Black_Han_Sans } from "next/font/google";
+import { Inter, Black_Han_Sans, Do_Hyeon } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import styles from "./layout.module.css";
@@ -8,6 +8,11 @@ import Image from 'next/image';
 
 const inter = Inter({ subsets: ["latin"] });
 const blackHanSans = Black_Han_Sans({ 
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
+const doHyeon = Do_Hyeon({
   weight: '400',
   subsets: ['latin'],
   display: 'swap',
@@ -26,11 +31,11 @@ export default async function RootLayout({
   const profile = await getProfile()
   return (
     <html lang="ko">
-      <body className={inter.className} style={{ fontFamily: blackHanSans.style.fontFamily }}>
+      <body className={inter.className}>
         <div className={styles.container}>
           <nav className={styles.sidebar}>
-            <div className={styles.logo}>Spooky Town</div>
-            <ul className={styles.menu}>
+            <div className={styles.logo} style={blackHanSans.style}>Spooky Town</div>
+            <ul className={styles.menu} style={doHyeon.style}>
               <li><Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={30} height={30} className={styles.icon}/>
               <span>홈</span>
               </Link></li>
