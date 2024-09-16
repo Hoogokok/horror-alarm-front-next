@@ -42,13 +42,13 @@ export default async function RootLayout({
               <li><Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={30} height={30} className={styles.icon}/>
               <span>스트리밍</span>
               </Link></li>
-              <li><Link href="/manga"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/>
+              <li><Link href="/inDevelopment"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/>
               <span>만화</span>
               </Link></li>
-              <li><Link href="/game"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/>
+              <li><Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/>
               <span>게임</span>
               </Link></li>
-              <li><Link href="/search"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
+                <li><Link href="/inDevelopment"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
               <span>찾기</span>
               </Link></li>
               {profile.id ? (
@@ -75,13 +75,13 @@ export default async function RootLayout({
             <Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={30} height={30} className={styles.icon}/>
             <span>스트리밍</span>
             </Link>
-            <Link href="/manga"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/>
+            <Link href="/inDevelopment"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/>
             <span>만화</span>
             </Link>
-            <Link href="/game"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/>
+            <Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/>
             <span>게임</span>
             </Link>
-            <Link href="/search"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
+            <Link href="/inDevelopment"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
             <span>찾기</span>
             </Link>
             {profile.id ? (
