@@ -357,7 +357,7 @@ describe('getProfile', () => {
     await getProfile()
 
     expect(consoleSpy).toHaveBeenCalledWith(mockError)
-    expect(redirect).toHaveBeenCalledWith('/error')
+    expect(redirect).toHaveBeenCalledWith('/login')
     consoleSpy.mockRestore()
   })
 
@@ -387,7 +387,7 @@ describe('getProfile', () => {
     await getProfile()
 
     expect(consoleSpy).toHaveBeenCalledWith(mockError)
-    expect(redirect).toHaveBeenCalledWith('/error')
+    expect(redirect).toHaveBeenCalledWith('/login')
     consoleSpy.mockRestore()
   })
 })
@@ -423,7 +423,7 @@ describe('updateProfile', () => {
         }
     
         formData = new FormData()
-        formData.append('image', new File([''], 'test.jpeg', { type: 'image/jpeg' }))
+        formData.append('image', new File(['test'], 'test.jpeg', { type: 'image/jpeg' }))
         formData.append('name', 'New Name')
         formData.append('id', '123')
       })
@@ -451,12 +451,12 @@ describe('updateProfile', () => {
         expect(redirect).toHaveBeenCalledWith('/profile')
       })
 
-      it('유효성 검사 실패 시(jpeg 파일만 업로드 가능합니다) 에러를 반환해야 합니다', async () => {
-        formData.set('image', new File([''], 'test.png', { type: 'image/png' }))
-        const result = await updateProfile(prevState, formData)
+      it('유효성 검사 실패 시(JPEG 파일만 업로드 가능합니다) 에러를 반환해야 합니다', async () => {
+        formData.set('image', new File(['test'], 'test.png', { type: 'image/png' }));
+        const result = await updateProfile(prevState, formData);
         expect(result).toEqual({
-            error: expect.stringContaining('jpeg 파일만 업로드 가능합니다'),
-            message: "jpeg 파일만 업로드 가능합니다",
+            error: expect.stringContaining('JPEG 파일만 업로드 가능합니다'),
+            message: "JPEG 파일만 업로드 가능합니다",
             isPending: false,
             name: prevState.name,
             imageUrl: prevState.imageUrl,

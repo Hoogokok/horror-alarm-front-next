@@ -102,6 +102,7 @@ export async function logout() {
     const supabase = createClient()
     const { error } = await supabase.auth.signOut()
     if (error) {
+        console.log(error)
         redirect('/error')
     }
     revalidatePath('/', 'layout')
@@ -110,57 +111,72 @@ export async function logout() {
 
 export async function getUser() {
     const supabase = createClient()
-    const { data, error } = await supabase.auth.getUser()
-   
-    //로그인 하지 않았을 때
-    if (!data.user) {
-        return {
-            user: null,
-            movieIds: [],
+    try {
+        const { data, error } = await supabase.auth.getUser()
+        //로그인 하지 않았을 때
+        if (!data.user) {
+            return {
+                user: null,
+                movieIds: [],
+            }
         }
-    }
-    const { data: rateData, error: rateError } = await supabase.from('rate').select('rate_movie_id')
-    if (rateError) {
-        console.log(rateError)
-    }
-    let movieIds: string[] = []
-    if (rateData) {
-        movieIds = rateData.map((rate: any) => rate.rate_movie_id)
-    }
-    return {
-        user: data.user,
-        movieIds: movieIds,
+        const { data: rateData, error: rateError } = await supabase.from('rate').select('rate_movie_id')
+        if (rateError) {
+            console.log(rateError)
+        }
+        let movieIds: string[] = []
+        if (rateData) {
+            movieIds = rateData.map((rate: any) => rate.rate_movie_id)
+        }
+        return {
+            user: data.user,
+            movieIds: movieIds,
+        }
+    } catch (error) {
+        console.error('사용자 정보 조회 중 오류 발생:', error)
+        return { user: null, movieIds: [] }
     }
 }
 
 export async function getProfile() {
-    const supabase = createClient()
-    const { data, error } = await supabase.auth.getUser()
-    if (error) {
-        console.log(error)
-        redirect('/error')
-    }
-    const { data: profileData, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id)
+  const supabase = createClient()
+  const { data, error } = await supabase.auth.getUser()
+  if (error) {
+      console.log(error)
+      redirect('/login')
+  }
+  const { data: profileData, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id)
 
-    if (profileError) {
-        console.log(profileError)
-        redirect('/error')
-    }
-    const fileName = `user-${profileData?.[0].id}.jpeg`
-    const filePath = `${profileData?.[0].id}/${fileName}`
-    const { data: profileImageData } = await supabase.storage.from('profile-image').getPublicUrl(filePath)
-    const imageUrl = `${profileImageData.publicUrl}`
-    return {
-        ...profileData?.[0],
-        image_url: imageUrl,
-        id: profileData?.[0].id,
-    }
+  if (profileError) {
+      console.log(profileError)
+      redirect('/login')
+  }
+  const fileName = `user-${profileData?.[0].id}.jpeg`
+  const filePath = `${profileData?.[0].id}/${fileName}`
+  const { data: profileImageData } = await supabase.storage.from('profile-image').getPublicUrl(filePath)
+  const imageUrl = `${profileImageData.publicUrl}`
+  return {
+      ...profileData?.[0],
+      image_url: imageUrl,
+      id: profileData?.[0].id,
+  }
 }
 const uploadProfileImageSchema = z.object({
     image: z.union([
-        z.custom<File>((val) => val instanceof File && ['image/jpeg'].includes(val.type), "JPEG 파일만 업로드 가능합니다"),
+        z.custom<File>((val) => val instanceof File, "파일이어야 합니다"),
         z.string().url("유효한 이미지 URL이어야 합니다"),
-      ]).optional(),
+    ]).optional()
+    .refine(
+        (val) => {
+            if (val instanceof File) {
+                return ['image/jpeg'].includes(val.type);
+            }
+            return true; // URL인 경우 이미 검증되었으므로 true 반환
+        },
+        {
+            message: "JPEG 파일만 업로드 가능합니다",
+        }
+    ),
     name: z.string().min(2, "이름은 최소 2자 이상이어야 합니다").max(20, "이름은 최대 20자 이하이어야 합니다").optional(),
     id: z.string().min(1, "id는 최소 1자 이상이어야 합니다"),
 })
@@ -181,9 +197,8 @@ export async function updateProfile(prevState: UploadProfileImageState, formData
         id: formData.get('id') as string,
     })
     if (!validation.success) {
-      console.log(validation.error.message)
-      const errorMessage = validation.error.flatten().fieldErrors.name?.[0] ?? validation.error.flatten().fieldErrors.image?.[0] ?? "알 수 없는 오류가 발생했습니다"
-        return {
+      const errorMessage = validation.error.issues[0]?.message || "알 수 없는 오류가 발생했습니다"
+      return {
             error: validation.error.message,
             message: errorMessage,
             isPending: false,
@@ -258,4 +273,14 @@ export async function updateProfile(prevState: UploadProfileImageState, formData
     
     revalidatePath('/profile', 'page')
     redirect('/profile')
+}
+
+export async function refreshSession() {
+  const supabase = createClient()
+  const { data, error } = await supabase.auth.refreshSession()
+  if (error) {
+    console.error('세션 갱신 오류:', error)
+    return false
+  }
+  return true
 }
