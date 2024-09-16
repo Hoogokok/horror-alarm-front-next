@@ -1,48 +1,122 @@
 .tabs {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
-  }
-  
-  .tabs button {
-    padding: 10px 20px;
+    justify-content: center;
+}
+
+.tabs button {
+    padding: 8px 16px;
     cursor: pointer;
     background-color: #232020;
     border: none;
     border-radius: 5px;
-    min-width: 100px;
+    min-width: 80px;
     white-space: nowrap;
-  }
-  
-  .tabs button:hover {
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.tabs button:hover {
     background-color: #e0e0e0;
-  }
-  
-  .tabContent {
+    color: #232020;
+}
+
+.tabContent {
     flex-direction: column;
     margin-top: 20px;
-  }
+    padding: 0 10px;
+}
 
-  .pagination {
+.pagination {
     display: flex;
     flex-direction: row;
     gap: 10px;
     margin-top: 20px;
-  }
+    justify-content: center;
+}
 
-  .pagination button {
+.pagination button {
     cursor: pointer;
     background-color: #232020;
     border: none;
     border-radius: 5px;
     min-width: 50px;
     white-space: nowrap;
-  }
+    color: #fff;
+    padding: 8px 16px;
+}
 
-  .rated {
+.rated {
     color: #e0e0e0;
     font-size: 12px;
     margin-top: 10px;
-  }
-  
+    text-align: center;
+}
+
+.starRating {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    direction: ltr;
+}
+
+.starRating label {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.starRating span {
+    font-size: 30px;
+    color: #ccc;
+    transition: color 0.2s ease-in-out;
+}
+
+.starRating input:checked ~ label span,
+.starRating label:hover span,
+.starRating label:hover ~ label span,
+.starRating span.filled {
+    color: #ffb900;
+}
+
+.starRating label:hover span {
+    transform: scale(1.2);
+}
+
+.ratingForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ratingForm button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #ffb900;
+    color: #232020;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.ratingForm button:hover {
+    background-color: #ffa000;
+}
+
+@media (min-width: 768px) {
+    .tabs {
+        justify-content: flex-start;
+    }
+
+    .tabs button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+
+    .tabContent {
+        padding: 0;
+    }
+}
