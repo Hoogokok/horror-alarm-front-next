@@ -331,7 +331,7 @@ describe('getProfile', () => {
     })
   })
 
-  it('사용자 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 리다이렉트해야 합니다', async () => {
+  it('사용자 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 null을 반환합니다', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     const mockError = new Error('User fetch error')
     const mockUser = { id: '123', email: 'test@example.com' }
@@ -354,14 +354,14 @@ describe('getProfile', () => {
 
     vi.mocked(createClient).mockReturnValue(mockSupabase as any)
 
-    await getProfile()
+    const result = await getProfile()
 
     expect(consoleSpy).toHaveBeenCalledWith(mockError)
-    expect(redirect).toHaveBeenCalledWith('/error')
+    expect(result).toEqual(null)
     consoleSpy.mockRestore()
   })
 
-  it('프로필 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 리다이렉트해야 합니다', async () => {
+  it('프로필 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 null을 반환합니다', async () => {
     const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     const mockUser = { id: '123', email: 'test@example.com' }
     const mockError = new Error('Profile fetch error')
@@ -384,10 +384,10 @@ describe('getProfile', () => {
 
     vi.mocked(createClient).mockReturnValue(mockSupabase as any)
 
-    await getProfile()
+    const result = await getProfile()
 
     expect(consoleSpy).toHaveBeenCalledWith(mockError)
-    expect(redirect).toHaveBeenCalledWith('/error')
+    expect(result).toEqual(null)
     consoleSpy.mockRestore()
   })
 })
@@ -423,7 +423,7 @@ describe('updateProfile', () => {
         }
     
         formData = new FormData()
-        formData.append('image', new File([''], 'test.jpeg', { type: 'image/jpeg' }))
+        formData.append('image', new File(['test'], 'test.jpeg', { type: 'image/jpeg' }))
         formData.append('name', 'New Name')
         formData.append('id', '123')
       })
@@ -451,12 +451,12 @@ describe('updateProfile', () => {
         expect(redirect).toHaveBeenCalledWith('/profile')
       })
 
-      it('유효성 검사 실패 시(jpeg 파일만 업로드 가능합니다) 에러를 반환해야 합니다', async () => {
-        formData.set('image', new File([''], 'test.png', { type: 'image/png' }))
-        const result = await updateProfile(prevState, formData)
+      it('유효성 검사 실패 시(JPEG 파일만 업로드 가능합니다) 에러를 반환해야 합니다', async () => {
+        formData.set('image', new File(['test'], 'test.png', { type: 'image/png' }));
+        const result = await updateProfile(prevState, formData);
         expect(result).toEqual({
-            error: expect.stringContaining('jpeg 파일만 업로드 가능합니다'),
-            message: "jpeg 파일만 업로드 가능합니다",
+            error: expect.stringContaining('JPEG 파일만 업로드 가능합니다'),
+            message: "JPEG 파일만 업로드 가능합니다",
             isPending: false,
             name: prevState.name,
             imageUrl: prevState.imageUrl,
