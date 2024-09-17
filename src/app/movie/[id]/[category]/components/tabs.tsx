@@ -37,6 +37,16 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
 
+  const [newReview, setNewReview] = useState('');
+
+  const handleReviewSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // 여기에 리뷰 제출 로직을 구현합니다.
+    console.log('제출된 리뷰:', newReview);
+    // 리뷰를 제출한 후 입력 필드를 초기화합니다.
+    setNewReview('');
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
@@ -49,6 +59,7 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
                 <li key={index}>{review}</li>
               ))}
             </ul>
+            
             <div className={styles.pagination}>
               <button
                 onClick={() => setCurrentPage(currentPage - 1)}
@@ -64,6 +75,25 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
                 다음
               </button>
             </div>
+
+            {isLogin ? (
+              <div className={styles.reviewForm}>
+                <h3 className={styles.reviewFormTitle}>리뷰 작성하기</h3>
+                <form onSubmit={handleReviewSubmit}>
+                  <textarea 
+                    value={newReview}
+                    onChange={(e) => setNewReview(e.target.value)}
+                    placeholder="이 영화에 대한 리뷰를 작성해주세요..."
+                    required
+                  />
+                  <button type="submit">리뷰 제출</button>
+                </form>
+              </div>
+            ) : (
+              <p className={styles.loginPrompt}>
+                <Link href="/login">로그인</Link>하고 리뷰를 작성해보세요!
+              </p>
+            )}
           </div>
         );
       case 'ratings':

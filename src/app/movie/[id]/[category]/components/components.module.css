@@ -36,6 +36,7 @@
     gap: 10px;
     margin-top: 20px;
     justify-content: center;
+    align-items: center;
 }
 
 .pagination button {
@@ -47,6 +48,20 @@
     white-space: nowrap;
     color: #fff;
     padding: 8px 16px;
+}
+
+.pagination span {
+    margin: 0 15px; /* 페이지 숫자 좌우 여백 추가 */
+    font-size: 1rem; /* 페이지 숫자 크기 조정 */
+}
+
+.pagination button:hover {
+    background-color: #3a3636;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .rated {
@@ -118,5 +133,106 @@
 
     .tabContent {
         padding: 0;
+    }
+}
+
+.reviewForm {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: transparent;
+    border-radius: 8px;
+    max-width: 500px; /* 최대 너비 설정 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.reviewForm textarea {
+    width: 100%;
+    min-height: 80px; /* 높이 줄임 */
+    padding: 8px;
+    margin-bottom: 8px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 0.9rem; /* 폰트 크기 줄임 */
+}
+
+.reviewForm button {
+    padding: 8px 16px;
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    font-size: 0.9rem; /* 폰트 크기 줄임 */
+}
+
+.reviewForm button:hover {
+    background-color: #f40612;
+}
+
+.reviewFormTitle {
+    font-size: 1rem; /* 폰트 크기 줄임 */
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.loginPrompt {
+    text-align: center;
+    margin: 20px 0;
+    color: #a5a5a5;
+}
+
+.loginPrompt a {
+    color: #e50914;
+    text-decoration: none;
+}
+
+.loginPrompt a:hover {
+    text-decoration: underline;
+}
+
+.review {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.review li {
+    padding: 5px;
+    border: none;
+    margin-bottom: 15px; /* 리뷰 항목 간 간격 유지 */
+}
+
+.pagination {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.reviewForm, .loginPrompt {
+    width: 90%;
+    max-width: 400px;
+}
+
+@media (max-width: 768px) {
+    .review ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .review li {
+        width: 90%;
+        max-width: 400px;
+        background-color: transparent; /* 배경색을 투명하게 유지 */
+        padding: 10px;
+        border-radius: 5px;
+        /* 테두리 제거 */
+        border: none;
+        margin-bottom: 15px; /* 리뷰 항목 간 간격 유지 */
     }
 }
