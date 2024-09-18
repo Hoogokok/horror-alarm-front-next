@@ -24,7 +24,6 @@ vi.mock('@/app/auth/lib/actions', () => ({
 }))
 
 import SignupPage from '@/app/signup/page'
-import * as actions from '@/app/auth/lib/actions'
 
 describe('SignupPage', () => {
   beforeEach(() => {
