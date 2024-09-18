@@ -36,9 +36,11 @@ export async function rate(prevState: RateState, formData: FormData) {
     })
 
     if (!validation.success) {
+        const error = validation.error.flatten().fieldErrors
+        console.log(error)
         return {
-            error: validation.error.flatten().fieldErrors,
-            message: "평점 등록 실패"
+            error: error,
+            message: error.rating?.[0] || "평점 등록 실패"
         }
     }
     console.log(validation.data)
