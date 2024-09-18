@@ -5,7 +5,7 @@ import { getUser } from "@/app/auth/lib/actions";
 
 export default async function MovieDetail({ params }: { params: { id: string, category: string } }) {
   const url = `${process.env.MOVIE_API}/api/movie/${params.id}?category=${params.category}`;
-  const movie = await fetch(url, { cache: "force-cache" }).then(res => res.json());
+  const movie = await fetch(url).then(res => res.json());
   const result = await getUser();
   return (
     <div className={styles.main}>
