@@ -117,24 +117,34 @@ export async function getUser() {
         if (!data.user) {
             return {
                 user: null,
-                movieIds: [],
+                rate_movieIds: [],
+                review_movieIds: [],
             }
         }
         const { data: rateData, error: rateError } = await supabase.from('rate').select('rate_movie_id')
+        const { data: reviewData, error: reviewError } = await supabase.from('reviews').select('review_movie_id')
         if (rateError) {
             console.log(rateError)
         }
+        if (reviewError) {
+            console.log(reviewError)
+        }
         let movieIds: string[] = []
+        let reviewIds: string[] = []
         if (rateData) {
             movieIds = rateData.map((rate: any) => rate.rate_movie_id)
         }
+        if (reviewData) {
+            reviewIds = reviewData.map((review: any) => review.review_movie_id)
+        }
         return {
             user: data.user,
-            movieIds: movieIds,
+            rate_movieIds: movieIds,
+            review_movieIds: reviewIds,
         }
     } catch (error) {
         console.error('사용자 정보 조회 중 오류 발생:', error)
-        return { user: null, movieIds: [] }
+        return { user: null, rate_movieIds: [], review_movieIds: [] }
     }
 }
 

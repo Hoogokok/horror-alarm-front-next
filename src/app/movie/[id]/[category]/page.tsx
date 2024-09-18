@@ -5,7 +5,7 @@ import { getUser } from "@/app/auth/lib/actions";
 
 export default async function MovieDetail({ params }: { params: { id: string, category: string } }) {
   const url = `${process.env.MOVIE_API}/api/movie/${params.id}?category=${params.category}`;
-  const movie = await fetch(url, { cache: "force-cache" }).then(res => res.json());
+  const movie = await fetch(url).then(res => res.json());
   const result = await getUser();
   return (
     <div className={styles.main}>
@@ -14,7 +14,7 @@ export default async function MovieDetail({ params }: { params: { id: string, ca
         <div className={styles.section}>
           <div className={styles.title}>{movie.title}</div>
           <div className={styles.info}>
-            <Tabs movie={movie} user={result.user} movieIds={result.movieIds} category={params.category} />
+            <Tabs movie={movie} user={result.user} rate_movieIds={result.rate_movieIds} review_movieIds={result.review_movieIds} category={params.category} />
           </div>
         </div>
       </div>
