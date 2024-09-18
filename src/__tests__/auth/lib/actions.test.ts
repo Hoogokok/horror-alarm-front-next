@@ -13,11 +13,12 @@ vi.mock('@/app/utils/supabase/server', () => ({
       getUser: vi.fn(),
       signOut: vi.fn(),
     },
-    from: vi.fn(() => ({
-      select: vi.fn().mockReturnValue({
-        data: [],
-        error: null,
-      }),
+    from: vi.fn((table) => ({
+      select: vi.fn().mockResolvedValue(
+        table === 'rate' 
+          ? { data: [], error: null }
+          : { data: [], error: null }
+      ),
       eq: vi.fn().mockReturnValue({
         data: [],
         error: null,
@@ -240,13 +241,18 @@ describe('getUser', () => {
   it('로그인한 사용자의 정보를 반환해야 합니다', async () => {
     const mockUser = { id: '123', email: 'test@example.com' }
     const mockRateData = [{ rate_movie_id: 'movie1' }, { rate_movie_id: 'movie2' }]
-
+    const mockReviewData = [{ review_movie_id: 'movie1' }, { review_movie_id: 'movie2' }]
+    
     vi.mocked(createClient).mockReturnValue({
       auth: {
         getUser: vi.fn().mockResolvedValue({ data: { user: mockUser }, error: null }),
       },
-      from: vi.fn(() => ({
-        select: vi.fn().mockResolvedValue({ data: mockRateData, error: null }),
+      from: vi.fn((table) => ({
+        select: vi.fn().mockResolvedValue(
+          table === 'rate' 
+            ? { data: mockRateData, error: null }
+            : { data: mockReviewData, error: null }
+        )
       })),
     } as any)
 
@@ -254,7 +260,8 @@ describe('getUser', () => {
 
     expect(result).toEqual({
       user: mockUser,
-      movieIds: ['movie1', 'movie2'],
+      rate_movieIds: ['movie1', 'movie2'],
+      review_movieIds: ['movie1', 'movie2'],
     })
   })
 
@@ -272,7 +279,8 @@ describe('getUser', () => {
 
     expect(result).toEqual({
       user: null,
-      movieIds: [],
+      rate_movieIds: [],
+      review_movieIds: [],
     })
   })
 
