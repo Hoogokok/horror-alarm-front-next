@@ -14,7 +14,7 @@ export default async function MovieDetail({ params }: { params: { id: string, ca
         <div className={styles.section}>
           <div className={styles.title}>{movie.title}</div>
           <div className={styles.info}>
-            <Tabs movie={movie} user={result.user} movieIds={result.movieIds} category={params.category} />
+            <Tabs movie={movie} user={result.user} rate_movieIds={result.rate_movieIds} review_movieIds={result.review_movieIds} category={params.category} />
           </div>
         </div>
       </div>
