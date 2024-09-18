@@ -17,7 +17,7 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
   const reviewsPerPage = 5;
   const isLogin = user ? true : false;
   const [rating, setRating] = useState(0);
-  const isRated = movieIds.includes(movie.id)
+  const isRated = movieIds.includes(movie.the_movie_db_id)
 
   const reviews = [
     "이 영화는 너무 재미있어요.",
@@ -104,8 +104,9 @@ export default function Tabs({ movie, user, movieIds, category }: { movie: any, 
               <div>
                 <form action={formAction} className={styles.ratingForm}>
                   <StarRating rating={rating} setRating={setRating} />
-                  <input type="hidden" name="user_id" value={user.id} />
                   <input type="hidden" name="movie_id" value={movie.id} />
+                  <input type="hidden" name="user_id" value={user.id} />
+                  <input type="hidden" name="the_movie_db_id" value={movie.the_movie_db_id} />
                   <input type="hidden" name="category" value={category} />
                   <button type="submit">평점 남기기</button>
                 </form>
