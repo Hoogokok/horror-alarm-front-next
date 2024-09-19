@@ -5,28 +5,27 @@ import { updateProfile, UploadProfileImageState } from '@/app/auth/lib/actions';
 import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
 import { useState, useRef, useCallback} from 'react';
-import { Do_Hyeon } from "next/font/google";
+import localFont from 'next/font/local';
 
-const doHyeon = Do_Hyeon({
-  weight: '400',
-  subsets: ['latin'],
+const doHyeon = localFont({
+  src: '../../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
 });
 
 interface ProfileEditProps {
-  initialNickname: string;
-  initialImageUrl: string;
-  initialId: string;
+  name: string;
+  image_url: string;
+  id: string;
 }
 
-export default function ProfileEdit({ initialNickname, initialImageUrl, initialId }: ProfileEditProps) {
+export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
   const initialState: UploadProfileImageState = {
     error: '',
     message: '',
-    imageUrl: initialImageUrl || '',
-    name: initialNickname || '',
+    imageUrl: image_url || '',
+    name: name || '',
     isPending: false,
-    id: initialId || '',
+    id: id || '',
   }
   const [state, formAction] = useActionState(updateProfile, initialState);
   const [previewImage, setPreviewImage] = useState<string | null>(null);

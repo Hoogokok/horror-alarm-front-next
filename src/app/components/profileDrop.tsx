@@ -5,11 +5,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../layout.module.css';
 import { logout, Profile } from '@/app/auth/lib/actions';
-import { Do_Hyeon } from "next/font/google";
+import localFont from 'next/font/local';
 
-const doHyeon = Do_Hyeon({
-  weight: '400',
-  subsets: ['latin'],
+const doHyeon = localFont({
+  src: '../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
 });
 
