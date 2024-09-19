@@ -15,7 +15,7 @@ export default async function StreamingPage({ searchParams }: {
     const query = searchParams?.query || "all" // default query is all
     const page = searchParams?.page || "1" // default page is 1
     const url = `${process.env.MOVIE_API}/api/streaming?query=${query}`;
-    const totalPages = await fetch(url, { cache: "force-cache" }).then(res => res.json());
+    const totalPages = await fetch(url, { next: { revalidate: 3600 } }).then(res => res.json());
     return (
         <div className={styles.streamingContainer}>
             <div className={styles.searchTabWrapper}>
