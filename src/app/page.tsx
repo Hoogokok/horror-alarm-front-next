@@ -28,7 +28,7 @@ export default async function Home() {
                 <div key={movie.id} className={styles.movieItem}>
                   <Image
                     alt={movie.title}
-                    src={process.env.POSTER_URL + movie.posterPath}
+                    src={process.env.POSTER_URL + movie.poster_path}
                     width={250}
                     height={300}
                     priority={true}
@@ -49,7 +49,7 @@ export default async function Home() {
                   <div key={movie.id} className={styles.movieItem}>
                     <Image
                       alt={movie.title}
-                      src={process.env.POSTER_URL + movie.posterPath}
+                      src={process.env.POSTER_URL + movie.poster_path}
                       width={250}
                       height={300}
                       className={styles.movieImage}
@@ -74,7 +74,7 @@ export default async function Home() {
                   <div key={movie.id} className={styles.movieItem}>
                     <Image
                       alt={movie.title}
-                      src={process.env.POSTER_URL + movie.posterPath}
+                      src={process.env.POSTER_URL + movie.poster_path}
                       width={250}
                       height={300}
                       className={styles.movieImage}
