@@ -5,6 +5,12 @@ import { useActionState } from 'react';
 import { rate, review } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
 import Link from 'next/link';
+import localFont from 'next/font/local';
+
+const doHyeon = localFont({
+  src: '../../../../fonts/DoHyeon-Regular.ttf',
+  display: 'swap',
+});
 
 export default function Tabs({ movie, user, rate_movieIds, review_movieIds, category }: { movie: any, user: any, rate_movieIds: string[], review_movieIds: string[], category: string }) {
   const initialState = {
@@ -126,7 +132,7 @@ export default function Tabs({ movie, user, rate_movieIds, review_movieIds, cate
         <button onClick={() => setActiveTab('releaseDate')}>개봉일</button>
         <button onClick={() => setActiveTab('watch')}>볼 수 있는 곳</button>
       </div>
-      <div className={styles.tabContent}>
+      <div className={styles.tabContent} style={doHyeon.style}>
         {renderContent()}
       </div>
     </div>
