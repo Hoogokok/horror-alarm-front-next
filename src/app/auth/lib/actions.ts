@@ -157,7 +157,6 @@ export async function getProfile() : Promise<Profile | null> {
   const supabase = createClient()
   const { data, error } = await supabase.auth.getUser()
   if (error) {
-      console.log(error)
       return null
   }
   const { data: profileData, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id)

@@ -90,7 +90,7 @@ export default function Tabs({ movie, user, rate_movieIds, review_movieIds, cate
       case 'ratings':
         return (
           <div>
-            <p>평점: {movie.voteAverage ? movie.voteAverage.toFixed(1) : 0}</p>
+            <p>평점: {movie.vote_average ? movie.vote_average.toFixed(1) : 0}</p>
             {isLogin && !isRated && (
               <div>
                 <form action={rateAction} className={styles.ratingForm}>
@@ -109,7 +109,7 @@ export default function Tabs({ movie, user, rate_movieIds, review_movieIds, cate
           </div>
         );
       case 'releaseDate':
-        return <div>{movie.releaseDate}</div>;
+        return <div>{movie.release_date}</div>;
       case 'watch':
         return <div>{movie.providers.join(', ')}</div>;
       default:
