@@ -6,7 +6,7 @@ import { Do_Hyeon } from "next/font/google";
 interface Movie {
   id: string;
   title: string;
-  posterPath: string;
+  poster_path: string;
 }
 
 const doHyeon = Do_Hyeon({
@@ -24,7 +24,7 @@ export default async function ImageTabs({ query, page }: { query: string, page: 
         <div key={movie.id} className={styls.movieItem}>
           <div className={styls.moviePosterContainer}>
             <Image 
-              src={process.env.POSTER_URL + movie.posterPath} 
+                src={process.env.POSTER_URL + movie.poster_path} 
               alt={movie.title} 
               className={styls.moviePoster} 
               width={100}
