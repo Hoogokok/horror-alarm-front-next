@@ -149,6 +149,7 @@ export async function getUser() {
 }
 
 export type Profile = {
+  name: string;
   id: string;
   image_url: string;
 }
@@ -170,7 +171,7 @@ export async function getProfile() : Promise<Profile | null> {
   const { data: profileImageData } = await supabase.storage.from('profile-image').getPublicUrl(filePath)
   const imageUrl = `${profileImageData.publicUrl}`
   return {
-      ...profileData?.[0],
+      name: profileData?.[0].name,
       image_url: imageUrl,
       id: profileData?.[0].id,
   }
