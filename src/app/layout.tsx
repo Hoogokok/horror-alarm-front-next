@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, Black_Han_Sans, Do_Hyeon } from "next/font/google";
+import { Inter, Black_Han_Sans } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import styles from "./layout.module.css";
-import { getProfile, Profile } from '@/app/auth/lib/actions'
+import { getProfile } from '@/app/auth/lib/actions'
 import Image from 'next/image';
 import ProfileDropdown from './components/profileDropdown';
+import localFont from 'next/font/local';
+
+const doHyeon = localFont({
+  src: './fonts/DoHyeon-Regular.ttf',
+  display: 'swap',
+});
 
 const inter = Inter({ subsets: ["latin"] });
 const blackHanSans = Black_Han_Sans({ 
-  weight: '400',
-  subsets: ['latin'],
-  display: 'swap',
-});
-const doHyeon = Do_Hyeon({
   weight: '400',
   subsets: ['latin'],
   display: 'swap',

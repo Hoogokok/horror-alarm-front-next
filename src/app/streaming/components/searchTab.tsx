@@ -2,11 +2,10 @@
 import styls from './components.module.css';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import { Do_Hyeon } from "next/font/google";
+import localFont from 'next/font/local';
 
-const doHyeon = Do_Hyeon({
-  weight: '400',
-  subsets: ['latin'],
+const doHyeon = localFont({
+  src: '../../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
 });
 

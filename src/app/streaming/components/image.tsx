@@ -1,19 +1,17 @@
 import Image from 'next/image';
 import styls from './components.module.css';
 import Link from 'next/link';
-import { Do_Hyeon } from "next/font/google";
+import localFont from 'next/font/local';
 
+const doHyeon = localFont({
+  src: '../../fonts/DoHyeon-Regular.ttf',
+  display: 'swap',
+});
 interface Movie {
   id: string;
   title: string;
   poster_path: string;
 }
-
-const doHyeon = Do_Hyeon({
-  weight: '400',
-  subsets: ['latin'],
-  display: 'swap',
-});
 
 export default async function ImageTabs({ query, page }: { query: string, page: string }) {
   const data: Movie[] = await fetch(`${process.env.MOVIE_API}/api/streaming/page?query=${query}&page=${page}`, { cache: 'force-cache' }).then(res => res.json());
