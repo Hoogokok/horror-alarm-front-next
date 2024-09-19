@@ -11,10 +11,12 @@ const doHyeon = Do_Hyeon({
   display: 'swap',
 });
 
+export const revalidate = 3600; // 1시간마다 재검증
+
 export default async function Home() {
-  const upcoming = await fetch(process.env.MOVIE_API + '/api/upcoming').then(res => res.json());
-  const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing').then(res => res.json());
-  const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired').then(res => res.json());
+  const upcoming = await fetch(process.env.MOVIE_API + '/api/upcoming', { next: { revalidate: 3600 } }).then(res => res.json());
+  const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing', { next: { revalidate: 3600 } }).then(res => res.json());
+  const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired', { next: { revalidate: 3600 } }).then(res => res.json());
   const expiredList = streamingExpiring?.expiredMovies
   
   return (

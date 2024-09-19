@@ -65,7 +65,7 @@ export default async function RootLayout({
             </ul>
           </nav>
           <header className={styles.mobileHeader}>
-          <div className={styles.logo}>Spooky Town</div>
+          <div className={styles.logo} style={blackHanSans.style}>Spooky Town</div>
           </header>
           <main className={styles.content}>
             {children}
