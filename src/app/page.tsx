@@ -11,21 +11,10 @@ const doHyeon = Do_Hyeon({
   display: 'swap',
 });
 
-export interface NetflixResponses {
-  expiredMovies: Array<NetflixResponse>;
-}
-
-interface NetflixResponse {
-  id: string;
-  title: string;
-  posterPath: string;
-  expiredDate: string;
-}
-
 export default async function Home() {
-  const upcoming = await fetch(process.env.MOVIE_API + '/api/upcoming', { cache: 'force-cache', next: { revalidate: 7200 } }).then(res => res.json());
-  const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing', { cache: 'force-cache' }).then(res => res.json());
-  const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired', { cache: 'force-cache' }).then(res => res.json());
+  const upcoming = await fetch(process.env.MOVIE_API + '/api/upcoming').then(res => res.json());
+  const nowPlaying = await fetch(process.env.MOVIE_API + '/api/releasing').then(res => res.json());
+  const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/streaming/expired').then(res => res.json());
   const expiredList = streamingExpiring?.expiredMovies
   
   return (
