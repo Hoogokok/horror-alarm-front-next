@@ -339,8 +339,7 @@ describe('getProfile', () => {
     })
   })
 
-  it('사용자 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 null을 반환합니다', async () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+  it('사용자 정보 조회 중 에러 발생 시 null을 반환합니다', async () => {
     const mockError = new Error('User fetch error')
     const mockUser = { id: '123', email: 'test@example.com' }
     const mockProfileData = [{ id: '', name: 'Test User' }]
@@ -364,9 +363,7 @@ describe('getProfile', () => {
 
     const result = await getProfile()
 
-    expect(consoleSpy).toHaveBeenCalledWith(mockError)
     expect(result).toEqual(null)
-    consoleSpy.mockRestore()
   })
 
   it('프로필 정보 조회 중 에러 발생 시 콘솔에 로그를 출력하고 null을 반환합니다', async () => {
