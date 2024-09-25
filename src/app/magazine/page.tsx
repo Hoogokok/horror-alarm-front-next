@@ -18,7 +18,7 @@ const doHyeon = localFont({
 
 async function fetchArticles(): Promise<Article[]> {
   try {
-    const response = await fetch('http://localhost:3031/api/fangoria-articles', { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MAGAZINE_PROXY}/api/fangoria-articles`, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error('기사를 가져오는데 실패했습니다');
     }
