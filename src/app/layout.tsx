@@ -52,8 +52,8 @@ export default async function RootLayout({
               <li><Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/>
               <span>게임</span>
               </Link></li>
-                <li><Link href="/inDevelopment"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
-              <span>찾기</span>
+                <li><Link href="/magazine"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/>
+              <span>잡지 기사</span>
               </Link></li>
               {profile && profile.id ? (
                 <ProfileDropdown isMobile={false} profile={profile}/>
@@ -75,6 +75,7 @@ export default async function RootLayout({
             <Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={30} height={30} className={styles.icon}/><span>스트리밍</span></Link>
             <Link href="/inDevelopment"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/><span>만화</span></Link>
             <Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/><span>게임</span></Link>
+            <Link href="/magazine"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/><span>잡지 기사</span></Link>
             {profile && profile.id ? (
               <ProfileDropdown isMobile={true} profile={profile}/>
             ) : (
