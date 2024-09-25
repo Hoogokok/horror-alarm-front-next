@@ -12,6 +12,11 @@ const nextConfig = {
                 hostname: process.env.NEXT_PUBLIC_SUPABASE_NOTHOST,
                 port: '',
             },
+            {
+                protocol: 'https',
+                hostname: 'www.fangoria.com',
+                port: '',
+            },
         ],
     },
     experimental: {
