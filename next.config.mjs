@@ -14,7 +14,7 @@ const nextConfig = {
             },
             {
                 protocol: 'https',
-                hostname: 'www.fangoria.com',
+                hostname: process.env.NEXT_PUBLIC_FAANGORIA_NOTHOST,
                 port: '',
             },
         ],
