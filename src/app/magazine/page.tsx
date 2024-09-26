@@ -8,7 +8,7 @@ export interface Article {
   url: string;
   imageUrl: string;
   author?: string;
-  excerpt?: string;
+  source: string;
 }
 
 const doHyeon = localFont({
@@ -18,7 +18,7 @@ const doHyeon = localFont({
 
 async function fetchArticles(): Promise<Article[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MAGAZINE_PROXY}/api/fangoria-articles`, { cache: 'no-store' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_MAGAZINE_PROXY}/api/articles`, { cache: 'no-store' });
     if (!response.ok) {
       throw new Error('기사를 가져오는데 실패했습니다');
     }
@@ -52,7 +52,6 @@ export default async function MagazinePage() {
                 <h2 className={styles['article-title']}>{article.title}</h2>
               </Link>
               {article.author && <p className={styles['article-author']}>BY {article.author.toUpperCase()}</p>}
-              {article.excerpt && <p className={styles['article-excerpt']}>{article.excerpt}</p>}
             </div>
           </div>
         ))}
