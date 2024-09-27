@@ -65,5 +65,11 @@ describe('MovieDetail 컴포넌트', () => {
     // 추가적인 요소 확인...
   })
 
-  // 추가 테스트 케이스...
+  it('환경 변수가 올바르게 사용되는지 확인합니다', async () => {
+    await render(await MovieDetail({ params: { id: '123', category: 'horror' } }))
+    expect(global.fetch).toHaveBeenCalledWith(
+      'http://test-api.com/api/movie/123?category=horror',
+      expect.anything()
+    )
+  })
 })
