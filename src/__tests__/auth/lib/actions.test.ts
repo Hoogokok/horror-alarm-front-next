@@ -53,8 +53,12 @@ describe('signup', () => {
 
   beforeEach(() => {
     prevState = {
-      error: undefined,
-      message: undefined,
+      error: {
+        email: undefined as string[] | undefined,
+        password: undefined as string[] | undefined,
+        name: undefined as string[] | undefined,
+      },
+      message: '',
     }
     formData = new FormData()
     formData.append('email', 'test@example.com')
@@ -121,9 +125,14 @@ describe('signup', () => {
       },
     } as any)
 
-    await signup(prevState, formData)
+    const result = await signup(prevState, formData)
 
-    expect(redirect).toHaveBeenCalledWith('/signup')
+    expect(result).toEqual({
+      error: expect.objectContaining({
+        email: expect.arrayContaining([formData.get('email') as string]),
+      }),
+      message: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+    })   
   })
 })
 
