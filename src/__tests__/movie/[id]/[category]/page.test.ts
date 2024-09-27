@@ -109,4 +109,12 @@ describe('MovieDetail 컴포넌트', () => {
     expect(titleElement.className).toContain('_title_65291b')
     expect(titleElement.style.fontFamily).toBe('mocked-font')
   })
+
+  it('영화 정보를 올바르게 fetch합니다', async () => {
+    await render(await MovieDetail({ params: { id: '123', category: 'horror' } }))
+    expect(global.fetch).toHaveBeenCalledWith(
+      'http://test-api.com/api/movie/123?category=horror',
+      { next: { revalidate: 3600 } }
+    )
+  })
 })
