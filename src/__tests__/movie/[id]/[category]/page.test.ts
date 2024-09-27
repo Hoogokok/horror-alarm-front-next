@@ -117,4 +117,10 @@ describe('MovieDetail 컴포넌트', () => {
       { next: { revalidate: 3600 } }
     )
   })
+
+  it('fetch 실패 시 에러를 처리합니다', async () => {
+    global.fetch = vi.fn(() => Promise.reject(new Error('Fetch failed')))
+    
+    await expect(MovieDetail({ params: { id: '123', category: 'horror' } })).rejects.toThrow('Fetch failed')
+  })
 })
