@@ -25,6 +25,7 @@ export default function SignupPage() {
         <input type="name" name="name" className={styles.input} placeholder="별명을 입력하세요"/>
         {state.error.name && <p className={styles.error}>{state.error.name[0]}</p>}
         <button type="submit" className={styles.button} name="signup">회원가입</button>
+        {state.message && <p className={styles.error}>{state.message}</p>} {/* 서버 에러 메시지 표시 */}
       </form>
     </div>
   )

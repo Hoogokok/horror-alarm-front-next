@@ -55,15 +55,15 @@ export async function login(prevState: LoginState, formData: FormData) {
 }
 
 export type SignupState = {
-    error?: {
+    error: {
         email?: string[]
         password?: string[]
         name?: string[]
     }
-    message?: string
+    message: string
 };
 
-export async function signup(prevState: SignupState, formData: FormData) {
+export async function signup(prevState: SignupState, formData: FormData): Promise<SignupState> {
     const validation = signupSchema.safeParse({
         email: formData.get('email') as string,
         password: formData.get('password') as string,
@@ -90,7 +90,14 @@ export async function signup(prevState: SignupState, formData: FormData) {
   })
 
   if (error) {
-    redirect('/signup')
+    return {
+      error: {
+        email: [email], // 배열로 변경
+        password: [password], // 배열로 변경
+        name: [name], // 배열로 변경
+      },
+      message: "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+    }
   }
 
   revalidatePath('/', 'layout')
