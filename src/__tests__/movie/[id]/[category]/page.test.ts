@@ -1,14 +1,18 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import MovieDetail from '@/app/movie/[id]/[category]/page'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { render, screen, cleanup } from '@testing-library/react'
 import React from 'react';
 
-// PageTabs 컴포넌트 모의 구현
-vi.mock('@/app/movie/[id]/[category]/components/tabs', () => ({
-  default: () => React.createElement('div', { 'data-testid': "mock-page-tabs" }, 'Mock Page Tabs')
-}))
+// 모든 vi.mock 호출을 파일 상단으로 이동
+vi.mock('@/app/movie/[id]/[category]/components/tabs', () => {
+  return {
+    default: vi.fn(({ movie, user, rate_movieIds, review_movieIds, category }) => {
+      return React.createElement('div', { 'data-testid': "mock-page-tabs" }, 
+        `Mock PageTabs: ${movie.title}, ${user.id}, ${category}`
+      )
+    })
+  }
+})
 
-// localFont 모의 구현
 vi.mock('next/font/local', () => ({
   default: () => ({
     style: {
@@ -17,19 +21,22 @@ vi.mock('next/font/local', () => ({
   })
 }))
 
-// Image 컴포넌트 모의 구현
 vi.mock('next/image', () => ({
   default: (props: any) => React.createElement('img', props)
 }))
 
-// getUser 함수 모의 구현
-vi.mock('@/app/auth/lib/actions', () => ({
-  getUser: vi.fn(() => Promise.resolve({
-    user: { id: 'test-user-id' },
-    rate_movieIds: [],
-    review_movieIds: []
-  }))
-}))
+vi.mock('@/app/auth/lib/actions', () => {
+  return {
+    getUser: vi.fn(() => Promise.resolve({
+      user: { id: 'test-user-id' },
+      rate_movieIds: [],
+      review_movieIds: []
+    }))
+  }
+})
+
+// MovieDetail 컴포넌트 import를 vi.mock 호출 이후로 이동
+import MovieDetail from '@/app/movie/[id]/[category]/page'
 
 // 환경 변수 설정
 vi.stubEnv('MOVIE_API', 'http://test-api.com')
@@ -38,9 +45,14 @@ vi.stubEnv('POSTER_URL', 'http://test-poster.com/')
 // 모의 영화 데이터
 const mockMovie = {
   id: '123',
+  the_movie_db_id: 'tmdb123',
   title: '테스트 영화',
   poster_path: '/test-poster.jpg',
-  // 기타 필요한 영화 정보...
+  overview: '테스트 영화 줄거리',
+  vote_average: 8.5,
+  release_date: '2023-01-01',
+  providers: ['Netflix', 'Amazon Prime'],
+  reviews: ['좋은 영화예요', '재미있어요']
 }
 
 describe('MovieDetail 컴포넌트', () => {
@@ -53,16 +65,16 @@ describe('MovieDetail 컴포넌트', () => {
     ) as any
   })
 
-  it('영화 정보를 올바르게 렌더링합니다', async () => {
-    // 컴포넌트 렌더링
-    await render(await MovieDetail({ params: { id: '123', category: 'horror' } }))
+  afterEach(() => {
+    cleanup()
+  })
 
-    // 예상 결과 확인
+  it('영화 정보를 올바르게 렌더링합니다', async () => {
+    await render(await MovieDetail({ params: { id: '123', category: 'horror' } }))
     expect(screen.getByText('테스트 영화')).toBeDefined()
-    expect(screen.getByAltText('테스트 영화')).toBeDefined()
-    expect(screen.getByAltText('테스트 영화').getAttribute('src')).toBe('http://test-poster.com//test-poster.jpg')
+    expect(screen.getAllByAltText('테스트 영화')[0]).toBeDefined()
+    expect(screen.getAllByAltText('테스트 영화')[0].getAttribute('src')).toBe('http://test-poster.com//test-poster.jpg')
     expect(screen.getByTestId('mock-page-tabs')).toBeDefined()
-    // 추가적인 요소 확인...
   })
 
   it('환경 변수가 올바르게 사용되는지 확인합니다', async () => {
@@ -71,5 +83,22 @@ describe('MovieDetail 컴포넌트', () => {
       'http://test-api.com/api/movie/123?category=horror',
       expect.anything()
     )
+  })
+
+  it('getUser 함수가 호출되는지 확인합니다', async () => {
+    const { getUser } = await import('@/app/auth/lib/actions')
+    await render(await MovieDetail({ params: { id: '123', category: 'horror' } }))
+    expect(getUser).toHaveBeenCalled()
+  })
+
+  it('영화 포스터를 올바르게 렌더링합니다', async () => {
+    await render(await MovieDetail({ params: { id: '123', category: 'horror' } }))
+    const posters = screen.getAllByAltText('테스트 영화') as HTMLImageElement[]
+    expect(posters.length).toBeGreaterThan(0)
+    const poster = posters[0]
+    expect(poster).toBeDefined()
+    expect(poster.src).toBe('http://test-poster.com//test-poster.jpg')
+    expect(poster.width).toBe(263)
+    expect(poster.height).toBe(394)
   })
 })
