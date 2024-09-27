@@ -101,4 +101,12 @@ describe('MovieDetail 컴포넌트', () => {
     expect(poster.width).toBe(263)
     expect(poster.height).toBe(394)
   })
+
+  it('영화 제목이 올바른 스타일로 렌더링됩니다', async () => {
+    await render(await MovieDetail({ params: { id: '123', category: 'horror' } }))
+    const titleElement = screen.getByText('테스트 영화')
+    expect(titleElement).toBeDefined()
+    expect(titleElement.className).toContain('_title_65291b')
+    expect(titleElement.style.fontFamily).toBe('mocked-font')
+  })
 })
