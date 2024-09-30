@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import styles from "./page.module.css";
 import { Do_Hyeon } from "next/font/google";
+import { MovieResponseDto } from './types/movie-response-dto';  // 이 타입을 정의해야 합니다
 
 const doHyeon = Do_Hyeon({
   weight: '400',
@@ -14,9 +15,9 @@ const doHyeon = Do_Hyeon({
 export const revalidate = 3600; // 1시간마다 재검증
 
 export default async function Home() {
-  const upcoming = await fetch(process.env.MOVIE_API + '/api/movies/theater/upcoming', { next: { revalidate: 3600 } }).then(res => res.json());
-  const nowPlaying = await fetch(process.env.MOVIE_API + '/api/movies/theater/released', { next: { revalidate: 3600 } }).then(res => res.json());
-  const streamingExpiring = await fetch(process.env.MOVIE_API + '/api/movies/expiring-horror', { next: { revalidate: 3600 } }).then(res => res.json());
+  const upcoming: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/upcoming', { next: { revalidate: 3600 } }).then(res => res.json());
+  const nowPlaying: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/released', { next: { revalidate: 3600 } }).then(res => res.json());
+  const streamingExpiring = await fetch(process.env.MOVIE_API + '/movies/expiring-horror', { next: { revalidate: 3600 } }).then(res => res.json());
   const expiredList = streamingExpiring?.expiredMovies
   
   return (
@@ -26,11 +27,11 @@ export default async function Home() {
           <div className={styles.imagesectionTitle}>개봉 예정</div>
           {
             upcoming.length ? <div className={styles.content}>
-              {upcoming.map((movie: any) => (
+              {upcoming.map((movie: MovieResponseDto) => (
                 <div key={movie.id} className={styles.movieItem}>
                   <Image
                     alt={movie.title}
-                    src={process.env.POSTER_URL + movie.poster_path}
+                    src={process.env.POSTER_URL + movie.posterPath}
                     width={250}
                     height={300}
                     priority={true}
@@ -47,11 +48,11 @@ export default async function Home() {
           {
             nowPlaying.length ? (
               <div className={styles.content}>
-                {nowPlaying.map((movie: any) => (
+                {nowPlaying.map((movie: MovieResponseDto) => (
                   <div key={movie.id} className={styles.movieItem}>
                     <Image
                       alt={movie.title}
-                      src={process.env.POSTER_URL + movie.poster_path}
+                      src={process.env.POSTER_URL + movie.posterPath}
                       width={250}
                       height={300}
                       className={styles.movieImage}
