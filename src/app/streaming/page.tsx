@@ -8,14 +8,14 @@ export const experimental_ppr = true;
 
 export default async function StreamingPage({ searchParams }: {
     searchParams?: {
-        query?: string;
+        provider?: string;
         page?: string;
     }
 }) {
-    const query = searchParams?.query || "all" // default query is all
-    const page = searchParams?.page || "1" // default page is 1
-    const url = `${process.env.MOVIE_API}/api/streaming?query=${query}`;
-    const totalPages = await fetch(url, { next: { revalidate: 3600 } }).then(res => res.json());
+    const provider = searchParams?.provider || "all" // 기본 제공자는 all
+    const page = searchParams?.page || "1" // 기본 페이지는 1
+    const url = `${process.env.MOVIE_API}/movies/streaming/pages?provider=${provider}`;
+    const { totalPages } = await fetch(url, { next: { revalidate: 3600 } }).then(res => res.json());
     return (
         <div className={styles.streamingContainer}>
             <div className={styles.searchTabWrapper}>
@@ -23,11 +23,11 @@ export default async function StreamingPage({ searchParams }: {
             </div>
             <div className={styles.imageGalleryWrapper}>
                 <Suspense
-                    key={query + page}
+                    key={provider + page}
                     fallback={
                         <ImageSkeleton />
                     }>
-                    <Images query={query} page={page} />
+                    <Images provider={provider} page={page} />
                 </Suspense>
             </div>
             <div className={styles.paginationWrapper}>
