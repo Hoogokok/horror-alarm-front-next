@@ -57,7 +57,7 @@ export default async function Home() {
                       height={300}
                       className={styles.movieImage}
                     />
-                    <Link href={`/movie/${movie.id}/${"upcoming"}`} className={styles.movieTitle}>
+                    <Link href={`/movie/${movie.id}/${"released"}`} className={styles.movieTitle}>
                       {movie.title}
                     </Link>
                   </div>
@@ -80,7 +80,7 @@ export default async function Home() {
                       height={300}
                       className={styles.movieImage}
                     />
-                    <Link href={`/movie/${movie.id}/${"streaming"}`} className={styles.movieTitle}>
+                    <Link href={`/movie/${movie.id}/${"expiring"}`} className={styles.movieTitle}>
                       {movie.title}
                     </Link>
                     <div className={styles.expiringDate}>
