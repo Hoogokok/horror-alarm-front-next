@@ -12,7 +12,7 @@ const doHyeon = localFont({
   display: 'swap',
 });
 
-export default function Tabs({ movie, user, rate_movieIds, review_movieIds, category }: { movie: any, user: any, rate_movieIds: string[], review_movieIds: string[], category: string }) {
+export default function PageTabs({ movie, user, rate_movieIds, review_movieIds, category }: { movie: any, user: any, rate_movieIds: string[], review_movieIds: string[], category: string }) {
   const initialState = {
     error: {},
     message: ""
