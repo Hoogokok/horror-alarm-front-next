@@ -13,13 +13,13 @@ export default function SearchTab() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
-    const handleClick = useDebouncedCallback((query: string) => {
+    const handleClick = useDebouncedCallback((provider: string) => {
        const params = new URLSearchParams(searchParams);
        params.set('page', '1');
-       if (query) {
-         params.set('query', query);
+       if (provider) {
+         params.set('provider', provider);
        } else {
-         params.delete('query');
+         params.delete('provider');
        }
        replace(`${pathname}?${params.toString()}`);
     }, 300);
