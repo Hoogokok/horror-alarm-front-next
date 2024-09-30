@@ -67,11 +67,9 @@ export default async function Home() {
               <div className={styles.content}>상영중인 영화가 없어요!</div>
             )
           }
+          <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
           {
-           <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
-          }
-          {
-            streamingExpiring.length ? <div className={styles.content}>
+            streamingExpiring.length ? (
               <div className={styles.content}>
                 {streamingExpiring.map((movie: ExpiringMovieResponseDto) => (
                   <div key={movie.id} className={styles.movieItem}>
@@ -86,7 +84,7 @@ export default async function Home() {
                       {movie.title}
                     </Link>
                     <div className={styles.expiringDate}>
-                      {movie.expiringDate}
+                      {new Date(movie.expiringDate).toLocaleDateString()}
                     </div>
                     <div className={styles.providers}>
                       {movie.providers}
@@ -94,9 +92,9 @@ export default async function Home() {
                   </div>
                 ))}
               </div>
-            </div> : <div className={styles.content}>
-               스트리밍 종료 예정인 영화가 없어요!
-            </div>
+            ) : (
+              <div className={styles.content}>스트리밍 종료 예정인 영화가 없어요!</div>
+            )
           }
         </Suspense>
       </section>
