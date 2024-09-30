@@ -5,6 +5,7 @@ import Loading from "./loading";
 import styles from "./page.module.css";
 import { Do_Hyeon } from "next/font/google";
 import { MovieResponseDto } from './types/movie-response-dto';  // 이 타입을 정의해야 합니다
+import { ExpiringMovieResponseDto } from './types/expiring-response-dto';
 
 const doHyeon = Do_Hyeon({
   weight: '400',
@@ -17,9 +18,8 @@ export const revalidate = 3600; // 1시간마다 재검증
 export default async function Home() {
   const upcoming: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/upcoming', { next: { revalidate: 3600 } }).then(res => res.json());
   const nowPlaying: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/released', { next: { revalidate: 3600 } }).then(res => res.json());
-  const streamingExpiring = await fetch(process.env.MOVIE_API + '/movies/expiring-horror', { next: { revalidate: 3600 } }).then(res => res.json());
-  const expiredList = streamingExpiring?.expiredMovies
-  
+  const streamingExpiring: ExpiringMovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/expiring-horror', { next: { revalidate: 3600 } }).then(res => res.json());
+
   return (
     <main className={styles.main} style={doHyeon.style}>
       <section className={styles.imagesection}>
@@ -71,13 +71,13 @@ export default async function Home() {
            <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
           }
           {
-            expiredList.length ? <div className={styles.content}>
+            streamingExpiring.length ? <div className={styles.content}>
               <div className={styles.content}>
-                {expiredList.map((movie: any) => (
+                {streamingExpiring.map((movie: ExpiringMovieResponseDto) => (
                   <div key={movie.id} className={styles.movieItem}>
                     <Image
                       alt={movie.title}
-                      src={process.env.POSTER_URL + movie.poster_path}
+                      src={process.env.POSTER_URL + movie.posterPath}
                       width={250}
                       height={300}
                       className={styles.movieImage}
@@ -85,6 +85,12 @@ export default async function Home() {
                     <Link href={`/movie/${movie.id}/${"streaming"}`} className={styles.movieTitle}>
                       {movie.title}
                     </Link>
+                    <div className={styles.expiringDate}>
+                      {movie.expiringDate}
+                    </div>
+                    <div className={styles.providers}>
+                      {movie.providers}
+                    </div>
                   </div>
                 ))}
               </div>
