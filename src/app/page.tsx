@@ -8,6 +8,7 @@ import { MovieResponseDto } from './types/movie-response-dto';
 import { ExpiringMovieResponseDto } from './types/expiring-response-dto';
 import MovieList from './components/MovieLIst';
 import ExpiringMovieList from './components/ExpiringMovieList';
+import { fetchUpcomingMovies, fetchNowPlayingMovies, fetchExpiringMovies } from './utils/fetchMovies';
 
 const doHyeon = Do_Hyeon({
   weight: '400',
@@ -18,24 +19,9 @@ const doHyeon = Do_Hyeon({
 export const revalidate = 3600; // 1시간마다 재검증
 
 export default async function Home() {
-  const upcoming: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/upcoming', { 
-    next: { revalidate: 3600 },
-    headers: {
-      'X-API-Key': process.env.MOVIE_API_KEY as string
-    }
-  }).then(res => res.json());
-  const nowPlaying: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/released', { 
-    next: { revalidate: 3600 },
-    headers: {
-      'X-API-Key': process.env.MOVIE_API_KEY as string
-    }
-  }).then(res => res.json());
-  const streamingExpiring: ExpiringMovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/expiring-horror', { 
-    next: { revalidate: 3600 },
-    headers: {
-      'X-API-Key': process.env.MOVIE_API_KEY as string
-    }
-  }).then(res => res.json());
+  const upcoming = await fetchUpcomingMovies();
+  const nowPlaying = await fetchNowPlayingMovies();
+  const streamingExpiring = await fetchExpiringMovies();
   
   return (
     <main className={styles.main} style={doHyeon.style}>
