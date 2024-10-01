@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from "next/link";
 import ProfileDropdown from './components/ProfileDropDown';
 import SidebarNav from './components/SidebarNav';
+import MobileNav from './components/MobileNav';
 import "./globals.css";
 import styles from "./layout.module.css";
 
@@ -43,18 +44,7 @@ export default async function RootLayout({
           <main className={styles.content}>
             {children}
           </main>
-          <nav className={styles.mobileNav}>
-            <Link href="/"><Image src={"/icons/home.svg"} alt="홈" width={30} height={30} className={styles.icon}/><span>홈</span></Link>
-            <Link href="/streaming"><Image src={"/icons/video.svg"} alt="스트리밍" width={30} height={30} className={styles.icon}/><span>스트리밍</span></Link>
-            <Link href="/inDevelopment"><Image src={"/icons/manga.svg"} alt="만화" width={30} height={30} className={styles.icon}/><span>만화</span></Link>
-            <Link href="/inDevelopment"><Image src={"/icons/game.svg"} alt="게임" width={30} height={30} className={styles.icon}/><span>게임</span></Link>
-            <Link href="/magazine"><Image src={"/icons/search.svg"} alt="찾기" width={30} height={30} className={styles.icon}/><span>잡지 기사</span></Link>
-            {profile && profile.id ? (
-              <ProfileDropdown isMobile={true} profile={profile}/>
-            ) : (
-              <Link href="/login"><Image src={"/icons/login.svg"} alt="로그인" width={30} height={30} className={styles.icon} /><span>로그인</span></Link>
-            )}
-          </nav>
+          <MobileNav profile={profile} />
         </div>
       </body>
     </html>
