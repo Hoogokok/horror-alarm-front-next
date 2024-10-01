@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '@/app/layout.module.css';
-import { Profile } from '../../types/profile';
+import { Profile } from '@/\btypes/profile';
 import localFont from 'next/font/local';
 import { profileMenuItems } from '@/config/profileMenu';
 

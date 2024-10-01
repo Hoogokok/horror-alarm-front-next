@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from "../app/layout.module.css";
+import styles from "@/app/layout.module.css";
 import ProfileDropdown from './ProfileDropdown';
-import { Profile } from '../../types/profile';
+import { Profile } from '@/\btypes/profile';
 import { navItems, loginItem } from '@/config/navigation';
 
 interface SidebarNavProps {
