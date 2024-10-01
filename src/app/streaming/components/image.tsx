@@ -8,13 +8,18 @@ const doHyeon = localFont({
   display: 'swap',
 });
 interface Movie {
-  id: string;
+  id: number;
   title: string;
-  poster_path: string;
+  posterPath: string;
 }
 
-export default async function ImageTabs({ query, page }: { query: string, page: string }) {
-  const data: Movie[] = await fetch(`${process.env.MOVIE_API}/api/streaming/page?query=${query}&page=${page}`, { cache: 'force-cache' }).then(res => res.json());
+export default async function ImageTabs({ provider, page }: { provider: string, page: string }) {
+  const data: Movie[] = await fetch(`${process.env.MOVIE_API}/movies/streaming?provider=${provider}&page=${page}`, { 
+    cache: 'force-cache',
+    headers: {
+      'X-API-Key': process.env.MOVIE_API_KEY as string
+    }
+  }).then(res => res.json());
 
   return (
     <div className={styls.movieList}>
@@ -22,7 +27,7 @@ export default async function ImageTabs({ query, page }: { query: string, page: 
         <div key={movie.id} className={styls.movieItem}>
           <div className={styls.moviePosterContainer}>
             <Image 
-                src={process.env.POSTER_URL + movie.poster_path} 
+                src={process.env.POSTER_URL + movie.posterPath} 
               alt={movie.title} 
               className={styls.moviePoster} 
               width={100}

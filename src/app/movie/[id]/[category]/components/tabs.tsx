@@ -78,7 +78,7 @@ export default function PageTabs({ movie, user, rate_movieIds, review_movieIds, 
                   />
                   <input type="hidden" name="movie_id" value={movie.id} />
                   <input type="hidden" name="user_id" value={user.id} />
-                  <input type="hidden" name="the_movie_db_id" value={movie.the_movie_db_id} />
+                  <input type="hidden" name="the_movie_db_id" value={movie.theMovieDbId} />
                   <input type="hidden" name="category" value={category} />
                   <button type="submit">리뷰 제출</button>
                 </form>
@@ -96,14 +96,14 @@ export default function PageTabs({ movie, user, rate_movieIds, review_movieIds, 
       case 'ratings':
         return (
           <div>
-            <p>평점: {movie.vote_average ? movie.vote_average.toFixed(1) : 0}</p>
+            <p>평점: {movie.voteAverage ? movie.voteAverage.toFixed(1) : 0}</p>
             {isLogin && !isRated && (
               <div>
                 <form action={rateAction} className={styles.ratingForm}>
                   <StarRating rating={rating} setRating={setRating} />
                   <input type="hidden" name="movie_id" value={movie.id} />
                   <input type="hidden" name="user_id" value={user.id} />
-                  <input type="hidden" name="the_movie_db_id" value={movie.the_movie_db_id} />
+                  <input type="hidden" name="the_movie_db_id" value={movie.theMovieDbId} />
                   <input type="hidden" name="category" value={category} />
                   <button type="submit">평점 남기기</button>
                 </form>
@@ -114,8 +114,16 @@ export default function PageTabs({ movie, user, rate_movieIds, review_movieIds, 
             {!isLogin && <Link href="/login" className={styles.rated}>로그인 후 이용해주세요.</Link>}
           </div>
         );
-      case 'releaseDate':
-        return <div>{movie.release_date}</div>;
+        case 'date':
+          return (
+            <div>
+              {category === 'expiring' ? (
+                <p>스트리밍 종료일: {movie.expiringDate}</p>
+              ) : (
+                <p>개봉일: {movie.releaseDate}</p>
+              )}
+            </div>
+          );
       case 'watch':
         return <div>{movie.providers.join(', ')}</div>;
       default:

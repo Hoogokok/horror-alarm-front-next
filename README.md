@@ -28,18 +28,18 @@ Spooky Town은 모든 공포 콘텐츠를 소개하는 종합 애플리케이션
 
 1. Supabase API: 사용자 인증 및 데이터베이스 관리를 위해 사용됩니다.
 
-2. 영화 정보 API: 공포 영화 데이터를 가져오기 위해 사용됩니다. 이 API는 [horror-alarm-backend-ts](https://github.com/Hoogokok/horror-alarm-backend-ts) 프로젝트에서 구현되었으며, 다음과 같은 엔드포인트를 제공합니다:
+2. 영화 정보 API: 공포 영화 데이터를 가져오기 위해 사용됩니다. 이 API는 [spooky-town](https://github.com/Hoogokok/spooky-town) 프로젝트에서 구현되었으며, 다음과 같은 엔드포인트를 제공합니다:
 
-   - GET `/api/streaming`: 스트리밍 서비스의 총 페이지 수를 반환합니다.
-     - 쿼리 파라미터: `query` (검색어, 기본값 "all" "Netflix", "Disney+")
-   - GET `/api/streaming/page`: 스트리밍 서비스의 특정 페이지 영화 정보를 반환합니다.
-     - 쿼리 파라미터: `query` (검색어, 기본값 "all"), `page` (페이지 번호, 기본값 "1")
-   - GET `/api/movie/{id}`: 영화의 상세 정보를 반환합니다.
-     - 쿼리 파라미터: `category` (영화 카테고리, 카테고리 종류: "upcoming", "streaming")
-   - GET `/api/releasing`: 상영 중인 영화 정보를 반환합니다.
-   - GET `/api/upcoming`: 상영 예정 영화 정보를 반환합니다.
-   - GET `/api/streaming/expired`: 스트리밍 종료 예정 영화 정보를 반환합니다.
-   - GET `/api/streaming/expired/detail/{id}`: 스트리밍 종료 예정 영화 상세 정보를 반환합니다.
+   - GET `/movies/theater/released`: 현재 상영 중인 영화 정보를 반환합니다.
+   - GET `/movies/theater/upcoming`: 상영 예정인 영화 정보를 반환합니다.
+   - GET `/movies/expiring-horror`: 스트리밍 서비스에서 곧 종료될 공포 영화 목록을 반환합니다.
+   - GET `/movies/expiring-horror/{id}`: 특정 스트리밍 종료 예정 공포 영화의 상세 정보를 반환합니다.
+   - GET `/movies/streaming/pages`: 스트리밍 서비스의 총 페이지 수를 반환합니다.
+     - 쿼리 파라미터: `provider` (스트리밍 서비스 이름)
+   - GET `/movies/streaming`: 스트리밍 서비스의 영화 정보를 반환합니다.
+     - 쿼리 파라미터: `provider` (스트리밍 서비스 이름), `page` (페이지 번호, 선택적)
+   - GET `/movies/streaming/{id}`: 스트리밍 영화의 상세 정보를 반환합니다.
+   - GET `/movies/theater/{id}`: 극장 상영 영화의 상세 정보를 반환합니다.
 
    이 API는 영화 제목, 포스터 이미지 경로, 개봉일, 줄거리, 평점, 리뷰, 스트리밍 제공업체 등의 정보를 제공합니다.
 

@@ -81,6 +81,18 @@
   font-weight: bold;
 }
 
+.expiringDate {
+  font-size: 14px;
+  color: #ff4d4d;
+  margin-top: 5px;
+}
+
+.providers {
+  font-size: 14px;
+  color: #a0a0a0;
+  margin-top: 5px;
+}
+
 @media (min-width: 768px) {
   .content {
     gap: 50px; /* 30px에서 50px로 증가 */
@@ -98,6 +110,11 @@
   
   .movieTitle {
     font-size: 20px; /* 18px에서 22px로 증가 */
+  }
+
+  .expiringDate,
+  .providers {
+    font-size: 16px;
   }
 }
 
@@ -119,5 +136,10 @@
   
   .movieTitle {
     font-size: 24px; /* 20px에서 24px로 증가 */
+  }
+
+  .expiringDate,
+  .providers {
+    font-size: 18px;
   }
 }
