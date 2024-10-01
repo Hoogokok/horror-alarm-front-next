@@ -1,11 +1,8 @@
 import { getProfile } from '@/app/auth/lib/actions';
 import type { Metadata } from "next";
 import { Black_Han_Sans, Inter } from "next/font/google";
-import Image from 'next/image';
-import Link from "next/link";
-import ProfileDropdown from './components/ProfileDropDown';
-import SidebarNav from './components/SidebarNav';
 import MobileNav from './components/MobileNav';
+import SidebarNav from './components/SidebarNav';
 import "./globals.css";
 import styles from "./layout.module.css";
 
