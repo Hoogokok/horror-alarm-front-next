@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from '../layout.module.css';
+import styles from '@/app/layout.module.css';
 import { Profile } from '../types/profile';
 import localFont from 'next/font/local';
 import { profileMenuItems } from '@/config/profileMenu';
 
 const doHyeon = localFont({
-  src: '../../fonts/DoHyeon-Regular.ttf',
+  src: '../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
 });
 
