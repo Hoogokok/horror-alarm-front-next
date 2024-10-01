@@ -15,7 +15,7 @@ interface Movie {
 
 export default async function ImageTabs({ provider, page }: { provider: string, page: string }) {
   const data: Movie[] = await fetch(`${process.env.MOVIE_API}/movies/streaming?provider=${provider}&page=${page}`, { 
-    cache: 'force-cache',
+    next: { revalidate: 3600 },
     headers: {
       'X-API-Key': process.env.MOVIE_API_KEY as string
     }
