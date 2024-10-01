@@ -4,7 +4,7 @@ import ExpiringMovieList from './components/ExpiringMovieList';
 import MovieList from './components/MovieLIst';
 import Loading from "./loading";
 import styles from "./page.module.css";
-import { fetchExpiringMovies, fetchNowPlayingMovies, fetchUpcomingMovies } from './utils/fetchMovies';
+import { fetchExpiringMovies, fetchNowPlayingMovies, fetchUpcomingMovies } from '../utils/fetchMovies';
 
 const doHyeon = Do_Hyeon({
   weight: '400',
