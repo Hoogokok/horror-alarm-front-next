@@ -7,6 +7,7 @@ import { Do_Hyeon } from "next/font/google";
 import { MovieResponseDto } from './types/movie-response-dto';
 import { ExpiringMovieResponseDto } from './types/expiring-response-dto';
 import MovieList from './components/MovieLIst';
+import ExpiringMovieList from './components/ExpiringMovieList';
 
 const doHyeon = Do_Hyeon({
   weight: '400',
@@ -57,28 +58,7 @@ export default async function Home() {
           <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
           {
             streamingExpiring.length ? (
-              <div className={styles.content}>
-                {streamingExpiring.map((movie: ExpiringMovieResponseDto) => (
-                  <div key={movie.id} className={styles.movieItem}>
-                    <Image
-                      alt={movie.title}
-                      src={process.env.POSTER_URL + movie.posterPath}
-                      width={250}
-                      height={300}
-                      className={styles.movieImage}
-                    />
-                    <Link href={`/movie/${movie.id}/${"expiring"}`} className={styles.movieTitle}>
-                      {movie.title}
-                    </Link>
-                    <div className={styles.expiringDate}>
-                      {new Date(movie.expiringDate).toLocaleDateString()}
-                    </div>
-                    <div className={styles.providers}>
-                      {movie.providers}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ExpiringMovieList movies={streamingExpiring} />
             ) : (
               <div className={styles.content}>스트리밍 종료 예정인 영화가 없어요!</div>
             )
