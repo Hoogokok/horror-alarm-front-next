@@ -19,7 +19,7 @@ export default async function MovieDetail({ params }: { params: { id: string, ca
       break;
     case 'upcoming':
     case 'released':
-      url = `${process.env.MOVIE_API}/movies/theater/${params.category}/${params.id}`;
+      url = `${process.env.MOVIE_API}/movies/theater/${params.id}`;
       break;
     case 'expiring':
       url = `${process.env.MOVIE_API}/movies/expiring-horror/${params.id}`;
