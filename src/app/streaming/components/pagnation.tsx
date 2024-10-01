@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useSearchParams } from 'next/navigation';
-import styls from './components.module.css';
+import styles from './components.module.css';
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
   const searchParams = useSearchParams();
@@ -15,15 +15,15 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   };
   const allPages = generatePagination(currentPage, totalPages);
   return (
-    <div className={styls.pagenation}>
+    <div className={styles.pagenation}>
       {allPages.map((page, index) => (
         typeof page === 'string' ? (
-          <span key={index} className={styls.middle}>{page}</span>
+          <span key={index} className={styles.middle}>{page}</span>
         ) : (
           <a
             key={page}
             href={createPageURL(page)}
-            className={page === currentPage ? styls.pageNumberActive : styls.pageNumber}
+            className={page === currentPage ? styles.pageNumberActive : styles.pageNumber}
           >
             {page}
           </a>

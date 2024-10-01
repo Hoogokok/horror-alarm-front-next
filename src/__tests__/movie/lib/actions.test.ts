@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { rate, review, ReviewState } from '@/app/movie/lib/actions'
-import { createClient } from '@/app/utils/supabase/server'
+import { createClient } from '@/utils/supabase/server'
 
 vi.mock('@/app/utils/supabase/server', () => ({
   createClient: vi.fn()

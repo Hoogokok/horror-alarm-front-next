@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod';
-import { createClient } from '@/app/utils/supabase/server'
+import { createClient } from '@/utils/supabase/server'
+import { Profile } from '@/types/profile';
 
 const loginSchema = z.object({
   email: z.string().email("이메일 형식이 올바르지 않습니다"),
@@ -153,12 +154,6 @@ export async function getUser() {
         console.error('사용자 정보 조회 중 오류 발생:', error)
         return { user: null, rate_movieIds: [], review_movieIds: [] }
     }
-}
-
-export type Profile = {
-  name: string;
-  id: string;
-  image_url: string;
 }
 
 export async function getProfile() : Promise<Profile | null> {

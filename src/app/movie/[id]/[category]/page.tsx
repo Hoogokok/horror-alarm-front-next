@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import PageTabs from "./components/tabs";
 import { getUser } from "@/app/auth/lib/actions";
 import localFont from 'next/font/local';
-import { MovieDetailResponseDto } from '@/app/types/movie-detail-response-dto';
+import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 
 const doHyeon = localFont({
   src: '../../../fonts/DoHyeon-Regular.ttf',

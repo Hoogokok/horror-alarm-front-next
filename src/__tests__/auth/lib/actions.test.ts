@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { login, LoginState, signup, SignupState, getUser, logout, getProfile, updateProfile, UploadProfileImageState } from '@/app/auth/lib/actions'
-import { createClient } from '@/app/utils/supabase/server'
+import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
