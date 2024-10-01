@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./layout.module.css";
 import { getProfile } from '@/app/auth/lib/actions'
 import Image from 'next/image';
-import ProfileDropdown from './components/profileDrop';
+import ProfileDropdown from './components/ProfileDropDown';
 import localFont from 'next/font/local';
 
 const doHyeon = localFont({
