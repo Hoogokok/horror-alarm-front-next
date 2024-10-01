@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import styls from './components.module.css';
+import styles from './components.module.css';
 import Link from 'next/link';
 import localFont from 'next/font/local';
 import { Movie } from '@/\btypes/movie';
@@ -18,19 +18,19 @@ export default async function ImageTabs({ provider, page }: { provider: string, 
   }).then(res => res.json());
 
   return (
-    <div className={styls.movieList}>
+    <div className={styles.movieList}>
       {data.map((movie: Movie) => (
-        <div key={movie.id} className={styls.movieItem}>
-          <div className={styls.moviePosterContainer}>
+        <div key={movie.id} className={styles.movieItem}>
+          <div className={styles.moviePosterContainer}>
             <Image 
                 src={process.env.POSTER_URL + movie.posterPath} 
               alt={movie.title} 
-              className={styls.moviePoster} 
+              className={styles.moviePoster} 
               width={100}
               height={100}
             />
           </div>
-          <Link href={`/movie/${movie.id}/${"streaming"}`} className={`${styls.movieTitle} ${doHyeon.className}`}>
+          <Link href={`/movie/${movie.id}/${"streaming"}`} className={`${styles.movieTitle} ${doHyeon.className}`}>
             {movie.title}
           </Link>
         </div>

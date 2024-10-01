@@ -1,5 +1,5 @@
 'use client';
-import styls from './components.module.css';
+import styles from './components.module.css';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import localFont from 'next/font/local';
@@ -25,10 +25,10 @@ export default function SearchTab() {
     }, 300);
 
     return (
-        <div className={styls.searchTab}>
-            <button onClick={() => handleClick("all")} className={`${styls.searchButton} ${doHyeon.className}`}>모든 서비스</button>
-            <button onClick={() => handleClick("netflix")} className={`${styls.searchButton} ${doHyeon.className}`}>넷플릭스</button>
-            <button onClick={() => handleClick("disney")} className={`${styls.searchButton} ${doHyeon.className}`}>디즈니+</button>
+        <div className={styles.searchTab}>
+            <button onClick={() => handleClick("all")} className={`${styles.searchButton} ${doHyeon.className}`}>모든 서비스</button>
+            <button onClick={() => handleClick("netflix")} className={`${styles.searchButton} ${doHyeon.className}`}>넷플릭스</button>
+            <button onClick={() => handleClick("disney")} className={`${styles.searchButton} ${doHyeon.className}`}>디즈니+</button>
         </div>
     );
 }
