@@ -4,11 +4,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../layout.module.css';
-import { logout, Profile } from '@/app/auth/lib/actions';
+import { Profile } from '../types/profile';
 import localFont from 'next/font/local';
+import { profileMenuItems } from '@/config/profileMenu';
 
 const doHyeon = localFont({
-  src: '../fonts/DoHyeon-Regular.ttf',
+  src: '../../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
 });
 
@@ -16,6 +17,7 @@ interface ProfileDropdownProps {
   profile: Profile;
   isMobile: boolean;
 }
+
 
 export default function ProfileDropdown({ profile, isMobile }: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,11 +30,14 @@ export default function ProfileDropdown({ profile, isMobile }: ProfileDropdownPr
   const menuClass = isMobile ? styles.mobileDropdownMenu : styles.dropdownMenu;
   const buttonClass = isMobile ? `${styles.profileButton} ${styles.mobileProfileButton}` : styles.profileButton;
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('로그아웃 중 오류 발생:', error);
+  const handleMenuItemClick = async (action: (() => Promise<void>) | null) => {
+    setIsOpen(false);
+    if (action) {
+      try {
+        await action();
+      } catch (error) {
+        console.error('로그아웃 실행 중 오류 발생:', error);
+      }
     }
   };
 
@@ -44,8 +49,15 @@ export default function ProfileDropdown({ profile, isMobile }: ProfileDropdownPr
       </button>
       {isOpen && (
         <ul className={menuClass}>
-          <li><Link href="/profile" onClick={() => setIsOpen(false)}>프로필 편집</Link></li>
-          <li><button onClick={handleLogout}>로그아웃</button></li>
+          {profileMenuItems.map((item) => (
+            <li key={item.href}>
+              {item.action ? (
+                <button onClick={() => handleMenuItemClick(item.action)}>{item.label}</button>
+              ) : (
+                <Link href={item.href} onClick={() => handleMenuItemClick(null)}>{item.label}</Link>
+              )}
+            </li>
+          ))}
         </ul>
       )}
     </li>
