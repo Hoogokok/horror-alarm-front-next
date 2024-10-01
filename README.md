@@ -28,7 +28,7 @@ Spooky Town은 모든 공포 콘텐츠를 소개하는 종합 애플리케이션
 
 1. Supabase API: 사용자 인증 및 데이터베이스 관리를 위해 사용됩니다.
 
-2. 영화 정보 API: 공포 영화 데이터를 가져오기 위해 사용됩니다. 이 API는 [horror-alarm-backend-ts](https://github.com/Hoogokok/horror-alarm-backend-ts) 프로젝트에서 구현되었으며, 다음과 같은 엔드포인트를 제공합니다:
+2. 영화 정보 API: 공포 영화 데이터를 가져오기 위해 사용됩니다. 이 API는 [spooky-town](https://github.com/Hoogokok/spooky-town) 프로젝트에서 구현되었으며, 다음과 같은 엔드포인트를 제공합니다:
 
    - GET `/movies/theater/released`: 현재 상영 중인 영화 정보를 반환합니다.
    - GET `/movies/theater/upcoming`: 상영 예정인 영화 정보를 반환합니다.
