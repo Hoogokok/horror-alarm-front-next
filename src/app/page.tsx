@@ -1,14 +1,10 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import { Do_Hyeon } from "next/font/google";
 import { Suspense } from "react";
+import ExpiringMovieList from './components/ExpiringMovieList';
+import MovieList from './components/MovieLIst';
 import Loading from "./loading";
 import styles from "./page.module.css";
-import { Do_Hyeon } from "next/font/google";
-import { MovieResponseDto } from './types/movie-response-dto';
-import { ExpiringMovieResponseDto } from './types/expiring-response-dto';
-import MovieList from './components/MovieLIst';
-import ExpiringMovieList from './components/ExpiringMovieList';
-import { fetchUpcomingMovies, fetchNowPlayingMovies, fetchExpiringMovies } from './utils/fetchMovies';
+import { fetchExpiringMovies, fetchNowPlayingMovies, fetchUpcomingMovies } from './utils/fetchMovies';
 
 const doHyeon = Do_Hyeon({
   weight: '400',
