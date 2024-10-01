@@ -4,6 +4,8 @@ import Images from './components/image';
 import SearchTab from './components/searchTab';
 import Pagination from './components/pagnation';
 import ImageSkeleton from './components/imageskeleton';
+import { fetchTotalPages } from '@/utils/api';
+
 export const experimental_ppr = true;
 
 export default async function StreamingPage({ searchParams }: {
@@ -12,26 +14,17 @@ export default async function StreamingPage({ searchParams }: {
         page?: string;
     }
 }) {
-    const provider = searchParams?.provider || "all" // 기본 제공자는 all
-    const page = searchParams?.page || "1" // 기본 페이지는 1
-    const url = `${process.env.MOVIE_API}/movies/streaming/pages?provider=${provider}`;
-    const { totalPages } = await fetch(url, { 
-      next: { revalidate: 3600 },
-      headers: {
-        'X-API-Key': process.env.MOVIE_API_KEY as string
-      }
-    }).then(res => res.json());
+    const provider = searchParams?.provider || "all"
+    const page = searchParams?.page || "1"
+    const { totalPages } = await fetchTotalPages(provider);
+
     return (
         <div className={styles.streamingContainer}>
             <div className={styles.searchTabWrapper}>
                 <SearchTab />
             </div>
             <div className={styles.imageGalleryWrapper}>
-                <Suspense
-                    key={provider + page}
-                    fallback={
-                        <ImageSkeleton />
-                    }>
+                <Suspense key={provider + page} fallback={<ImageSkeleton />}>
                     <Images provider={provider} page={page} />
                 </Suspense>
             </div>
