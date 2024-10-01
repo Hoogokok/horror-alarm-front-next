@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod';
 import { createClient } from '@/utils/supabase/server'
-import { Profile } from '@/app/\btypes/profile';
+import { Profile } from '@/types/profile';
 
 const loginSchema = z.object({
   email: z.string().email("이메일 형식이 올바르지 않습니다"),

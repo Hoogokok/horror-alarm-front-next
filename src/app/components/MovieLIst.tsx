@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from "../app/page.module.css";
-import { MovieResponseDto } from '../types/movie-response-dto';
+import { MovieResponseDto } from '../../types/movie-response-dto';
 
 interface MovieListProps {
   movies: MovieResponseDto[];

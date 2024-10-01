@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '@/app/layout.module.css';
-import { Profile } from '../types/profile';
+import { Profile } from '../../types/profile';
 import localFont from 'next/font/local';
 import { profileMenuItems } from '@/config/profileMenu';
 
@@ -44,7 +44,7 @@ export default function ProfileDropdown({ profile, isMobile }: ProfileDropdownPr
   return (
     <li className={dropdownClass}>
       <button className={buttonClass} onClick={toggleDropdown}>
-        <Image src={profile.image_url} alt="프로필" width={30} height={30} className={styles.profileIcon} unoptimized/>
+        <Image src={profile.image_url} alt="프로필" width={30} height={30} className={styles.profileIcon} unoptimized />
         <span className={doHyeon.className}>프로필</span>
       </button>
       {isOpen && (
