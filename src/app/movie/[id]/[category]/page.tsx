@@ -28,7 +28,12 @@ export default async function MovieDetail({ params }: { params: { id: string, ca
       throw new Error('Invalid category');
   }
 
-  const movie: MovieDetailResponseDto = await fetch(url, { next: { revalidate: 3600 } }).then(res => res.json());
+  const movie: MovieDetailResponseDto = await fetch(url, { 
+    next: { revalidate: 3600 },
+    headers: {
+      'X-API-Key': process.env.MOVIE_API_KEY as string
+    }
+  }).then(res => res.json());
   const result = await getUser();
 
   return (

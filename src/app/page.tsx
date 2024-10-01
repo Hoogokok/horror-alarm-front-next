@@ -16,10 +16,25 @@ const doHyeon = Do_Hyeon({
 export const revalidate = 3600; // 1시간마다 재검증
 
 export default async function Home() {
-  const upcoming: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/upcoming', { next: { revalidate: 3600 } }).then(res => res.json());
-  const nowPlaying: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/released', { next: { revalidate: 3600 } }).then(res => res.json());
-  const streamingExpiring: ExpiringMovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/expiring-horror', { next: { revalidate: 3600 } }).then(res => res.json());
-
+  const upcoming: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/upcoming', { 
+    next: { revalidate: 3600 },
+    headers: {
+      'X-API-Key': process.env.MOVIE_API_KEY as string
+    }
+  }).then(res => res.json());
+  const nowPlaying: MovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/theater/released', { 
+    next: { revalidate: 3600 },
+    headers: {
+      'X-API-Key': process.env.MOVIE_API_KEY as string
+    }
+  }).then(res => res.json());
+  const streamingExpiring: ExpiringMovieResponseDto[] = await fetch(process.env.MOVIE_API + '/movies/expiring-horror', { 
+    next: { revalidate: 3600 },
+    headers: {
+      'X-API-Key': process.env.MOVIE_API_KEY as string
+    }
+  }).then(res => res.json());
+  
   return (
     <main className={styles.main} style={doHyeon.style}>
       <section className={styles.imagesection}>

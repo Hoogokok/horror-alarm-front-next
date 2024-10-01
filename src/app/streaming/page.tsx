@@ -15,7 +15,12 @@ export default async function StreamingPage({ searchParams }: {
     const provider = searchParams?.provider || "all" // 기본 제공자는 all
     const page = searchParams?.page || "1" // 기본 페이지는 1
     const url = `${process.env.MOVIE_API}/movies/streaming/pages?provider=${provider}`;
-    const { totalPages } = await fetch(url, { next: { revalidate: 3600 } }).then(res => res.json());
+    const { totalPages } = await fetch(url, { 
+      next: { revalidate: 3600 },
+      headers: {
+        'X-API-Key': process.env.MOVIE_API_KEY as string
+      }
+    }).then(res => res.json());
     return (
         <div className={styles.streamingContainer}>
             <div className={styles.searchTabWrapper}>
