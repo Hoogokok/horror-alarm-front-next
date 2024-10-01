@@ -4,8 +4,9 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import styles from "./page.module.css";
 import { Do_Hyeon } from "next/font/google";
-import { MovieResponseDto } from './types/movie-response-dto';  // 이 타입을 정의해야 합니다
+import { MovieResponseDto } from './types/movie-response-dto';
 import { ExpiringMovieResponseDto } from './types/expiring-response-dto';
+import MovieList from './components/MovieLIst';
 
 const doHyeon = Do_Hyeon({
   weight: '400',
@@ -40,48 +41,19 @@ export default async function Home() {
       <section className={styles.imagesection}>
         <Suspense fallback={<Loading />}>
           <div className={styles.imagesectionTitle}>개봉 예정</div>
-          {
-            upcoming.length ? <div className={styles.content}>
-              {upcoming.map((movie: MovieResponseDto) => (
-                <div key={movie.id} className={styles.movieItem}>
-                  <Image
-                    alt={movie.title}
-                    src={process.env.POSTER_URL + movie.posterPath}
-                    width={250}
-                    height={300}
-                    priority={true}
-                    className={styles.movieImage}
-                  />
-                  <Link href={`/movie/${movie.id}/${"upcoming"}`} className={styles.movieTitle}>
-                    {movie.title}
-                  </Link>
-                </div>
-              ))}
-            </div> : <div className={styles.content}>개봉 예정인 영화가 없어요!</div>
-          }
+          {upcoming.length ? (
+            <MovieList movies={upcoming} type="upcoming" />
+          ) : (
+            <div className={styles.content}>개봉 예정인 영화가 없어요!</div>
+          )}
+          
           <div className={styles.imagesectionTitle}>상영중</div>
-          {
-            nowPlaying.length ? (
-              <div className={styles.content}>
-                {nowPlaying.map((movie: MovieResponseDto) => (
-                  <div key={movie.id} className={styles.movieItem}>
-                    <Image
-                      alt={movie.title}
-                      src={process.env.POSTER_URL + movie.posterPath}
-                      width={250}
-                      height={300}
-                      className={styles.movieImage}
-                    />
-                    <Link href={`/movie/${movie.id}/${"released"}`} className={styles.movieTitle}>
-                      {movie.title}
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className={styles.content}>상영중인 영화가 없어요!</div>
-            )
-          }
+          {nowPlaying.length ? (
+            <MovieList movies={nowPlaying} type="released" />
+          ) : (
+            <div className={styles.content}>상영중인 영화가 없어요!</div>
+          )}
+          
           <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
           {
             streamingExpiring.length ? (
