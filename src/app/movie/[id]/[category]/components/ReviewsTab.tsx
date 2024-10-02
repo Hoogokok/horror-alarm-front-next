@@ -1,6 +1,6 @@
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { UserWithMovieIds } from '@/types/user';
-import { review } from '@/app/movie/lib/actions';
+import { review, ReviewState } from '@/app/movie/lib/actions';
 import { usePagination } from '@/hooks/usePagination';
 import Link from 'next/link';
 import { useActionState } from 'react';
@@ -13,7 +13,7 @@ interface ReviewsTabProps {
 }
 
 export default function ReviewsTab({ movie, userWithMovieIds, category }: ReviewsTabProps) {
-  const initialState = {
+  const initialState: ReviewState = {
     error: {},
     message: ""
   }

@@ -73,11 +73,11 @@ export type ReviewState = {
         the_movie_db_id?: string[]
         category?: string[]
         review?: string[]
-    }
+    } | string
     message?: string
 }
 
-export async function review(prevState: ReviewState, formData: FormData) {
+export async function review(prevState: ReviewState, formData: FormData) : Promise<ReviewState> {
     const supabase = createClient()
     const validation = reviewSchema.safeParse({
         movie_id: formData.get('movie_id') as string,
