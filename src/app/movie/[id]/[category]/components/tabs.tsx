@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import styles from "./components.module.css";
 import localFont from 'next/font/local';
 import { UserWithMovieIds } from '@/types/user';
@@ -22,17 +22,25 @@ interface PageTabsProps {
 export default function PageTabs({ movie, userWithMovieIds, category }: PageTabsProps) {
   const [activeTab, setActiveTab] = useState('overview');
 
+  const handleTabChange = useCallback((tab: string) => {
+    setActiveTab(tab);
+  }, []);
+
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <div>{movie.overview}</div>;
+        return <div id="overview-content" role="tabpanel" aria-labelledby="overview-tab">{movie.overview}</div>;
       case 'reviews':
-        return <ReviewsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />;
+        return <div id="reviews-content" role="tabpanel" aria-labelledby="reviews-tab">
+          <ReviewsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
+        </div>;
       case 'ratings':
-        return <RatingsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />;
+        return <div id="ratings-content" role="tabpanel" aria-labelledby="ratings-tab">
+          <RatingsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
+        </div>;
       case 'date':
         return (
-          <div>
+          <div id="date-content" role="tabpanel" aria-labelledby="date-tab">
             {category === 'expiring' ? (
               <p>스트리밍 종료일: {movie.expiringDate}</p>
             ) : (
@@ -41,7 +49,9 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
           </div>
         );
       case 'watch':
-        return <div>{movie.providers ? movie.providers.join(', ') : '정보 없음'}</div>;
+        return <div id="watch-content" role="tabpanel" aria-labelledby="watch-tab">
+          {movie.providers ? movie.providers.join(', ') : '정보 없음'}
+        </div>;
       default:
         return null;
     }
@@ -49,12 +59,52 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
 
   return (
     <div>
-      <div className={styles.tabs}>
-        <button onClick={() => setActiveTab('overview')}>줄거리</button>
-        <button onClick={() => setActiveTab('reviews')}>리뷰</button>
-        <button onClick={() => setActiveTab('ratings')}>평점</button>
-        <button onClick={() => setActiveTab('date')}>개봉일</button>
-        <button onClick={() => setActiveTab('watch')}>볼 수 있는 곳</button>
+      <div className={styles.tabs} role="tablist">
+        <button 
+          id="overview-tab"
+          onClick={() => handleTabChange('overview')} 
+          aria-selected={activeTab === 'overview'} 
+          role="tab" 
+          aria-controls="overview-content"
+        >
+          줄거리
+        </button>
+        <button 
+          id="reviews-tab"
+          onClick={() => handleTabChange('reviews')} 
+          aria-selected={activeTab === 'reviews'} 
+          role="tab" 
+          aria-controls="reviews-content"
+        >
+          리뷰
+        </button>
+        <button 
+          id="ratings-tab"
+          onClick={() => handleTabChange('ratings')} 
+          aria-selected={activeTab === 'ratings'} 
+          role="tab" 
+          aria-controls="ratings-content"
+        >
+          평점
+        </button>
+        <button 
+          id="date-tab"
+          onClick={() => handleTabChange('date')} 
+          aria-selected={activeTab === 'date'} 
+          role="tab" 
+          aria-controls="date-content"
+        >
+          {category === 'expiring' ? '스트리밍 종료일' : '개봉일'}
+        </button>
+        <button 
+          id="watch-tab"
+          onClick={() => handleTabChange('watch')} 
+          aria-selected={activeTab === 'watch'} 
+          role="tab" 
+          aria-controls="watch-content"
+        >
+          볼 수 있는 곳
+        </button>
       </div>
       <div className={styles.tabContent} style={doHyeon.style}>
         {renderContent()}
