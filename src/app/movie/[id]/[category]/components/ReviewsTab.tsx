@@ -24,6 +24,24 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
   const { currentItems: currentReviews, currentPage, nextPage, prevPage, totalPages } = usePagination(movie.reviews);
 
+  const renderError = () => {
+    if (typeof reviewState.error === 'string') {
+      return <p className={styles.error}>{reviewState.error}</p>;
+    } else if (reviewState.error) {
+      return (
+        <ul className={styles.errorList}>
+          {Object.entries(reviewState.error).map(([key, errors]) => (
+            errors && errors.map((error, index) => (
+              <li key={`${key}-${index}`} className={styles.errorItem}>{error}</li>
+            ))
+          ))}
+        </ul>
+      );
+    }
+    return null;
+  };
+
+
   return (
     <div className={styles.review}>
       <ul>
@@ -64,7 +82,8 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
             <input type="hidden" name="category" value={category} />
             <button type="submit">리뷰 제출</button>
           </form>
-          {reviewState?.error && <p>{reviewState.message}</p>}
+          {renderError()}
+          {reviewState.message && <p className={styles.message}>{reviewState.message}</p>}
         </div>
       ) : isReviewed ? (
         <p className={styles.rated}>이미 리뷰를 작성했습니다.</p>

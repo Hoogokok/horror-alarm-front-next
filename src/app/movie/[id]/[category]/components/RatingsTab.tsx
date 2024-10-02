@@ -23,6 +23,23 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
   const [rating, setRating] = useState(0);
   const [rateState, rateAction] = useActionState(rate, initialState);
 
+  const renderError = () => {
+    if (typeof rateState.error === 'string') {
+      return <p className={styles.error}>{rateState.error}</p>;
+    } else if (rateState.error) {
+      return (
+        <ul className={styles.errorList}>
+          {Object.entries(rateState.error).map(([key, errors]) => (
+            errors && errors.map((error, index) => (
+              <li key={`${key}-${index}`} className={styles.errorItem}>{error}</li>
+            ))
+          ))}
+        </ul>
+      );
+    }
+    return null;
+  };
+
   return (
     <div>
       <p>평점: {movie.voteAverage ? movie.voteAverage.toFixed(1) : 0}</p>
@@ -36,7 +53,8 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
             <input type="hidden" name="category" value={category} />
             <button type="submit">평점 남기기</button>
           </form>
-          {rateState.error && <p>{rateState.message}</p>}
+          {renderError()}
+          {rateState.message && <p className={styles.message}>{rateState.message}</p>}
         </div>
       )}
       {isRated && <p className={styles.rated}>이미 평점을 매겼습니다.</p>}
