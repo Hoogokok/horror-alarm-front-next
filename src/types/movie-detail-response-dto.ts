@@ -8,6 +8,12 @@ export interface MovieDetailResponseDto {
     voteAverage: number;
     voteCount: number;
     providers?: string[];
-    theMovieDbId: number;
-    reviews: string[];
+    theMovieDbId: string;
+    reviews: Review[];
+  }
+
+  export interface Review {
+    id: string;
+    content: string;
+    createdAt: string;
   }
