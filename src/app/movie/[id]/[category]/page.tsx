@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from "./page.module.css";
-import PageTabs from "./components/Tabs";
+import PageTabs from "./components/PageTabs";
 import { getUser } from "@/app/auth/lib/actions";
 import localFont from 'next/font/local';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
