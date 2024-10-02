@@ -19,10 +19,9 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
   }
   const { user, rate_movieIds } = userWithMovieIds;
   const isLogin = user !== null;
-  const isRated = rate_movieIds.includes(movie.theMovieDbId.toString());
+  const isRated = rate_movieIds.includes(Number(movie.theMovieDbId));
   const [rating, setRating] = useState(0);
   const [rateState, rateAction] = useActionState(rate, initialState);
-
   const renderError = () => {
     if (typeof rateState.error === 'string') {
       return <p className={styles.error}>{rateState.error}</p>;

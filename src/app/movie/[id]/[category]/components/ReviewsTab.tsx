@@ -19,11 +19,9 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
   }
   const { user, review_movieIds } = userWithMovieIds;
   const isLogin = user !== null;
-  const isReviewed = review_movieIds.includes(movie.theMovieDbId.toString());
+  const isReviewed = review_movieIds.includes(Number(movie.theMovieDbId));
   const [reviewState, reviewAction] = useActionState(review, initialState);
-
   const { currentItems: currentReviews, currentPage, nextPage, prevPage, totalPages } = usePagination(movie.reviews);
-
   const renderError = () => {
     if (typeof reviewState.error === 'string') {
       return <p className={styles.error}>{reviewState.error}</p>;
@@ -44,12 +42,14 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
   return (
     <div className={styles.review}>
-      <ul>
-        {currentReviews.map((review, index) => (
-          <li key={index}>{review}</li>
+     <ul>
+        {currentReviews.map((review) => (
+          <li key={review.id}>
+            <p>{review.content}</p>
+            <small>{new Date(review.createdAt).toLocaleDateString('ko-KR')}</small>
+          </li>
         ))}
       </ul>
-      
       <div className={styles.pagination}>
         <button
           onClick={prevPage}

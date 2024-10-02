@@ -138,8 +138,8 @@ export async function getUser(): Promise<UserWithMovieIds> {
         if (reviewError) {
             console.log(reviewError)
         }
-        let movieIds: string[] = []
-        let reviewIds: string[] = []
+        let movieIds: number[] = []
+        let reviewIds: number[] = []
         if (rateData) {
             movieIds = rateData.map((rate: any) => rate.rate_movie_id)
         }
