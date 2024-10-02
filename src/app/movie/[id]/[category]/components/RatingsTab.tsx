@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useActionState } from 'react';
-import { rate } from '@/app/movie/lib/actions';
+import { rate, RateState } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
 import { UserWithMovieIds } from '@/types/user';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
@@ -13,7 +13,7 @@ interface RatingsTabProps {
 }
 
 export default function RatingsTab({ movie, userWithMovieIds, category }: RatingsTabProps) {
-  const initialState = {
+  const initialState: RateState = {
     error: {},
     message: ""
   }

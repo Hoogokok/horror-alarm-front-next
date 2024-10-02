@@ -20,7 +20,7 @@ export type RateState = {
         user_id?: string[]
         the_movie_db_id?: string[]
         category?: string[]
-    }
+    } | string
     message?: string
 }
 
