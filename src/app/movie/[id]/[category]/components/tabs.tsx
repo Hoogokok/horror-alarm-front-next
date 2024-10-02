@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import styles from "./components.module.css";
 import localFont from 'next/font/local';
 import { UserWithMovieIds } from '@/types/user';
@@ -26,7 +26,7 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
     setActiveTab(tab);
   }, []);
 
-  const renderContent = () => {
+  const renderContent = useMemo(() => {
     switch (activeTab) {
       case 'overview':
         return <div id="overview-content" role="tabpanel" aria-labelledby="overview-tab">{movie.overview}</div>;
@@ -55,60 +55,35 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
       default:
         return null;
     }
-  };
+  }, [activeTab, movie, userWithMovieIds, category]);
+
+  const tabButtons = useMemo(() => [
+    { id: 'overview', label: '줄거리' },
+    { id: 'reviews', label: '리뷰' },
+    { id: 'ratings', label: '평점' },
+    { id: 'date', label: category === 'expiring' ? '스트리밍 종료일' : '개봉일' },
+    { id: 'watch', label: '볼 수 있는 곳' },
+  ], [category]);
 
   return (
     <div>
-      <div className={styles.tabs} role="tablist">
+    <div className={styles.tabs} role="tablist">
+      {tabButtons.map((tab) => (
         <button 
-          id="overview-tab"
-          onClick={() => handleTabChange('overview')} 
-          aria-selected={activeTab === 'overview'} 
+          key={tab.id}
+          id={`${tab.id}-tab`}
+          onClick={() => handleTabChange(tab.id)} 
+          aria-selected={activeTab === tab.id} 
           role="tab" 
-          aria-controls="overview-content"
+          aria-controls={`${tab.id}-content`}
         >
-          줄거리
+          {tab.label}
         </button>
-        <button 
-          id="reviews-tab"
-          onClick={() => handleTabChange('reviews')} 
-          aria-selected={activeTab === 'reviews'} 
-          role="tab" 
-          aria-controls="reviews-content"
-        >
-          리뷰
-        </button>
-        <button 
-          id="ratings-tab"
-          onClick={() => handleTabChange('ratings')} 
-          aria-selected={activeTab === 'ratings'} 
-          role="tab" 
-          aria-controls="ratings-content"
-        >
-          평점
-        </button>
-        <button 
-          id="date-tab"
-          onClick={() => handleTabChange('date')} 
-          aria-selected={activeTab === 'date'} 
-          role="tab" 
-          aria-controls="date-content"
-        >
-          {category === 'expiring' ? '스트리밍 종료일' : '개봉일'}
-        </button>
-        <button 
-          id="watch-tab"
-          onClick={() => handleTabChange('watch')} 
-          aria-selected={activeTab === 'watch'} 
-          role="tab" 
-          aria-controls="watch-content"
-        >
-          볼 수 있는 곳
-        </button>
-      </div>
-      <div className={styles.tabContent} style={doHyeon.style}>
-        {renderContent()}
-      </div>
+      ))}
     </div>
-  );
+    <div className={styles.tabContent} style={doHyeon.style}>
+      {renderContent}
+    </div>
+  </div>
+);
 }
