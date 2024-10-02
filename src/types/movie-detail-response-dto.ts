@@ -9,4 +9,5 @@ export interface MovieDetailResponseDto {
     voteCount: number;
     providers?: string[];
     theMovieDbId: number;
+    reviews: string[];
   }

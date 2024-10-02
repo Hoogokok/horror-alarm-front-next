@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod';
 import { createClient } from '@/utils/supabase/server'
 import { Profile } from '@/types/profile';
+import { UserWithMovieIds } from '@/types/user';
 
 const loginSchema = z.object({
   email: z.string().email("이메일 형식이 올바르지 않습니다"),
@@ -117,7 +118,7 @@ export async function logout() {
     redirect('/')
 }
 
-export async function getUser() {
+export async function getUser(): Promise<UserWithMovieIds> {
     const supabase = createClient()
     try {
         const { data, error } = await supabase.auth.getUser()
