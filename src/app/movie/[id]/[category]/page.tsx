@@ -4,36 +4,17 @@ import PageTabs from "./components/tabs";
 import { getUser } from "@/app/auth/lib/actions";
 import localFont from 'next/font/local';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
-
+import { fetchMovieDetail } from "@/utils/api";
 const doHyeon = localFont({
   src: '../../../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
 });
 
 export default async function MovieDetail({ params }: { params: { id: string, category: string } }) {
-  let url: string;
+  
 
-  switch (params.category) {
-    case 'streaming':
-      url = `${process.env.MOVIE_API}/movies/streaming/${params.id}`;
-      break;
-    case 'upcoming':
-    case 'released':
-      url = `${process.env.MOVIE_API}/movies/theater/${params.id}`;
-      break;
-    case 'expiring':
-      url = `${process.env.MOVIE_API}/movies/expiring-horror/${params.id}`;
-      break;
-    default:
-      throw new Error('Invalid category');
-  }
+  const movie: MovieDetailResponseDto = await fetchMovieDetail(params.category, params.id);
 
-  const movie: MovieDetailResponseDto = await fetch(url, { 
-    next: { revalidate: 3600 },
-    headers: {
-      'X-API-Key': process.env.MOVIE_API_KEY as string
-    }
-  }).then(res => res.json());
   const result = await getUser();
 
   return (
@@ -50,3 +31,4 @@ export default async function MovieDetail({ params }: { params: { id: string, ca
     </div>
   );
 }
+

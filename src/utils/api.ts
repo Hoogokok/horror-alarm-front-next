@@ -1,4 +1,5 @@
 import { Movie } from '@/\btypes/movie';
+import { MovieDetailResponseDto } from '@/\btypes/movie-detail-response-dto';
 
 const API_BASE_URL = process.env.MOVIE_API;
 const API_KEY = process.env.MOVIE_API_KEY;
@@ -29,4 +30,23 @@ export async function fetchStreamingMovies(provider: string, page: string): Prom
 
 export async function fetchTotalPages(provider: string): Promise<{ totalPages: number }> {
   return fetchAPI<{ totalPages: number }>('/movies/streaming/pages', { provider });
+}
+
+export async function fetchMovieDetail(category: string, id: string): Promise<MovieDetailResponseDto> {
+  const endpoint = getMovieEndpoint(category, id);
+  return fetchAPI<MovieDetailResponseDto>(endpoint);
+}
+
+function getMovieEndpoint(category: string, id: string): string {
+  switch (category) {
+    case 'streaming':
+      return `/movies/streaming/${id}`;
+    case 'upcoming':
+    case 'released':
+      return `/movies/theater/${id}`;
+    case 'expiring':
+      return `/movies/expiring-horror/${id}`;
+    default:
+      throw new Error('Invalid category');
+  }
 }
