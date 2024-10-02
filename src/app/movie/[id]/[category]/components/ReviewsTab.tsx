@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
+import { UserWithMovieIds } from '@/types/user';
+import { review } from '@/app/movie/lib/actions';
+import { usePagination } from '@/hooks/usePagination';
 import Link from 'next/link';
 import { useActionState } from 'react';
-import { review } from '@/app/movie/lib/actions';
-import { REVIEWS_PER_PAGE } from '@/constants/pagination';
 import styles from "./components.module.css";
-import { UserWithMovieIds } from '@/types/user';
-import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 
 interface ReviewsTabProps {
   movie: MovieDetailResponseDto;
@@ -21,13 +20,9 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
   const { user, review_movieIds } = userWithMovieIds;
   const isLogin = user !== null;
   const isReviewed = review_movieIds.includes(movie.theMovieDbId.toString());
-  const [currentPage, setCurrentPage] = useState(1);
   const [reviewState, reviewAction] = useActionState(review, initialState);
 
-  const reviews = movie.reviews;
-  const indexOfLastReview = currentPage * REVIEWS_PER_PAGE;
-  const indexOfFirstReview = indexOfLastReview - REVIEWS_PER_PAGE;
-  const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+  const { currentItems: currentReviews, currentPage, nextPage, prevPage, totalPages } = usePagination(movie.reviews);
 
   return (
     <div className={styles.review}>
@@ -39,15 +34,15 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
       
       <div className={styles.pagination}>
         <button
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={prevPage}
           disabled={currentPage === 1}
         >
           이전
         </button>
         <span>{currentPage}</span>
         <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={indexOfLastReview >= reviews.length}
+          onClick={nextPage}
+          disabled={currentPage === totalPages}
         >
           다음
         </button>
