@@ -6,13 +6,22 @@ import { rate, review } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
 import Link from 'next/link';
 import localFont from 'next/font/local';
-
+import { UserWithMovieIds } from '@/types/user';
+import { MovieDetailResponseDto } from '@/\btypes/movie-detail-response-dto';
 const doHyeon = localFont({
   src: '../../../../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
 });
 
-export default function PageTabs({ movie, user, rate_movieIds, review_movieIds, category }: { movie: any, user: any, rate_movieIds: string[], review_movieIds: string[], category: string }) {
+interface PageTabsProps {
+  movie: MovieDetailResponseDto;
+  userWithMovieIds: UserWithMovieIds;
+  category: string;
+}
+
+export default function PageTabs(
+  { movie, userWithMovieIds, category }: PageTabsProps
+) {
   const initialState = {
     error: {},
     message: ""
@@ -21,16 +30,16 @@ export default function PageTabs({ movie, user, rate_movieIds, review_movieIds, 
     error: {},
     message: ""
   } 
-
+  const { user, rate_movieIds, review_movieIds } = userWithMovieIds;
+  const isLogin = user !== null;
   const [rateState, rateAction] = useActionState(rate, initialState)
   const [reviewState, reviewAction] = useActionState(review, initialReviewState)
   const [activeTab, setActiveTab] = useState('overview');
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 5;
-  const isLogin = user ? true : false;
   const [rating, setRating] = useState(0);
-  const isRated = rate_movieIds.includes(movie.the_movie_db_id)
-  const isReviewed = review_movieIds.includes(movie.the_movie_db_id)
+  const isRated = rate_movieIds.includes(movie.theMovieDbId.toString())
+  const isReviewed = review_movieIds.includes(movie.theMovieDbId.toString())
 
   const reviews = movie.reviews
   const indexOfLastReview = currentPage * reviewsPerPage;
@@ -125,7 +134,7 @@ export default function PageTabs({ movie, user, rate_movieIds, review_movieIds, 
             </div>
           );
       case 'watch':
-        return <div>{movie.providers.join(', ')}</div>;
+        return <div>{movie.providers ? movie.providers.join(', ') : '정보 없음'}</div>;
       default:
         return null;
     }
