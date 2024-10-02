@@ -8,6 +8,8 @@ import Link from 'next/link';
 import localFont from 'next/font/local';
 import { UserWithMovieIds } from '@/types/user';
 import { MovieDetailResponseDto } from '@/\btypes/movie-detail-response-dto';
+import { REVIEWS_PER_PAGE } from '@/constants/pagination';
+
 const doHyeon = localFont({
   src: '../../../../fonts/DoHyeon-Regular.ttf',
   display: 'swap',
@@ -36,14 +38,13 @@ export default function PageTabs(
   const [reviewState, reviewAction] = useActionState(review, initialReviewState)
   const [activeTab, setActiveTab] = useState('overview');
   const [currentPage, setCurrentPage] = useState(1);
-  const reviewsPerPage = 5;
   const [rating, setRating] = useState(0);
   const isRated = rate_movieIds.includes(movie.theMovieDbId.toString())
   const isReviewed = review_movieIds.includes(movie.theMovieDbId.toString())
 
   const reviews = movie.reviews
-  const indexOfLastReview = currentPage * reviewsPerPage;
-  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const indexOfLastReview = currentPage * REVIEWS_PER_PAGE;
+  const indexOfFirstReview = indexOfLastReview - REVIEWS_PER_PAGE;
   const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
 
   const renderContent = () => {
