@@ -12,8 +12,6 @@ const doHyeon = Do_Hyeon({
   display: 'swap',
 });
 
-export const revalidate = 3600; // 1시간마다 재검증
-
 export default async function Home() {
   const upcoming = await fetchUpcomingMovies();
   const nowPlaying = await fetchNowPlayingMovies();
