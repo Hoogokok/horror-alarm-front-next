@@ -29,6 +29,9 @@ export default function SearchTab() {
             <button onClick={() => handleClick("all")} className={`${styles.searchButton} ${doHyeon.className}`}>모든 서비스</button>
             <button onClick={() => handleClick("netflix")} className={`${styles.searchButton} ${doHyeon.className}`}>넷플릭스</button>
             <button onClick={() => handleClick("disney")} className={`${styles.searchButton} ${doHyeon.className}`}>디즈니+</button>
+            <button onClick={() => handleClick("wavve")} className={`${styles.searchButton} ${doHyeon.className}`}>웨이브</button>
+            <button onClick={() => handleClick("naver")} className={`${styles.searchButton} ${doHyeon.className}`}>네이버</button>
+            <button onClick={() => handleClick("googleplay")} className={`${styles.searchButton} ${doHyeon.className}`}>구글 플레이</button>
         </div>
     );
 }
