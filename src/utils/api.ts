@@ -1,5 +1,6 @@
 import { Movie } from '@/\btypes/movie';
 import { MovieDetailResponseDto } from '@/\btypes/movie-detail-response-dto';
+import { supabase } from '@/utils/supabase/client'
 
 const API_BASE_URL = process.env.MOVIE_API;
 const API_KEY = process.env.MOVIE_API_KEY;
@@ -49,4 +50,39 @@ function getMovieEndpoint(category: string, id: string): string {
     default:
       throw new Error('Invalid category');
   }
+}
+
+export async function searchMovies(provider: string, page: string, search: string): Promise<{ totalPages: number, movies: Movie[] }> {
+    const pageSize = 18
+    const pageNumber = parseInt(page, 10)
+    const startIndex = (pageNumber - 1) * pageSize
+
+    let query = supabase
+        .from('movie')
+        .select('*', { count: 'exact' })
+
+    if (provider !== 'all') {
+        query = query.contains('providers', [provider])
+    }
+
+    if (search) {
+        query = query.ilike('title', `%${search}%`)
+    }
+
+    const { data: movies, count, error } = await query
+        .range(startIndex, startIndex + pageSize - 1)
+        .order('title')
+
+    if (error) {
+        console.error('Error fetching movies:', error)
+        throw error
+    }
+
+    const totalPages = Math.ceil((count || 0) / pageSize)
+
+    return { totalPages, movies: movies.map((movie) => ({
+        id: movie.id,
+        title: movie.title,
+        posterPath: movie.poster_path,
+    })) || [] }
 }
