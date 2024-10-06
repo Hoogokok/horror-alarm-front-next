@@ -4,7 +4,7 @@ import Images from './components/image';
 import SearchTab from './components/searchTab';
 import Pagination from './components/pagnation';
 import ImageSkeleton from './components/imageskeleton';
-import { fetchTotalPages } from '@/utils/api';
+import { searchMovies } from '@/utils/api';
 
 export const experimental_ppr = true;
 
@@ -12,11 +12,14 @@ export default async function StreamingPage({ searchParams }: {
     searchParams?: {
         provider?: string;
         page?: string;
+        search?: string;
     }
 }) {
     const provider = searchParams?.provider || "all"
     const page = searchParams?.page || "1"
-    const { totalPages } = await fetchTotalPages(provider);
+    const search = searchParams?.search || ""
+    
+    const { totalPages, movies } = await searchMovies(provider, page, search);
 
     return (
         <div className={styles.streamingContainer}>
@@ -24,8 +27,8 @@ export default async function StreamingPage({ searchParams }: {
                 <SearchTab />
             </div>
             <div className={styles.imageGalleryWrapper}>
-                <Suspense key={provider + page} fallback={<ImageSkeleton />}>
-                    <Images provider={provider} page={page} />
+                <Suspense key={provider + page + search} fallback={<ImageSkeleton />}>
+                    <Images movies={movies} />
                 </Suspense>
             </div>
             <div className={styles.paginationWrapper}>
