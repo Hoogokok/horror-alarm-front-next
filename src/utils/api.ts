@@ -1,5 +1,6 @@
 import { Movie } from '@/\btypes/movie';
 import { MovieDetailResponseDto } from '@/\btypes/movie-detail-response-dto';
+import { supabase } from '@/utils/supabase/client'
 
 const API_BASE_URL = process.env.MOVIE_API;
 const API_KEY = process.env.MOVIE_API_KEY;
@@ -11,10 +12,10 @@ async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}
   );
 
   const response = await fetch(url.toString(), {
-    next: { revalidate: 3600 },
     headers: {
       'X-API-Key': API_KEY as string
-    }
+    },
+    next: { revalidate: 3600 },
   });
 
   if (!response.ok) {
@@ -48,5 +49,63 @@ function getMovieEndpoint(category: string, id: string): string {
       return `/movies/expiring-horror/${id}`;
     default:
       throw new Error('Invalid category');
+  }
+}
+
+export async function searchMovies(provider: string, page: string, search: string): Promise<{ totalPages: number, movies: Movie[] }> {
+    const pageSize = 18
+    const pageNumber = parseInt(page, 10)
+    const startIndex = (pageNumber - 1) * pageSize
+    const providerId = getProviderId(provider)
+
+    let query = supabase
+        .from('movie')
+        .select(`
+            id,
+            title,
+            poster_path,
+            movie_providers!inner (
+                the_provider_id
+            )
+        `, { count: 'exact' })
+
+     if (providerId !== 0) {
+        query = query.eq('movie_providers.the_provider_id', providerId)
+    }
+
+
+    if (search) {
+        query = query.ilike('title', `%${search}%`)
+    }
+
+    const { data: movies, count, error } = await query
+        .range(startIndex, startIndex + pageSize - 1)
+        .order('title')
+
+    if (error) {
+        console.error('Error fetching movies:', error)
+        throw error
+    }
+
+    const totalPages = Math.ceil((count || 0) / pageSize)
+
+    return { 
+        totalPages, 
+        movies: movies.map((movie) => ({
+            id: movie.id,
+            title: movie.title,
+            posterPath: movie.poster_path,
+        })) || [] 
+    }
+}
+
+function getProviderId(provider: string): number {
+  switch (provider.toLowerCase()) {
+      case 'netflix': return 1;
+      case 'disney': return 2;
+      case 'wavve': return 3;
+      case 'naver': return 4;
+      case 'googleplay': return 5;
+      default: return 0; // 'all' 또는 알 수 없는 제공자의 경우
   }
 }

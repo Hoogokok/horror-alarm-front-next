@@ -98,10 +98,11 @@
 .searchTab {
     display: flex;
     justify-content: flex-start;
-    gap: 15px; /* 버튼 사이의 간격 증가 */
+    align-items: center;
+    gap: 15px;
     margin-bottom: 2rem;
     overflow-x: auto;
-    padding: 15px 0; /* 상하 패딩 증가 */
+    padding: 15px 0;
     margin-top: 1.5rem;
 }
 
@@ -109,18 +110,40 @@
     background-color: #333;
     color: white;
     border: none;
-    padding: 12px 20px; /* 패딩 증가 */
-    border-radius: 25px; /* 더 둥근 모서리 */
+    padding: 12px 20px;
+    border-radius: 25px;
     cursor: pointer;
     white-space: nowrap;
-    font-size: 18px; /* 글자 크기 증가 */
-    font-weight: 500; /* 약간의 두께 추가 */
+    font-size: 18px;
+    font-weight: 500;
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 .searchButton:hover {
     background-color: #555;
-    transform: scale(1.05); /* 호버 시 약간 확대 */
+    transform: scale(1.05);
+}
+
+.searchInput {
+    width: 200px; /* 고정된 너비 설정 */
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, width 0.3s ease;
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: #999;
+}
+
+.searchInput:focus {
+    background-color: #444;
+    width: 300px; /* 포커스 시 너비 증가 */
 }
 
 .movieList {
@@ -135,6 +158,9 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit; /* 링크 색상 상속 */
+    cursor: pointer; /* 커서를 포인터로 변경 */
 }
 
 .moviePosterContainer {
@@ -143,7 +169,7 @@
     padding-top: 150%; /* 2:3 비율 유지 */
     overflow: hidden;
     border-radius: 8px;
-    margin-bottom: 80px; /* 포스터와 제목 사이 간격 */
+    margin-bottom: 10px; /* 80px에서 10px로 줄임 */
 }
 
 .moviePoster {
@@ -167,7 +193,7 @@
     text-decoration: none;
     text-align: center;
     line-height: 1.2;
-    margin-top: 10px; /* 포스터와 제목 사이 간격 */
+    margin-top: 5px; /* 10px에서 5px로 줄임 */
     font-weight: 1000; /* 약간 두껍게 */
     white-space: nowrap; /* 텍스트를 한 줄로 유지 */
     overflow: hidden; /* 넘치는 텍스트 숨기기 */
@@ -186,7 +212,7 @@
     }
 
     .moviePosterContainer {
-        margin-bottom: 10px; /* 모바일에서 간격 조정 */
+        margin-bottom: 5px; /* 10px에서 5px로 줄임 */
     }
 }
 
