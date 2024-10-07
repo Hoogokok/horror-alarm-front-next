@@ -158,6 +158,9 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit; /* 링크 색상 상속 */
+    cursor: pointer; /* 커서를 포인터로 변경 */
 }
 
 .moviePosterContainer {

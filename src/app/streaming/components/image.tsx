@@ -13,7 +13,7 @@ export default function Images({ movies }: { movies: Movie[] }) {
   return (
     <div className={styles.movieList}>
       {movies.map((movie: Movie) => (
-        <div key={movie.id} className={styles.movieItem}>
+        <Link href={`/movie/${movie.id}/streaming`} key={movie.id} className={styles.movieItem}>
           <div className={styles.moviePosterContainer}>
             <Image 
               src={process.env.POSTER_URL + movie.posterPath} 
@@ -23,10 +23,10 @@ export default function Images({ movies }: { movies: Movie[] }) {
               height={100}
             />
           </div>
-          <Link href={`/movie/${movie.id}/streaming`} className={`${styles.movieTitle} ${doHyeon.className}`}>
+          <div className={`${styles.movieTitle} ${doHyeon.className}`}>
             {movie.title}
-          </Link>
-        </div>
+          </div>
+        </Link>
       ))}
     </div>
   );
