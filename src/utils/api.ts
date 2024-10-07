@@ -12,7 +12,6 @@ async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}
   );
 
   const response = await fetch(url.toString(), {
-    next: { revalidate: 3600 },
     headers: {
       'X-API-Key': API_KEY as string
     }
@@ -56,14 +55,23 @@ export async function searchMovies(provider: string, page: string, search: strin
     const pageSize = 18
     const pageNumber = parseInt(page, 10)
     const startIndex = (pageNumber - 1) * pageSize
+    const providerId = getProviderId(provider)
 
     let query = supabase
         .from('movie')
-        .select('*', { count: 'exact' })
+        .select(`
+            id,
+            title,
+            poster_path,
+            movie_providers!inner (
+                the_provider_id
+            )
+        `, { count: 'exact' })
 
-    if (provider !== 'all') {
-        query = query.contains('providers', [provider])
+     if (providerId !== 0) {
+        query = query.eq('movie_providers.the_provider_id', providerId)
     }
+
 
     if (search) {
         query = query.ilike('title', `%${search}%`)
@@ -80,9 +88,23 @@ export async function searchMovies(provider: string, page: string, search: strin
 
     const totalPages = Math.ceil((count || 0) / pageSize)
 
-    return { totalPages, movies: movies.map((movie) => ({
-        id: movie.id,
-        title: movie.title,
-        posterPath: movie.poster_path,
-    })) || [] }
+    return { 
+        totalPages, 
+        movies: movies.map((movie) => ({
+            id: movie.id,
+            title: movie.title,
+            posterPath: movie.poster_path,
+        })) || [] 
+    }
+}
+
+function getProviderId(provider: string): number {
+  switch (provider.toLowerCase()) {
+      case 'netflix': return 1;
+      case 'disney': return 2;
+      case 'wavve': return 3;
+      case 'naver': return 4;
+      case 'googleplay': return 5;
+      default: return 0; // 'all' 또는 알 수 없는 제공자의 경우
+  }
 }
