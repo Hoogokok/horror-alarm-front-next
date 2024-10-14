@@ -17,6 +17,11 @@ const nextConfig = {
                 hostname: process.env.NEXT_PUBLIC_FAANGORIA_NOTHOST,
                 port: '',
             },
+            {
+                protocol: 'https',
+                hostname: 'i.ytimg.com',
+                port: '',
+            },
         ],
     },
     experimental: {
