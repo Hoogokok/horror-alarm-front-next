@@ -18,9 +18,19 @@ const doHyeon = localFont({
 
 async function fetchArticles(): Promise<Article[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_MAGAZINE_PROXY}/api/fangoria-articles`, { 
-      next: { revalidate: 3600 } // 1시간마다 재검증
+    const now = Date.now();
+    const refreshInterval = 24 * 60 * 60 * 1000; // 24시간을 밀리초로 변환
+    const shouldRefresh = now % refreshInterval < 60000; // 24시간마다 1분 동안 refresh를 true로 설정
+
+    const url = new URL(`${process.env.NEXT_PUBLIC_MAGAZINE_PROXY}/api/fangoria-articles`);
+    if (shouldRefresh) {
+      url.searchParams.append('refresh', 'true');
+    }
+
+    const response = await fetch(url.toString(), { 
+      next: { revalidate: 86400 } // 24시간마다 재검증
     });
+
     if (!response.ok) {
       throw new Error('기사를 가져오는데 실패했습니다');
     }
