@@ -3,36 +3,42 @@
     flex-direction: column;
     gap: 30px;
     padding: 20px;
+    background-color: #141414;
+    color: white;
 }
 
 .channelList h1 {
     text-align: center;
     margin-bottom: 20px;
+    font-size: 24px;
 }
 
 .channelItem {
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     padding: 15px;
     border-radius: 8px;
+    background-color: #1f1f1f;
 }
 
 .channelName {
     font-size: 24px;
     margin-bottom: 10px;
+    color: #efe4e4;
 }
 
 .channelLink {
     display: inline-block;
     margin-bottom: 15px;
     padding: 5px 10px;
-    background-color: #f0f0f0;
+    background-color: #333;
     border-radius: 5px;
     text-decoration: none;
-    color: #333;
+    color: white;
+    transition: background-color 0.3s ease;
 }
 
 .channelLink:hover {
-    background-color: #e0e0e0;
+    background-color: #e50914;
 }
 
 .latestVideos {
@@ -41,6 +47,7 @@
     overflow-x: auto;
     gap: 20px;
     padding-bottom: 15px;
+    scroll-snap-type: x mandatory;
 }
 
 .videoItem {
@@ -48,6 +55,7 @@
     width: 300px;
     display: flex;
     flex-direction: column;
+    scroll-snap-align: start;
 }
 
 .thumbnailContainer {
@@ -73,7 +81,7 @@
 
 .videoDescription {
     font-size: 14px;
-    color: #666;
+    color: #a5a5a5;
     margin-bottom: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -85,19 +93,46 @@
 .videoLink {
     display: inline-block;
     padding: 5px 10px;
-    background-color: #f0f0f0;
+    background-color: #333;
     border-radius: 5px;
     text-decoration: none;
-    color: #333;
+    color: white;
     font-size: 14px;
+    transition: background-color 0.3s ease;
 }
 
 .videoLink:hover {
-    background-color: #e0e0e0;
+    background-color: #e50914;
 }
 
 @media (max-width: 768px) {
     .videoItem {
         width: 250px;
+    }
+    
+    .channelName {
+        font-size: 20px;
+    }
+    
+    .videoTitle {
+        font-size: 14px;
+    }
+    
+    .videoDescription {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .latestVideos {
+        gap: 30px;
+    }
+    
+    .videoItem {
+        width: 320px;
+    }
+    
+    .videoTitle {
+        font-size: 18px;
     }
 }
