@@ -23,6 +23,7 @@ const nextConfig = {
                 port: '',
             },
         ],
+        unoptimized: true,
     },
     experimental: {
         ppr: 'incremental'
