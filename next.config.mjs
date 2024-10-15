@@ -22,8 +22,7 @@ const nextConfig = {
                 hostname: 'i.ytimg.com',
                 port: '',
             },
-        ],
-        unoptimized: true,
+        ]
     },
     experimental: {
         ppr: 'incremental'

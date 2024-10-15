@@ -16,6 +16,7 @@ export default function Images({ movies }: { movies: Movie[] }) {
         <Link href={`/movie/${movie.id}/streaming`} key={movie.id} className={styles.movieItem}>
           <div className={styles.moviePosterContainer}>
             <Image 
+              unoptimized
               src={process.env.POSTER_URL + movie.posterPath} 
               alt={movie.title} 
               className={styles.moviePoster} 

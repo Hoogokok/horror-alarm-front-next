@@ -14,6 +14,7 @@ export default function MovieList({ movies, type }: MovieListProps) {
       {movies.map((movie: MovieResponseDto) => (
         <div key={movie.id} className={styles.movieItem}>
           <Image
+            unoptimized
             alt={movie.title}
             src={process.env.POSTER_URL + movie.posterPath}
             width={250}
