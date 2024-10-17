@@ -15,7 +15,7 @@ const blackHanSans = Black_Han_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Spooky Town",
+  title: "스푸키 타운",
   description: "공포 콘텐츠의 모든 것",
 };
 
@@ -32,11 +32,11 @@ export default async function RootLayout({
       <body className={inter.className}>
         <div className={styles.container}>
           <nav className={styles.sidebar}>
-            <div className={styles.logo} style={blackHanSans.style}>Spooky Town</div>
+            <div className={styles.logo} style={blackHanSans.style}>스푸키 타운</div>
             <SidebarNav profile={profile} />
           </nav>
           <header className={styles.mobileHeader}>
-          <div className={styles.logo} style={blackHanSans.style}>Spooky Town</div>
+          <div className={styles.logo} style={blackHanSans.style}>스푸키 타운</div>
           </header>
           <main className={styles.content}>
             {children}
