@@ -21,21 +21,21 @@ export default async function Home() {
     <main className={styles.main} style={doHyeon.style}>
       <section className={styles.imagesection}>
         <Suspense fallback={<Loading />}>
-          <div className={styles.imagesectionTitle}>개봉 예정</div>
+          <div className={styles.imagesectionTitle}>개봉 예정 공포 영화</div>
           {upcoming.length ? (
             <MovieList movies={upcoming} type="upcoming" />
           ) : (
             <div className={styles.content}>개봉 예정인 영화가 없어요!</div>
           )}
           
-          <div className={styles.imagesectionTitle}>상영중</div>
+          <div className={styles.imagesectionTitle}>상영중 공포 영화</div>
           {nowPlaying.length ? (
             <MovieList movies={nowPlaying} type="released" />
           ) : (
             <div className={styles.content}>상영중인 영화가 없어요!</div>
           )}
           
-          <div className={styles.imagesectionTitle}>스트리밍 종료 예정</div>
+          <div className={styles.imagesectionTitle}>스트리밍 종료 예정 공포 영화</div>
           {
             streamingExpiring.length ? (
               <ExpiringMovieList movies={streamingExpiring} />

@@ -19,7 +19,12 @@ async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}
   });
 
   if (!response.ok) {
-    throw new Error(`API request failed: ${response.statusText}`);
+    const errorBody = await response.json().catch(() => ({}));
+    const errorMessage = errorBody.message || response.statusText;
+    const error = new Error(errorMessage) as Error & { status?: number };
+    error.status = response.status;
+    console.error(`API 요청 실패: ${error.message}`);
+    throw error;
   }
 
   return response.json();
