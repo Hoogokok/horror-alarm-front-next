@@ -20,7 +20,20 @@ interface PageTabsProps {
 }
 
 export default function PageTabs({ movie, userWithMovieIds, category }: PageTabsProps) {
-  const [activeTab, setActiveTab] = useState('overview');
+  const getInitialTab = () => {
+    switch (category) {
+      case 'reviews':
+        return 'reviews';
+      case 'ratings':
+        return 'ratings';
+      case 'expiring':
+        return 'date';
+      default:
+        return 'overview';
+    }
+  };
+
+  const [activeTab, setActiveTab] = useState(getInitialTab());
 
   const handleTabChange = useCallback((tab: string) => {
     setActiveTab(tab);
