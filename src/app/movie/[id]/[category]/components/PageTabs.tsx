@@ -8,6 +8,7 @@ import { useMemo } from 'react';
 import styles from "./components.module.css";
 import RatingsTab from './RatingsTab';
 import ReviewsTab from './ReviewsTab';
+import { TABS, DEFAULT_TABS, TAB_LABELS } from '@/constants/tabs';
 
 const doHyeon = localFont({
   src: '../../../../fonts/DoHyeon-Regular.ttf',
@@ -28,14 +29,6 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
   const activeTab = useMemo(() => {
     const tab = searchParams.get('tab');
     if (tab) return tab;
-
-    const DEFAULT_TABS = {
-      reviews: 'reviews',
-      ratings: 'ratings',
-      expiring: 'date',
-      default: 'overview'
-    } as const;
-
     return DEFAULT_TABS[category as keyof typeof DEFAULT_TABS] || DEFAULT_TABS.default;
   }, [searchParams, category]);
 
@@ -47,17 +40,17 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
 
   const renderContent = useMemo(() => {
     switch (activeTab) {
-      case 'overview':
+      case TABS.OVERVIEW:
         return <div id="overview-content" role="tabpanel" aria-labelledby="overview-tab">{movie.overview}</div>;
-      case 'reviews':
+      case TABS.REVIEWS:
         return <div id="reviews-content" role="tabpanel" aria-labelledby="reviews-tab">
           <ReviewsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
         </div>;
-      case 'ratings':
+      case TABS.RATINGS:
         return <div id="ratings-content" role="tabpanel" aria-labelledby="ratings-tab">
           <RatingsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
         </div>;
-      case 'date':
+      case TABS.DATE:
         return (
           <div id="date-content" role="tabpanel" aria-labelledby="date-tab">
             {category === 'expiring' ? (
@@ -67,7 +60,7 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
             )}
           </div>
         );
-      case 'watch':
+      case TABS.WATCH:
         return <div id="watch-content" role="tabpanel" aria-labelledby="watch-tab">
           {movie.providers ? movie.providers.join(', ') : '정보 없음'}
         </div>;
@@ -77,32 +70,35 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
   }, [activeTab, movie, userWithMovieIds, category]);
 
   const tabButtons = useMemo(() => [
-    { id: 'overview', label: '줄거리' },
-    { id: 'reviews', label: '리뷰' },
-    { id: 'ratings', label: '평점' },
-    { id: 'date', label: category === 'expiring' ? '스트리밍 종료일' : '개봉일' },
-    { id: 'watch', label: '볼 수 있는 곳' },
+    { id: TABS.OVERVIEW, label: TAB_LABELS[TABS.OVERVIEW] },
+    { id: TABS.REVIEWS, label: TAB_LABELS[TABS.REVIEWS] },
+    { id: TABS.RATINGS, label: TAB_LABELS[TABS.RATINGS] },
+    {
+      id: TABS.DATE,
+      label: category === 'expiring' ? '스트리밍 종료일' : TAB_LABELS[TABS.DATE]
+    },
+    { id: TABS.WATCH, label: TAB_LABELS[TABS.WATCH] },
   ], [category]);
 
   return (
     <div>
-    <div className={styles.tabs} role="tablist">
-      {tabButtons.map((tab) => (
-        <button 
-          key={tab.id}
-          id={`${tab.id}-tab`}
-          onClick={() => handleTabChange(tab.id)} 
-          aria-selected={activeTab === tab.id} 
-          role="tab" 
-          aria-controls={`${tab.id}-content`}
-        >
-          {tab.label}
-        </button>
-      ))}
+      <div className={styles.tabs} role="tablist">
+        {tabButtons.map((tab) => (
+          <button
+            key={tab.id}
+            id={`${tab.id}-tab`}
+            onClick={() => handleTabChange(tab.id)}
+            aria-selected={activeTab === tab.id}
+            role="tab"
+            aria-controls={`${tab.id}-content`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div className={styles.tabContent} style={doHyeon.style}>
+        {renderContent}
+      </div>
     </div>
-    <div className={styles.tabContent} style={doHyeon.style}>
-      {renderContent}
-    </div>
-  </div>
-);
+  );
 }
