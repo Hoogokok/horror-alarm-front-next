@@ -13,7 +13,7 @@ async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}
 
   const response = await fetch(url.toString(), {
     headers: {
-      'X-API-Key': API_KEY as string
+      'X-API-KEY': API_KEY as string
     },
     next: { revalidate: 3600 },
   });
