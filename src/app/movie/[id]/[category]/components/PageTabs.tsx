@@ -80,23 +80,55 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
     { id: TABS.WATCH, label: TAB_LABELS[TABS.WATCH] },
   ], [category]);
 
+  const handleKeyDown = (e: React.KeyboardEvent, currentIndex: number) => {
+    const tabCount = tabButtons.length;
+
+    switch (e.key) {
+      case 'ArrowLeft':
+        e.preventDefault();
+        const prevIndex = (currentIndex - 1 + tabCount) % tabCount;
+        handleTabChange(tabButtons[prevIndex].id);
+        break;
+      case 'ArrowRight':
+        e.preventDefault();
+        const nextIndex = (currentIndex + 1) % tabCount;
+        handleTabChange(tabButtons[nextIndex].id);
+        break;
+      case 'Home':
+        e.preventDefault();
+        handleTabChange(tabButtons[0].id);
+        break;
+      case 'End':
+        e.preventDefault();
+        handleTabChange(tabButtons[tabCount - 1].id);
+        break;
+    }
+  };
+
   return (
     <div>
-      <div className={styles.tabs} role="tablist">
-        {tabButtons.map((tab) => (
+      <div className={styles.tabs} role="tablist" aria-label="영화 정보 탭">
+        {tabButtons.map((tab, index) => (
           <button
             key={tab.id}
             id={`${tab.id}-tab`}
             onClick={() => handleTabChange(tab.id)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
             aria-selected={activeTab === tab.id}
-            role="tab"
             aria-controls={`${tab.id}-content`}
+            role="tab"
+            tabIndex={activeTab === tab.id ? 0 : -1}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <div className={styles.tabContent} style={doHyeon.style}>
+      <div
+        className={styles.tabContent}
+        style={doHyeon.style}
+        role="region"
+        aria-live="polite"
+      >
         {renderContent}
       </div>
     </div>

@@ -285,3 +285,18 @@
     background: #007bff;
     border-radius: 1px;
 }
+
+.tabs button:focus-visible {
+  outline: 2px solid #007AFF;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+.tabs button[aria-selected="true"] {
+  /* ... active tab styles */
+}
+
+/* 키보드 포커스 스타일 */
+.tabs button:focus:not(:focus-visible) {
+  outline: none;
+}
