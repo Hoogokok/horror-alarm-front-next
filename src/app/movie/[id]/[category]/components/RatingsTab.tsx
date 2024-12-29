@@ -6,6 +6,7 @@ import styles from "./components.module.css";
 import { UserWithMovieIds } from '@/types/user';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { StarRating } from './StarRating';
+import { RATING_MESSAGES, FORM_LABELS } from '@/constants/rating';
 
 interface RatingsTabProps {
   movie: MovieDetailResponseDto;
@@ -41,14 +42,14 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
   };
 
   return (
-    <div role="tabpanel" aria-label="평점 탭">
+    <div role="tabpanel" aria-label={FORM_LABELS.RATING_TAB}>
       <p>평점: {movie.voteAverage ? movie.voteAverage.toFixed(1) : 0}</p>
       {isLogin && !isRated && (
         <div>
           <form
             action={rateAction}
             className={styles.ratingForm}
-            aria-label="평점 입력 폼"
+            aria-label={FORM_LABELS.RATING_FORM}
           >
             <StarRating rating={rating} setRating={setRating} />
             <input type="hidden" name="movie_id" value={movie.id} />
@@ -57,10 +58,10 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
             <input type="hidden" name="category" value={category} />
             <button
               type="submit"
-              aria-label="평점 제출하기"
+              aria-label={FORM_LABELS.SUBMIT_BUTTON}
               disabled={rating === 0}
             >
-              평점 남기기
+              {RATING_MESSAGES.SUBMIT_RATING}
             </button>
           </form>
           {renderError()}
@@ -73,16 +74,16 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
       )}
       {isRated && (
         <p className={styles.rated} role="alert">
-          이미 평점을 매겼습니다.
+          {RATING_MESSAGES.ALREADY_RATED}
         </p>
       )}
       {!isLogin && (
         <Link
           href="/login"
           className={styles.rated}
-          aria-label="로그인 페이지로 이동"
+          aria-label={FORM_LABELS.LOGIN_LINK}
         >
-          로그인 후 이용해주세요.
+          {RATING_MESSAGES.LOGIN_REQUIRED}
         </Link>
       )}
     </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './components.module.css';
+import { RATING, RATING_MESSAGES } from '@/constants/rating';
 
 interface StarRatingProps {
     rating: number;
@@ -15,11 +16,11 @@ export function StarRating({ rating, setRating }: StarRatingProps) {
         switch (e.key) {
             case 'ArrowLeft':
                 e.preventDefault();
-                setRating(Math.max(1, rating - 1));
+                setRating(Math.max(RATING.MIN, rating - RATING.STEP));
                 break;
             case 'ArrowRight':
                 e.preventDefault();
-                setRating(Math.min(5, rating + 1));
+                setRating(Math.min(RATING.MAX, rating + RATING.STEP));
                 break;
             case ' ':
             case 'Enter':
@@ -34,14 +35,14 @@ export function StarRating({ rating, setRating }: StarRatingProps) {
             className={styles.starRating}
             onMouseLeave={() => setHoverRating(0)}
             role="group"
-            aria-label="영화 평점"
+            aria-label={RATING_MESSAGES.RATING_LABEL}
         >
-            {[1, 2, 3, 4, 5].map((star) => (
+            {Array.from({ length: RATING.MAX }, (_, i) => i + 1).map((star) => (
                 <label
                     key={star}
                     onMouseEnter={() => {
                         const stars = [];
-                        for (let i = 1; i <= star; i++) {
+                        for (let i = RATING.MIN; i <= star; i++) {
                             stars.push(i);
                         }
                         setHoverRating(star);
@@ -54,7 +55,7 @@ export function StarRating({ rating, setRating }: StarRatingProps) {
                         checked={rating === star}
                         onChange={() => setRating(star)}
                         onKeyDown={(e) => handleKeyDown(e, star)}
-                        aria-label={`${star}점`}
+                        aria-label={RATING_MESSAGES.STAR_LABEL(star)}
                         tabIndex={0}
                     />
                     <span
@@ -67,7 +68,9 @@ export function StarRating({ rating, setRating }: StarRatingProps) {
                 </label>
             ))}
             <span className="sr-only">
-                {rating ? `현재 선택된 평점: ${rating}점` : '평점을 선택해주세요'}
+                {rating
+                    ? RATING_MESSAGES.CURRENT_RATING(rating)
+                    : RATING_MESSAGES.SELECT_RATING}
             </span>
         </div>
     );
