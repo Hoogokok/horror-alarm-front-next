@@ -1,23 +1,39 @@
 export interface MovieDetailResponseDto {
-    id: number;
-    title: string;
-    overview: string;
-    releaseDate?: string;
-    expiringDate?: string;
+  id: string;
+  title: string;
     posterPath: string;
+  overview: string;
+  releaseDate: string;
+  runtime: number;
     voteAverage: number;
-    voteCount: number;
-    providers?: string[];
+  voteCount: number;
     theMovieDbId: string;
-    reviews: Review[];
-  }
-
-  export interface Review {
+  providers?: {
+    id: number;
+    name: string;
+  }[];
+  reviews?: Review[];
+  ratings?: {
     id: string;
-    content: string;
-    createdAt: string;
+    score: number;
+    rate_user_id: string;
+    rate_movie_id: string;
+    created_at: string;
     profile?: {
       id: string;
       name: string;
     };
-  }
+  }[];
+}
+
+export interface Review {
+    id: string;
+  review_content: string;
+  review_user_id: string;
+  review_movie_id: string;
+  created_at: string;
+    profile?: {
+      id: string;
+      name: string;
+    };
+}
