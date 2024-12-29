@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useActionState } from 'react';
-import { rate, RateState } from '@/app/movie/lib/actions';
+import { rate } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
 import { UserWithMovieIds } from '@/types/user';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { StarRating } from './StarRating';
 import { RATING_MESSAGES, FORM_LABELS } from '@/constants/rating';
+import { renderError } from '@/utils/error';
+import { RateErrorState } from '@/types/error';
 
 interface RatingsTabProps {
   movie: MovieDetailResponseDto;
@@ -15,31 +17,16 @@ interface RatingsTabProps {
 }
 
 export default function RatingsTab({ movie, userWithMovieIds, category }: RatingsTabProps) {
-  const initialState: RateState = {
-    error: {},
+  const initialState: RateErrorState = {
+    error: undefined,
     message: ""
-  }
+  };
+
   const { user, rate_movieIds } = userWithMovieIds;
   const isLogin = user !== null;
   const isRated = rate_movieIds.includes(Number(movie.theMovieDbId));
   const [rating, setRating] = useState(0);
   const [rateState, rateAction] = useActionState(rate, initialState);
-  const renderError = () => {
-    if (typeof rateState.error === 'string') {
-      return <p className={styles.error}>{rateState.error}</p>;
-    } else if (rateState.error) {
-      return (
-        <ul className={styles.errorList}>
-          {Object.entries(rateState.error).map(([key, errors]) => (
-            errors && errors.map((error, index) => (
-              <li key={`${key}-${index}`} className={styles.errorItem}>{error}</li>
-            ))
-          ))}
-        </ul>
-      );
-    }
-    return null;
-  };
 
   return (
     <div role="tabpanel" aria-label={FORM_LABELS.RATING_TAB}>
@@ -64,7 +51,7 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
               {RATING_MESSAGES.SUBMIT_RATING}
             </button>
           </form>
-          {renderError()}
+          {renderError(rateState.error)}
           {rateState.message && (
             <p className={styles.message} role="alert">
               {rateState.message}
