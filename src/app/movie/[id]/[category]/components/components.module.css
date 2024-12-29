@@ -300,3 +300,17 @@
 .tabs button:focus:not(:focus-visible) {
   outline: none;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  color: #e0e0e0;
+}
+
+.error {
+  color: #ff4444;
+  text-align: center;
+  padding: 20px;
+}
