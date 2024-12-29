@@ -3,7 +3,8 @@
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { UserWithMovieIds } from '@/types/user';
 import localFont from 'next/font/local';
-import { useCallback, useMemo, useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useMemo } from 'react';
 import styles from "./components.module.css";
 import RatingsTab from './RatingsTab';
 import ReviewsTab from './ReviewsTab';
@@ -20,24 +21,29 @@ interface PageTabsProps {
 }
 
 export default function PageTabs({ movie, userWithMovieIds, category }: PageTabsProps) {
-  const getInitialTab = () => {
-    switch (category) {
-      case 'reviews':
-        return 'reviews';
-      case 'ratings':
-        return 'ratings';
-      case 'expiring':
-        return 'date';
-      default:
-        return 'overview';
-    }
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const activeTab = useMemo(() => {
+    const tab = searchParams.get('tab');
+    if (tab) return tab;
+
+    const DEFAULT_TABS = {
+      reviews: 'reviews',
+      ratings: 'ratings',
+      expiring: 'date',
+      default: 'overview'
+    } as const;
+
+    return DEFAULT_TABS[category as keyof typeof DEFAULT_TABS] || DEFAULT_TABS.default;
+  }, [searchParams, category]);
+
+  const handleTabChange = (tab: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('tab', tab);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
-
-  const [activeTab, setActiveTab] = useState(getInitialTab());
-
-  const handleTabChange = useCallback((tab: string) => {
-    setActiveTab(tab);
-  }, []);
 
   const renderContent = useMemo(() => {
     switch (activeTab) {
