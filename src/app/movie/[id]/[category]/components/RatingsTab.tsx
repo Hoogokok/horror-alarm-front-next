@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useActionState } from 'react';
 import { rate, RateState } from '@/app/movie/lib/actions';
 import styles from "./components.module.css";
-import { UserWithMovieIds } from '@/types/user';
-import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
+import { UserWithMovieIds } from '@/types/user';
+import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { StarRating } from './StarRating';
 import { RATING_MESSAGES, FORM_LABELS } from '@/constants/rating';
 

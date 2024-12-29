@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styles from './components.module.css';
 import Link from 'next/link';
 import localFont from 'next/font/local';
-import { Movie } from '@/\btypes/movie';
+import { Movie } from '@/types/movie';
 
 const doHyeon = localFont({
   src: '../../fonts/DoHyeon-Regular.ttf',

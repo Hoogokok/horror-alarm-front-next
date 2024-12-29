@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from "@/app/layout.module.css";
 import ProfileDropdown from './ProfileDropdown';
-import { Profile } from '@/\btypes/profile';
+import { Profile } from '@/types/profile';
 import { navItems, loginItem } from '@/config/navigation';
 interface MobileNavProps {
   profile: Profile | null;

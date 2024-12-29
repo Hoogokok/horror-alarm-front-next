@@ -1,5 +1,5 @@
-import { MovieResponseDto } from "@/\btypes/movie-response-dto";
-import { ExpiringMovieResponseDto } from "@/\btypes/expiring-response-dto";
+import { MovieResponseDto } from "@/types/movie-response-dto";
+import { ExpiringMovieResponseDto } from "@/types/expiring-response-dto";
 
 async function fetchMovies<T>(endpoint: string): Promise<T> {
   const response = await fetch(process.env.MOVIE_API + endpoint, {

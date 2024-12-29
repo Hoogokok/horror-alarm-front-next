@@ -1,5 +1,5 @@
-import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
-import { UserWithMovieIds } from '@/types/user';
+import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
+import { UserWithMovieIds } from '@/types/user';
 import { review, ReviewState } from '@/app/movie/lib/actions';
 import { usePagination } from '@/hooks/usePagination';
 import Link from 'next/link';

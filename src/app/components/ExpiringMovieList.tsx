@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from "@/app/page.module.css";
-import { ExpiringMovieResponseDto } from "../../types/expiring-response-dto"
+import { ExpiringMovieResponseDto } from "../../types/expiring-response-dto"
 
 interface ExpiringMovieListProps {
   movies: ExpiringMovieResponseDto[];

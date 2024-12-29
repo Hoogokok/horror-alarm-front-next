@@ -1,5 +1,5 @@
-import { Movie } from '@/\btypes/movie';
-import { MovieDetailResponseDto } from '@/\btypes/movie-detail-response-dto';
+import { Movie } from '@/types/movie';
+import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { supabase } from '@/utils/supabase/client'
 
 const API_BASE_URL = process.env.MOVIE_API;

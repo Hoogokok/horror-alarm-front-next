@@ -1,7 +1,7 @@
 'use client';
 
-import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
-import { UserWithMovieIds } from '@/types/user';
+import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
+import { UserWithMovieIds } from '@/types/user';
 import localFont from 'next/font/local';
 import { useCallback, useMemo, useState } from 'react';
 import styles from "./components.module.css";
