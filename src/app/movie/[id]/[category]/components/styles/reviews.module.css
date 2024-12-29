@@ -156,3 +156,63 @@
     font-size: 1.1em;
     color: rgba(255, 255, 255, 0.9);
   }  
+  
+  .reviewActions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .editButton, .deleteButton, .saveButton, .cancelButton {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+  
+  .editButton {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  .editButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .deleteButton {
+    background-color: rgba(229, 9, 20, 0.8);
+    color: white;
+  }
+  
+  .deleteButton:hover {
+    background-color: rgba(229, 9, 20, 1);
+  }
+  
+  .editForm {
+    margin-top: 12px;
+  }
+  
+  .editActions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  
+  .saveButton {
+    background-color: #e50914;
+    color: white;
+  }
+  
+  .saveButton:hover {
+    background-color: #f40612;
+  }
+  
+  .cancelButton {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  .cancelButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }  

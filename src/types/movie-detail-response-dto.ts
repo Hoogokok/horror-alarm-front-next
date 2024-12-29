@@ -16,8 +16,8 @@ export interface MovieDetailResponseDto {
     id: string;
     content: string;
     createdAt: string;
-    review_user_id: string;
     profile?: {
+      id: string;
       name: string;
     };
   }

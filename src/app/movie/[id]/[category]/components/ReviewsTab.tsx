@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { UserWithMovieIds } from '@/types/user';
@@ -16,6 +16,66 @@ interface ReviewsTabProps {
   userWithMovieIds: UserWithMovieIds;
   category: string;
 }
+
+interface ReviewItemProps {
+  review: MovieDetailResponseDto['reviews'][0];
+  currentUserId?: string;
+  style: React.CSSProperties;
+}
+
+const ReviewItem = ({ review, currentUserId, style }: ReviewItemProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const isAuthor = currentUserId === review.profile?.id;
+
+  return (
+    <div className={styles.reviewItem} style={style}>
+      <div className={styles.reviewContent}>
+        <div className={styles.reviewHeader}>
+          <div className={styles.authorInfo}>
+            <div className={styles.authorName}>{review.profile?.name || '알 수 없음'}</div>
+          </div>
+          {isAuthor && (
+            <div className={styles.reviewActions}>
+              <button
+                onClick={() => setIsEditing(true)}
+                className={styles.editButton}
+              >
+                수정
+              </button>
+              <button
+                className={styles.deleteButton}
+              >
+                삭제
+              </button>
+            </div>
+          )}
+        </div>
+        {isEditing ? (
+          <form className={styles.editForm}>
+            <textarea
+              defaultValue={review.content}
+              className={styles.reviewInput}
+            />
+            <div className={styles.editActions}>
+              <button type="submit" className={styles.saveButton}>
+                저장
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsEditing(false)}
+                className={styles.cancelButton}
+              >
+                취소
+              </button>
+            </div>
+          </form>
+        ) : (
+          <p className={styles.reviewText}>{review.content}</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default function ReviewsTab({ movie, userWithMovieIds, category }: ReviewsTabProps) {
   const initialState: ReviewState = {
@@ -104,9 +164,10 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                 const review = reviews[virtualRow.index];
                 return (
-                  <div
+                  <ReviewItem
                     key={virtualRow.index}
-                    className={styles.reviewItem}
+                    review={review}
+                    currentUserId={user?.id}
                     style={{
                       position: 'absolute',
                       top: 0,
@@ -115,16 +176,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
                       height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
-                  >
-                    <div className={styles.reviewContent}>
-                      <div className={styles.reviewHeader}>
-                        <div className={styles.authorInfo}>
-                          <div className={styles.authorName}>{review.profile?.name || '알 수 없음'}</div>
-                        </div>
-                      </div>
-                      <p className={styles.reviewText}>{review.content}</p>
-                    </div>
-                  </div>
+                  />
                 );
               })}
             </div>
