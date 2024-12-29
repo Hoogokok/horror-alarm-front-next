@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest src/app/movie/[id]/[category]/components/__tests__/*.test.tsx",
+    "test:all": "vitest",
+    "test:unit": "vitest src/**/*.test.ts",
+    "test:component": "vitest src/**/*.test.tsx",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
