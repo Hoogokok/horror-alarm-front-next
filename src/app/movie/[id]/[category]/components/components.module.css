@@ -314,3 +314,29 @@
   text-align: center;
   padding: 20px;
 }
+
+.reviewList {
+  width: 100%;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.reviewItem {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review p {
+  margin: 0;
+  color: #e0e0e0;
+}
+
+.review small {
+  color: #a0a0a0;
+}

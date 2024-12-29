@@ -1,3 +1,7 @@
+'use client';
+
+import { useRef } from 'react';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { UserWithMovieIds } from '@/types/user';
 import { review, ReviewState } from '@/app/movie/lib/actions';
@@ -22,6 +26,16 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
   const isReviewed = review_movieIds.includes(Number(movie.theMovieDbId));
   const [reviewState, reviewAction] = useActionState(review, initialState);
   const { currentItems: currentReviews, currentPage, nextPage, prevPage, totalPages } = usePagination(movie.reviews);
+  const parentRef = useRef<HTMLDivElement>(null);
+  const reviews = movie.reviews || [];
+
+  const rowVirtualizer = useVirtualizer({
+    count: reviews.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 100, // 각 리뷰 아이템의 예상 높이
+    overscan: 5, // 추가로 렌더링할 아이템 수
+  });
+
   const renderError = () => {
     if (typeof reviewState.error === 'string') {
       return <p className={styles.error}>{reviewState.error}</p>;
@@ -39,17 +53,48 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
     return null;
   };
 
-
   return (
     <div className={styles.review}>
-     <ul>
-        {currentReviews.map((review) => (
-          <li key={review.id}>
-            <p>{review.content}</p>
-            <small>{new Date(review.createdAt).toLocaleDateString('ko-KR')}</small>
-          </li>
-        ))}
-      </ul>
+      <div
+        ref={parentRef}
+        className={styles.reviewList}
+        style={{
+          height: '400px', // 고정 높이 설정
+          overflow: 'auto',
+        }}
+      >
+        <div
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            width: '100%',
+            position: 'relative',
+          }}
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const review = reviews[virtualRow.index];
+            return (
+              <div
+                key={virtualRow.index}
+                className={styles.reviewItem}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: `${virtualRow.size}px`,
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                <div className={styles.review}>
+                  <p>{review.content}</p>
+                  <small>작성자: {review.profiles?.name || '알 수 없음'}</small>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <div className={styles.pagination}>
         <button
           onClick={prevPage}

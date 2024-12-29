@@ -40,6 +40,7 @@ export async function fetchTotalPages(provider: string): Promise<{ totalPages: n
 
 export async function fetchMovieDetail(category: string, id: string): Promise<MovieDetailResponseDto> {
   const endpoint = getMovieEndpoint(category, id);
+
   return fetchAPI<MovieDetailResponseDto>(endpoint);
 }
 
