@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest",
+    "test": "vitest src/app/movie/[id]/[category]/components/__tests__/*.test.tsx",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -38,6 +38,7 @@
     "@storybook/test": "^8.3.0",
     "@tanstack/eslint-plugin-query": "^5.52.0",
     "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@types/node": "^20",
     "@types/react": "^18",
