@@ -1,31 +1,20 @@
 import { ErrorType } from '@/types/error';
-import styles from '@/app/movie/[id]/[category]/components/components.module.css';
+import styles from '@/app/movie/[id]/[category]/components/styles/common.module.css';
 
 export function renderError(error: ErrorType) {
     if (!error) return null;
 
     if (typeof error === 'string') {
-        return (
-            <p className={styles.error} role="alert">
-                {error}
-            </p>
-        );
+        return <p className={styles.error}>{error}</p>;
     }
 
-    const errors = Object.entries(error)
-        .filter(([_, messages]) => messages && messages.length > 0);
-
-    if (errors.length === 0) return null;
-
     return (
-        <ul className={styles.errorList} role="alert">
-            {errors.map(([key, messages]) =>
-                messages?.map((message, index) => (
-                    <li key={`${key}-${index}`} className={styles.errorItem}>
-                        {message}
-                    </li>
+        <ul className={styles.errorList}>
+            {Object.entries(error).map(([key, errors]) => (
+                errors && errors.map((error, index) => (
+                    <li key={`${key}-${index}`} className={styles.errorItem}>{error}</li>
                 ))
-            )}
+            ))}
         </ul>
     );
 } 

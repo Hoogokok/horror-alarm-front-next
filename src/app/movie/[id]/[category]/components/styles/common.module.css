@@ -21,4 +21,80 @@
   align-items: center;
 }
 
+.message {
+  color: #4CAF50;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.rated {
+  color: #e0e0e0;
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.loginPrompt {
+  text-align: center;
+  margin: 20px 0;
+  color: #a5a5a5;
+  text-decoration: none;
+  display: block;
+}
+
+.loginPrompt:hover {
+  text-decoration: underline;
+  color: #e50914;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pagination button {
+  cursor: pointer;
+  background-color: #232020;
+  border: none;
+  border-radius: 5px;
+  min-width: 50px;
+  white-space: nowrap;
+  color: #fff;
+  padding: 8px 16px;
+}
+
+.pagination button:hover {
+  background-color: #3a3636;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin: 0 15px;
+  font-size: 1rem;
+}
+
+.errorList {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+  color: #ff4444;
+}
+
+.errorItem {
+  text-align: center;
+  margin: 5px 0;
+}
+
 /* ... 나머지 공통 스타일 */ 

@@ -8,7 +8,8 @@ import { review, ReviewState } from '@/app/movie/lib/actions';
 import { usePagination } from '@/hooks/usePagination';
 import Link from 'next/link';
 import { useActionState } from 'react';
-import styles from "./components.module.css";
+import styles from './styles/reviews.module.css';
+import commonStyles from './styles/common.module.css';
 
 interface ReviewsTabProps {
   movie: MovieDetailResponseDto;
@@ -38,7 +39,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
   const renderError = () => {
     if (typeof reviewState.error === 'string') {
-      return <p className={styles.error}>{reviewState.error}</p>;
+      return <p className={commonStyles.error}>{reviewState.error}</p>;
     } else if (reviewState.error) {
       return (
         <ul className={styles.errorList}>
@@ -95,7 +96,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
         </div>
       </div>
 
-      <div className={styles.pagination}>
+      <div className={commonStyles.pagination}>
         <button
           onClick={prevPage}
           disabled={currentPage === 1}

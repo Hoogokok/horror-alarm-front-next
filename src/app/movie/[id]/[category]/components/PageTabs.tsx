@@ -6,7 +6,8 @@ import localFont from 'next/font/local';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Suspense, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
-import styles from "./components.module.css";
+import styles from './styles/tabs.module.css';
+import commonStyles from './styles/common.module.css';
 import { TABS, DEFAULT_TABS, TAB_LABELS } from '@/constants/tabs';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -24,7 +25,7 @@ interface PageTabsProps {
 const RatingsTab = dynamic(
   () => import('./RatingsTab'),
   {
-    loading: () => <div className={styles.loading}>평점을 불러오는 중...</div>,
+    loading: () => <div className={commonStyles.loading}>평점을 불러오는 중...</div>,
     ssr: false
   }
 );
@@ -32,7 +33,7 @@ const RatingsTab = dynamic(
 const ReviewsTab = dynamic(
   () => import('./ReviewsTab'),
   {
-    loading: () => <div className={styles.loading}>리뷰를 불러오는 중...</div>,
+    loading: () => <div className={commonStyles.loading}>리뷰를 불러오는 중...</div>,
     ssr: false
   }
 );
@@ -145,7 +146,7 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
   }, [activeTab, movie, userWithMovieIds, category]);
 
   if (!movie) {
-    return <div className={styles.error}>영화 정보를 찾을 수 없습니다.</div>;
+    return <div className={commonStyles.error}>영화 정보를 찾을 수 없습니다.</div>;
   }
 
   return (

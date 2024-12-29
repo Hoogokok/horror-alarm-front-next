@@ -2,7 +2,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useActionState } from 'react';
 import { rate } from '@/app/movie/lib/actions';
-import styles from "./components.module.css";
+import styles from './styles/ratings.module.css';
+import commonStyles from './styles/common.module.css';
 import { UserWithMovieIds } from '@/types/user';
 import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { StarRating } from './StarRating';
@@ -53,21 +54,21 @@ export default function RatingsTab({ movie, userWithMovieIds, category }: Rating
           </form>
           {renderError(rateState.error)}
           {rateState.message && (
-            <p className={styles.message} role="alert">
+            <p className={commonStyles.message} role="alert">
               {rateState.message}
             </p>
           )}
         </div>
       )}
       {isRated && (
-        <p className={styles.rated} role="alert">
+        <p className={commonStyles.rated} role="alert">
           {RATING_MESSAGES.ALREADY_RATED}
         </p>
       )}
       {!isLogin && (
         <Link
           href="/login"
-          className={styles.rated}
+          className={commonStyles.loginPrompt}
           aria-label={FORM_LABELS.LOGIN_LINK}
         >
           {RATING_MESSAGES.LOGIN_REQUIRED}

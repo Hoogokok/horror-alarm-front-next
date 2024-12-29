@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './components.module.css';
+import styles from './styles/ratings.module.css';
 import { RATING, RATING_MESSAGES } from '@/constants/rating';
 
 interface StarRatingProps {

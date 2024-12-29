@@ -26,4 +26,32 @@
   margin-right: auto;
 }
 
+.reviewForm textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 4px;
+  resize: vertical;
+  font-size: 0.9rem;
+}
+
+.reviewForm button {
+  padding: 8px 16px;
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 0.9rem;
+}
+
+.reviewForm button:hover {
+  background-color: #f40612;
+}
+
 /* ... 나머지 리뷰 관련 스타일 */ 
