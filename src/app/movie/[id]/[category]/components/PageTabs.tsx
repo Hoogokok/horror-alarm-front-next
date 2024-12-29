@@ -4,7 +4,7 @@ import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { UserWithMovieIds } from '@/types/user';
 import localFont from 'next/font/local';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { Suspense, useMemo } from 'react';
+import { Suspense, useMemo, useCallback } from 'react';
 import styles from "./components.module.css";
 import RatingsTab from './RatingsTab';
 import ReviewsTab from './ReviewsTab';
@@ -33,11 +33,47 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
     return DEFAULT_TABS[category as keyof typeof DEFAULT_TABS] || DEFAULT_TABS.default;
   }, [searchParams, category]);
 
-  const handleTabChange = (tab: string) => {
-    const params = new URLSearchParams(searchParams);
+  const handleTabChange = useCallback((tab: string) => {
+    const params = new URLSearchParams(searchParams.toString());
     params.set('tab', tab);
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
-  };
+  }, [pathname, searchParams, router]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent, currentIndex: number, buttons: typeof tabButtons) => {
+    const tabCount = buttons.length;
+
+    switch (e.key) {
+      case 'ArrowLeft':
+        e.preventDefault();
+        const prevIndex = (currentIndex - 1 + tabCount) % tabCount;
+        handleTabChange(buttons[prevIndex].id);
+        break;
+      case 'ArrowRight':
+        e.preventDefault();
+        const nextIndex = (currentIndex + 1) % tabCount;
+        handleTabChange(buttons[nextIndex].id);
+        break;
+      case 'Home':
+        e.preventDefault();
+        handleTabChange(buttons[0].id);
+        break;
+      case 'End':
+        e.preventDefault();
+        handleTabChange(buttons[tabCount - 1].id);
+        break;
+    }
+  }, [handleTabChange]);
+
+  const tabButtons = useMemo(() => [
+    { id: TABS.OVERVIEW, label: TAB_LABELS[TABS.OVERVIEW] },
+    { id: TABS.REVIEWS, label: TAB_LABELS[TABS.REVIEWS] },
+    { id: TABS.RATINGS, label: TAB_LABELS[TABS.RATINGS] },
+    {
+      id: TABS.DATE,
+      label: category === 'expiring' ? '스트리밍 종료일' : TAB_LABELS[TABS.DATE]
+    },
+    { id: TABS.WATCH, label: TAB_LABELS[TABS.WATCH] },
+  ], [category]);
 
   const renderContent = useMemo(() => {
     const content = (tab: string) => {
@@ -94,45 +130,8 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
           return null;
       }
     };
-
     return content(activeTab);
   }, [activeTab, movie, userWithMovieIds, category]);
-
-  const tabButtons = useMemo(() => [
-    { id: TABS.OVERVIEW, label: TAB_LABELS[TABS.OVERVIEW] },
-    { id: TABS.REVIEWS, label: TAB_LABELS[TABS.REVIEWS] },
-    { id: TABS.RATINGS, label: TAB_LABELS[TABS.RATINGS] },
-    {
-      id: TABS.DATE,
-      label: category === 'expiring' ? '스트리밍 종료일' : TAB_LABELS[TABS.DATE]
-    },
-    { id: TABS.WATCH, label: TAB_LABELS[TABS.WATCH] },
-  ], [category]);
-
-  const handleKeyDown = (e: React.KeyboardEvent, currentIndex: number) => {
-    const tabCount = tabButtons.length;
-
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault();
-        const prevIndex = (currentIndex - 1 + tabCount) % tabCount;
-        handleTabChange(tabButtons[prevIndex].id);
-        break;
-      case 'ArrowRight':
-        e.preventDefault();
-        const nextIndex = (currentIndex + 1) % tabCount;
-        handleTabChange(tabButtons[nextIndex].id);
-        break;
-      case 'Home':
-        e.preventDefault();
-        handleTabChange(tabButtons[0].id);
-        break;
-      case 'End':
-        e.preventDefault();
-        handleTabChange(tabButtons[tabCount - 1].id);
-        break;
-    }
-  };
 
   if (!movie) {
     return <div className={styles.error}>영화 정보를 찾을 수 없습니다.</div>;
@@ -146,7 +145,7 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
             key={tab.id}
             id={`${tab.id}-tab`}
             onClick={() => handleTabChange(tab.id)}
-            onKeyDown={(e) => handleKeyDown(e, index)}
+            onKeyDown={(e) => handleKeyDown(e, index, tabButtons)}
             aria-selected={activeTab === tab.id}
             aria-controls={`${tab.id}-content`}
             role="tab"
