@@ -1,57 +1,158 @@
-.reviewList {
-  width: 100%;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.reviewItem {
-  padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 .review {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.reviewForm {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: transparent;
-  border-radius: 8px;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.reviewForm textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 8px;
-  margin-bottom: 8px;
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #444;
-  border-radius: 4px;
-  resize: vertical;
-  font-size: 0.9rem;
-}
-
-.reviewForm button {
-  padding: 8px 16px;
-  background-color: #e50914;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  font-size: 0.9rem;
-}
-
-.reviewForm button:hover {
-  background-color: #f40612;
-}
-
-/* ... 나머지 리뷰 관련 스타일 */ 
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .reviewList {
+    width: 100%;
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin-bottom: 32px;
+  }
+  
+  .reviewItem {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease;
+  }
+  
+  .reviewItem:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .reviewContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .reviewHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .authorInfo {
+    flex: 1;
+  }
+  
+  .authorName {
+    font-weight: 600;
+    color: #fff;
+    font-size: 1.1em;
+    margin-bottom: 4px;
+  }
+  
+  .reviewDate {
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .reviewText {
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: pre-wrap;
+  }
+  
+  /* 리뷰 작성 폼 스타일 개선 */
+  .reviewForm {
+    margin-top: 32px;
+    margin-bottom: 48px;
+    padding: 24px;
+    background-color: transparent;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .reviewTitle {
+    font-size: 1.2em;
+    color: #fff;
+    margin-bottom: 16px;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  
+  .reviewInput {
+    width: 100%;
+    min-height: 120px;
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+    margin-bottom: 20px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .reviewInput:focus {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+  }
+  
+  .reviewInput::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  
+  .reviewForm button {
+    padding: 12px 24px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .reviewForm button:hover {
+    background-color: #f40612;
+  }
+  
+  .reviewForm button:disabled {
+    background-color: rgba(229, 9, 20, 0.5);
+    cursor: not-allowed;
+  }
+  
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    .reviewForm {
+      padding: 16px;
+      margin-top: 24px;
+    }
+    
+    .reviewInput {
+      min-height: 100px;
+      padding: 12px;
+    }
+    
+    .reviewForm button {
+      width: 100%;
+      padding: 10px 20px;
+    }
+  }  
+  
+  .noReviews {
+    text-align: center;
+    padding: 32px;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    margin-top: 20px;
+  }
+  
+  .noReviews p {
+    margin: 8px 0;
+  }
+  
+  .noReviews p:first-child {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.9);
+  }  
