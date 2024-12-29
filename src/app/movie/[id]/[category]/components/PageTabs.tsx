@@ -5,9 +5,8 @@ import { UserWithMovieIds } from '@/types/user';
 import localFont from 'next/font/local';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Suspense, useMemo, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import styles from "./components.module.css";
-import RatingsTab from './RatingsTab';
-import ReviewsTab from './ReviewsTab';
 import { TABS, DEFAULT_TABS, TAB_LABELS } from '@/constants/tabs';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -21,6 +20,22 @@ interface PageTabsProps {
   userWithMovieIds: UserWithMovieIds;
   category: string;
 }
+
+const RatingsTab = dynamic(
+  () => import('./RatingsTab'),
+  {
+    loading: () => <div className={styles.loading}>평점을 불러오는 중...</div>,
+    ssr: false
+  }
+);
+
+const ReviewsTab = dynamic(
+  () => import('./ReviewsTab'),
+  {
+    loading: () => <div className={styles.loading}>리뷰를 불러오는 중...</div>,
+    ssr: false
+  }
+);
 
 export default function PageTabs({ movie, userWithMovieIds, category }: PageTabsProps) {
   const router = useRouter();
@@ -89,21 +104,17 @@ export default function PageTabs({ movie, userWithMovieIds, category }: PageTabs
         case TABS.REVIEWS:
           return (
             <ErrorBoundary componentName="리뷰">
-              <Suspense fallback={<div className={styles.loading}>리뷰를 불러오는 중...</div>}>
-                <div id="reviews-content" role="tabpanel" aria-labelledby="reviews-tab">
-                  <ReviewsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
-                </div>
-              </Suspense>
+              <div id="reviews-content" role="tabpanel" aria-labelledby="reviews-tab">
+                <ReviewsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
+              </div>
             </ErrorBoundary>
           );
         case TABS.RATINGS:
           return (
             <ErrorBoundary componentName="평점">
-              <Suspense fallback={<div className={styles.loading}>평점을 불러오는 중...</div>}>
-                <div id="ratings-content" role="tabpanel" aria-labelledby="ratings-tab">
-                  <RatingsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
-                </div>
-              </Suspense>
+              <div id="ratings-content" role="tabpanel" aria-labelledby="ratings-tab">
+                <RatingsTab movie={movie} userWithMovieIds={userWithMovieIds} category={category} />
+              </div>
             </ErrorBoundary>
           );
         case TABS.DATE:
