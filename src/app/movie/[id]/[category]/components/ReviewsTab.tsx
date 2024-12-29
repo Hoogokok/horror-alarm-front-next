@@ -119,7 +119,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
                     <div className={styles.reviewContent}>
                       <div className={styles.reviewHeader}>
                         <div className={styles.authorInfo}>
-                          <div className={styles.authorName}>{review.profiles?.name || '알 수 없음'}</div>
+                          <div className={styles.authorName}>{review.profile?.name || '알 수 없음'}</div>
                         </div>
                       </div>
                       <p className={styles.reviewText}>{review.content}</p>
