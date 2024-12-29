@@ -1,0 +1,29 @@
+.reviewList {
+  width: 100%;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.reviewItem {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reviewForm {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: transparent;
+  border-radius: 8px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ... 나머지 리뷰 관련 스타일 */ 

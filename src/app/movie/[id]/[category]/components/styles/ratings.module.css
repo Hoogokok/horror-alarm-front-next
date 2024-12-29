@@ -1,0 +1,21 @@
+.starRating {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  padding: 10px 0;
+}
+
+.star {
+  font-size: 24px;
+  cursor: pointer;
+  color: #ddd;
+  transition: color 0.2s ease-in-out;
+  position: relative;
+  display: inline-block;
+}
+
+.filled {
+  color: gold;
+}
+
+/* ... 나머지 평점 관련 스타일 */ 

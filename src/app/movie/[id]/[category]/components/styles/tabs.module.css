@@ -1,0 +1,57 @@
+.tabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.tabs button {
+  padding: 8px 16px;
+  cursor: pointer;
+  background-color: #232020;
+  border: none;
+  border-radius: 5px;
+  min-width: 80px;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.tabs button:hover {
+  background-color: #e0e0e0;
+  color: #232020;
+}
+
+.tabContent {
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+
+.tabs button:focus-visible {
+  outline: 2px solid #007AFF;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
+.tabs button[aria-selected="true"] {
+  background-color: #e0e0e0;
+  color: #232020;
+}
+
+@media (min-width: 768px) {
+  .tabs {
+    justify-content: flex-start;
+  }
+
+  .tabs button {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+
+  .tabContent {
+    padding: 0;
+  }
+} 
