@@ -43,7 +43,6 @@ export async function rate(prevState: RateState, formData: FormData) {
             message: error.rating?.[0] || "평점 등록 실패"
         }
     }
-    console.log(validation.data)
     const { user_id, the_movie_db_id, category, rating, movie_id } = validation.data
     const { data, error } = await supabase.from('rate').insert([{rate_user_id: user_id, rate_movie_id: the_movie_db_id, score: rating}])
     if (error) {
@@ -54,7 +53,7 @@ export async function rate(prevState: RateState, formData: FormData) {
         }
     }
     const url = `/movie/${movie_id}/${category}`
-    revalidatePath(url)
+    revalidatePath(url, 'page')
     redirect(url)
 }
 
@@ -105,6 +104,92 @@ export async function review(prevState: ReviewState, formData: FormData) : Promi
         }
     }
     const url = `/movie/${movie_id}/${category}`
-    revalidatePath(url)
+    revalidatePath(url, 'page')
     redirect(url)
+}
+
+interface UpdateReviewState {
+    error?: string | Record<string, string[]>;
+    message?: string;
+}
+
+interface DeleteReviewState {
+    error?: string;
+    message?: string;
+}
+
+export async function updateReview(prevState: UpdateReviewState, formData: FormData): Promise<UpdateReviewState> {
+    try {
+        const supabase = createClient()
+        const reviewId = formData.get('reviewId') as string;
+        const content = formData.get('content') as string;
+        const userId = formData.get('userId') as string;
+        const { data: review, error: reviewError } = await supabase
+            .from('reviews')
+            .select('review_user_id')
+            .eq('id', reviewId)
+            .single();
+
+        if (reviewError) {
+            return { error: '리뷰를 찾을 수 없습니다.' };
+        }
+
+        // 권한 체크
+        if (review.review_user_id !== userId) {
+            return { error: '리뷰를 수정할 권한이 없습니다.' };
+        }
+
+        const { error: updateError } = await supabase
+            .from('reviews')
+            .update({ review_content: content })
+            .eq('id', reviewId);
+            
+        if (updateError) {
+            return { error: '리뷰 수정에 실패했습니다.' };
+        }
+
+        revalidatePath('/movie/[id]/[category]', 'page');
+        return { message: '리뷰가 수정되었습니다.' };
+    } catch (error) {
+        console.error('리뷰 수정 중 오류:', error);
+        return { error: '리뷰 수정 중 오류가 발생했습니다.' };
+    }
+}
+
+export async function deleteReview(prevState: DeleteReviewState, formData: FormData): Promise<DeleteReviewState> {
+    try {
+        const supabase = createClient()
+        const reviewId = formData.get('reviewId') as string;
+        const userId = formData.get('userId') as string;
+
+        const { data: review, error: reviewError } = await supabase
+            .from('reviews')
+            .select('review_user_id')
+            .eq('id', reviewId)
+            .single();
+
+        if (reviewError) {
+            return { error: '리뷰를 찾을 수 없습니다.' };
+        }
+
+        // 권한 체크
+        if (review.review_user_id !== userId) {
+            return { error: '리뷰를 삭제할 권한이 없습니다.' };
+        }
+
+        const { error: deleteError } = await supabase
+            .from('reviews')
+            .delete()
+            .eq('id', reviewId);
+
+        if (deleteError) {
+            return { error: '리뷰 삭제에 실패했습니다.' };
+        }
+
+        revalidatePath('/movie/[id]/[category]', 'page');
+        return { message: '리뷰가 삭제되었습니다.' };
+    } catch (error) {
+        console.error('리뷰 삭제 중 오류:', error);
+        return { error: '리뷰 삭제 중 오류가 발생했습니다.' };
+    }
 }
