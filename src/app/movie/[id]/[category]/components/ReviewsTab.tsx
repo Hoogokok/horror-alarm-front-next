@@ -1,17 +1,14 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { deleteReview, review, ReviewState, updateReview } from '@/app/movie/lib/actions';
 import { MovieDetailResponseDto, Review } from '@/types/movie-detail-response-dto';
 import { UserWithMovieIds } from '@/types/user';
-import { review, ReviewState, updateReview, deleteReview } from '@/app/movie/lib/actions';
-import { usePagination } from '@/hooks/usePagination';
-import Link from 'next/link';
-import { useActionState } from 'react';
-import styles from './styles/reviews.module.css';
-import commonStyles from './styles/common.module.css';
-import { useRouter } from 'next/navigation';
 import { fetchMovieReviews } from '@/utils/api';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import Link from 'next/link';
+import { useActionState, useRef, useState } from 'react';
+import commonStyles from './styles/common.module.css';
+import styles from './styles/reviews.module.css';
 
 interface ReviewsTabProps {
   movie: MovieDetailResponseDto;
@@ -23,9 +20,11 @@ interface ReviewItemProps {
   review: Review;
   currentUserId?: string;
   style: React.CSSProperties;
+  movie: MovieDetailResponseDto;
+  category: string;
 }
 
-const ReviewItem = ({ review, currentUserId, style }: ReviewItemProps) => {
+const ReviewItem = ({ review, currentUserId, style, movie, category }: ReviewItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const isAuthor = currentUserId === review.profile?.id;
   const [updateState, updateAction] = useActionState(updateReview, { error: '', message: '' });
@@ -77,9 +76,11 @@ const ReviewItem = ({ review, currentUserId, style }: ReviewItemProps) => {
           <form action={updateAction} className={styles.editForm}>
             <input type="hidden" name="reviewId" value={review.id} />
             <input type="hidden" name="userId" value={review.profile?.id} />
+            <input type="hidden" name="movie_id" value={movie.id} />
+            <input type="hidden" name="category" value={category} />
             <textarea
               name="content"
-              defaultValue={review.review_content}
+              defaultValue={review.content}
               className={styles.reviewInput}
               required
             />
@@ -97,7 +98,7 @@ const ReviewItem = ({ review, currentUserId, style }: ReviewItemProps) => {
             </div>
           </form>
         ) : (
-            <p className={styles.reviewText}>{review.review_content}</p>
+            <p className={styles.reviewText}>{review.content}</p>
         )}
       </div>
     </div>
@@ -152,13 +153,6 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
     return null;
   };
 
-  const renderActionError = (error: string | Record<string, string[]>) => {
-    if (typeof error === 'string') {
-      return <p className={styles.error}>{error}</p>;
-    }
-    return null;
-  };
-
   return (
     <div className={styles.review}>
       {isLogin && !isReviewed ? (
@@ -205,6 +199,8 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
                     key={virtualRow.index}
                     review={review}
                     currentUserId={user?.id}
+                    movie={movie}
+                    category={category}
                     style={{
                       position: 'absolute',
                       top: 0,
