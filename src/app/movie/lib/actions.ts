@@ -145,60 +145,6 @@ interface DeleteReviewState {
     message?: string;
 }
 
-export async function updateReview(prevState: UpdateReviewState, formData: FormData): Promise<UpdateReviewState> {
-    try {
-        const supabase = createClient()
-        const reviewId = formData.get('reviewId') as string;
-        const content = formData.get('content') as string;
-        const userId = formData.get('userId') as string;
-        const movie_id = formData.get('movie_id') as string;
-        const category = formData.get('category') as string;
-
-        console.log('Update Review Request:', {
-            reviewId,
-            content,
-            userId,
-            movie_id,
-            category
-        });
-
-        const { data: review, error: reviewError } = await supabase
-            .from('reviews')
-            .select('review_user_id')
-            .eq('id', reviewId)
-            .single();
-
-        if (reviewError) {
-            console.error('Review fetch error:', reviewError);
-            return { error: '리뷰를 찾을 수 없습니다.' };
-        }
-
-        // 권한 체크
-        if (review.review_user_id !== userId) {
-            console.error('Authorization error:', { review_user_id: review.review_user_id, userId });
-            return { error: '리뷰를 수정할 권한이 없습니다.' };
-        }
-
-        const { error: updateError } = await supabase
-            .from('reviews')
-            .update({ review_content: content })
-            .eq('id', reviewId);
-            
-        if (updateError) {
-            console.error('Update error:', updateError);
-            return { error: '리뷰 수정에 실패했습니다.' };
-        }
-
-        console.log('Review updated successfully');
-        const url = `/movie/${movie_id}/${category}`;
-        revalidatePath(url, 'page');
-        return { message: '리뷰가 수정되었습니다.' };
-    } catch (error) {
-        console.error('Review update error:', error);
-        return { error: '리뷰 수정 중 오류가 발생했습니다.' };
-    }
-}
-
 export async function deleteReview(prevState: DeleteReviewState, formData: FormData): Promise<DeleteReviewState> {
     try {
         const supabase = createClient()
@@ -234,5 +180,60 @@ export async function deleteReview(prevState: DeleteReviewState, formData: FormD
     } catch (error) {
         console.error('리뷰 삭제 중 오류:', error);
         return { error: '리뷰 삭제 중 오류가 발생했습니다.' };
+    }
+}
+
+const updateReviewSchema = z.object({
+    reviewId: z.string(),
+    userId: z.string(),
+    content: z.string().min(1, "리뷰는 1자 이상이어야 합니다").max(1000, "리뷰는 1000자 이하이어야 합니다"),
+});
+
+export async function updateReview(prevState: UpdateReviewState, formData: FormData): Promise<UpdateReviewState> {
+    try {
+        const supabase = createClient();
+
+        // 받은 데이터 로깅
+        console.log('Received data:', {
+            reviewId: formData.get('reviewId'),
+            userId: formData.get('userId'),
+            content: formData.get('content')
+        });
+
+        const validation = updateReviewSchema.safeParse({
+            reviewId: formData.get('reviewId') as string,
+            userId: formData.get('userId') as string,
+            content: formData.get('content') as string,
+        });
+
+        if (!validation.success) {
+            console.error('Validation failed:', validation.error);
+            return {
+                error: validation.error.flatten().fieldErrors,
+                message: "리뷰 수정 실패"
+            };
+        }
+
+        const { reviewId, userId, content } = validation.data;
+
+        // 리뷰 업데이트 전 데이터 확인
+        console.log('Updating review:', { reviewId, userId, content });
+
+        const { error: updateError } = await supabase
+            .from('reviews')
+            .update({ review_content: content })
+            .eq('id', reviewId)
+            .select();
+
+        if (updateError) {
+            console.error('Update error:', updateError);
+            return { error: '리뷰 수정에 실패했습니다.' };
+        }
+
+        revalidatePath('/movie/[id]/[category]', 'page');
+        return { message: '리뷰가 수정되었습니다.' };
+    } catch (error) {
+        console.error('Review update error:', error);
+        return { error: '리뷰 수정 중 오류가 발생했습니다.' };
     }
 }

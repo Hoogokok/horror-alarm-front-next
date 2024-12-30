@@ -45,13 +45,22 @@ export async function fetchTotalPages(provider: string): Promise<{ totalPages: n
 
 export async function fetchMovieDetail(category: string, id: string): Promise<MovieDetailResponseDto> {
   const endpoint = getMovieEndpoint(category, id);
-  const movieData = await fetchAPI<MovieDetailResponseDto>(endpoint);
+  const movieData = await fetchAPI<MovieDetailResponseDto>(endpoint, { cache: 'no-store' });
   return movieData;
 }
 
 export async function fetchMovieReviews(category: string, id: string, page: number): Promise<Review[]> {
-  const endpoint = `${getMovieEndpoint(category, id)}/reviews`;
-  return fetchAPI<Review[]>(endpoint, { page: page.toString() }, { cache: 'no-store' });
+  const response = await fetch(
+    `/api/reviews?category=${category}&movieId=${id}&page=${page}`,
+    { cache: 'no-store' }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || '리뷰를 불러오는데 실패했습니다.');
+  }
+
+  return response.json();
 }
 
 function getMovieEndpoint(category: string, id: string): string {

@@ -1,8 +1,9 @@
 'use client';
 
-import { deleteReview } from '@/app/movie/lib/actions';
+import { deleteReview, updateReview } from '@/app/movie/lib/actions';
 import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { useActionState } from 'react';
+import { useState } from 'react';
 import styles from '../styles/reviews.module.css';
 
 interface ReviewItemProps {
@@ -17,6 +18,19 @@ interface ReviewItemProps {
 export default function ReviewItem({ review, currentUserId, style, onRefresh }: ReviewItemProps) {
     const isAuthor = currentUserId === review.profile?.id;
     const [deleteState, deleteAction] = useActionState(deleteReview, { error: '', message: '' });
+    const [updateState, updateAction] = useActionState(updateReview, { error: '', message: '' });
+    const [isEditing, setIsEditing] = useState(false);
+    const [editContent, setEditContent] = useState(review.content);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+
+        await updateAction(formData);
+        setIsEditing(false);
+        onRefresh?.();
+    };
 
     const renderActionError = (error: string | Record<string, string[]>) => {
         if (typeof error === 'string') {
@@ -34,6 +48,14 @@ export default function ReviewItem({ review, currentUserId, style, onRefresh }: 
                     </div>
                     {isAuthor && (
                         <div className={styles.reviewActions}>
+                            {!isEditing && (
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className={styles.editButton}
+                                >
+                                    수정
+                                </button>
+                            )}
                             <form action={deleteAction} style={{ display: 'inline' }}>
                                 <input type="hidden" name="reviewId" value={review.id} />
                                 <input type="hidden" name="userId" value={review.profile?.id} />
@@ -53,7 +75,32 @@ export default function ReviewItem({ review, currentUserId, style, onRefresh }: 
                     )}
                 </div>
                 {deleteState.error && renderActionError(deleteState.error)}
-                <p className={styles.reviewText}>{review.content}</p>
+                {updateState.error && renderActionError(updateState.error)}
+
+                {isEditing ? (
+                    <form onSubmit={handleSubmit} className={styles.editForm}>
+                        <textarea
+                            name="content"
+                            value={editContent}
+                            onChange={(e) => setEditContent(e.target.value)}
+                            className={styles.editInput}
+                            required
+                        />
+                        <input type="hidden" name="reviewId" value={review.id} />
+                        <input type="hidden" name="userId" value={review.profile?.id || ''} />
+                        <div className={styles.editActions}>
+                            <button type="submit">저장</button>
+                            <button type="button" onClick={() => {
+                                setIsEditing(false);
+                                setEditContent(review.content);
+                            }}>
+                                취소
+                            </button>
+                        </div>
+                    </form>
+                ) : (
+                        <p className={styles.reviewText}>{review.content}</p>
+                )}
             </div>
         </div>
     );

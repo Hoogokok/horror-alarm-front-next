@@ -21,7 +21,6 @@ export default async function MovieDetail({
 }) {
   const movie: MovieDetailResponseDto = await fetchMovieDetail(params.category, params.id);
   const result = await getUser()
-  console.log(movie)
   return (
     <div className={styles.main}>
       <div className={styles.imagesection}>

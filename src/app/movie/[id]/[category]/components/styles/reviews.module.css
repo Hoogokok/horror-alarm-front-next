@@ -215,4 +215,49 @@
   
   .cancelButton:hover {
     background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .editButton {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .editForm {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .editInput {
+    width: 100%;
+    min-height: 80px;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  .editActions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .editActions button {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .editActions button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .editActions button[type="button"] {
+    background-color: #f44336;
+    color: white;
   }  
