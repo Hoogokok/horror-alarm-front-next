@@ -5,7 +5,7 @@ import styles from '../styles/reviews.module.css';
 import commonStyles from '../styles/common.module.css';
 import ReviewItem from './ReviewItem';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { RefObject } from 'react';
+import { RefObject, useState } from 'react';
 
 interface ReviewListProps {
     reviews: Review[];
@@ -28,11 +28,16 @@ export default function ReviewList({
     totalReviews,
     onPageChange
 }: ReviewListProps) {
+    const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
+
     const rowVirtualizer = useVirtualizer({
         count: reviews.length,
         getScrollElement: () => parentRef.current,
-        estimateSize: () => 100,
+        estimateSize: () => 190,
         overscan: 5,
+        measureElement: (element) => {
+            return element.getBoundingClientRect().height;
+        }
     });
 
     return (
@@ -43,26 +48,29 @@ export default function ReviewList({
                         height: `${rowVirtualizer.getTotalSize()}px`,
                         width: '100%',
                         position: 'relative',
+                        gap: '16px',
                     }}
                 >
                     {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                         const review = reviews[virtualRow.index];
                         return (
                             <ReviewItem
-                                key={virtualRow.index}
+                                key={review.id}
                                 review={review}
                                 currentUserId={currentUserId}
                                 movie={movie}
                                 category={category}
                                 style={{
                                     position: 'absolute',
-                                    top: 0,
+                                    top: `${virtualRow.start}px`,
                                     left: 0,
                                     width: '100%',
-                                    height: `${virtualRow.size}px`,
-                                    transform: `translateY(${virtualRow.start}px)`,
+                                    height: 'auto',
                                 }}
                                 onRefresh={() => onPageChange(currentPage)}
+                                isEditing={editingReviewId === review.id}
+                                onEditStart={() => setEditingReviewId(review.id)}
+                                onEditEnd={() => setEditingReviewId(null)}
                             />
                         );
                     })}

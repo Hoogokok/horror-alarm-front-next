@@ -12,19 +12,24 @@
   }
   
   .reviewItem {
-    padding: 20px;
+    padding: 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background-color 0.2s ease;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 16px 0;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
   }
   
   .reviewItem:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.02);
   }
   
   .reviewContent {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
   }
   
   .reviewHeader {
@@ -54,6 +59,7 @@
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.9);
     white-space: pre-wrap;
+    margin-bottom: 16px;
   }
   
   /* 리뷰 작성 폼 스타일 개선 */
@@ -160,96 +166,81 @@
   .reviewActions {
     display: flex;
     gap: 8px;
-  }
-  
-  .editButton, .deleteButton, .saveButton, .cancelButton {
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
+    justify-content: flex-end;
   }
   
   .editButton {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #4CAF50;
     color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
   }
   
   .editButton:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: #45a049;
   }
   
   .deleteButton {
-    background-color: rgba(229, 9, 20, 0.8);
+    background-color: #e50914;
     color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
   }
   
   .deleteButton:hover {
-    background-color: rgba(229, 9, 20, 1);
-  }
-  
-  .editForm {
-    margin-top: 12px;
-  }
-  
-  .editActions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-  }
-  
-  .saveButton {
-    background-color: #e50914;
-    color: white;
-  }
-  
-  .saveButton:hover {
     background-color: #f40612;
   }
   
-  .cancelButton {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: white;
-  }
-  
-  .cancelButton:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  .editButton {
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
   .editForm {
-    margin-top: 10px;
     width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
   }
   
   .editInput {
     width: 100%;
-    min-height: 80px;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
+    min-height: 100px;
+    padding: 12px;
+    margin-bottom: 16px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 4px;
     resize: vertical;
+    color: white;
+    font-size: 0.95rem;
+  }
+  
+  .editInput:focus {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.3);
+    outline: none;
   }
   
   .editActions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    justify-content: flex-end;
   }
   
   .editActions button {
-    padding: 5px 15px;
+    padding: 8px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
   }
   
   .editActions button[type="submit"] {
@@ -260,4 +251,50 @@
   .editActions button[type="button"] {
     background-color: #f44336;
     color: white;
+  }  
+  
+  /* 수정/삭제 버튼과 저장/취소 버튼의 스타일을 통일 */
+  .editButton, .deleteButton, .editActions button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .editButton, .editActions button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .deleteButton, .editActions button[type="button"] {
+    background-color: #e50914;
+    color: white;
+  }  
+  
+  .reviewTextArea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+  }
+  
+  .reviewTextArea:focus {
+    outline: none;
+    border-color: #4a5568;
+    box-shadow: 0 0 0 1px #4a5568;
+  }
+  
+  .reviewText {
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
   }  

@@ -13,13 +13,25 @@ interface ReviewItemProps {
     movie: MovieDetailResponseDto;
     category: string;
     onRefresh?: () => void;
+    isEditing: boolean;
+    onEditStart: () => void;
+    onEditEnd: () => void;
 }
 
-export default function ReviewItem({ review, currentUserId, style, onRefresh }: ReviewItemProps) {
+export default function ReviewItem({
+    review,
+    currentUserId,
+    style,
+    movie,
+    category,
+    onRefresh,
+    isEditing,
+    onEditStart,
+    onEditEnd
+}: ReviewItemProps) {
     const isAuthor = currentUserId === review.profile?.id;
     const [deleteState, deleteAction] = useActionState(deleteReview, { error: '', message: '' });
     const [updateState, updateAction] = useActionState(updateReview, { error: '', message: '' });
-    const [isEditing, setIsEditing] = useState(false);
     const [editContent, setEditContent] = useState(review.content);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -28,7 +40,7 @@ export default function ReviewItem({ review, currentUserId, style, onRefresh }: 
         const formData = new FormData(form);
 
         await updateAction(formData);
-        setIsEditing(false);
+        onEditEnd();
         onRefresh?.();
     };
 
@@ -48,29 +60,50 @@ export default function ReviewItem({ review, currentUserId, style, onRefresh }: 
                     </div>
                     {isAuthor && (
                         <div className={styles.reviewActions}>
-                            {!isEditing && (
-                                <button
-                                    onClick={() => setIsEditing(true)}
-                                    className={styles.editButton}
-                                >
-                                    수정
-                                </button>
+                            {isEditing ? (
+                                <>
+                                    <button type="submit" form="editForm" className={styles.editButton}>저장</button>
+                                    <button
+                                        type="button"
+                                        className={styles.deleteButton}
+                                        onClick={() => {
+                                            onEditEnd();
+                                        }}
+                                    >
+                                        취소
+                                    </button>
+                                </>
+                            ) : (
+                                <div className={styles.reviewActions}>
+                                    <button
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                onEditStart();
+                                            }}
+                                            className={styles.editButton}
+                                        >
+                                            수정
+                                        </button>
+                                        <div style={{ display: 'inline' }}>
+                                            <form action={deleteAction} style={{ display: 'inline' }}>
+                                                <input type="hidden" name="reviewId" value={review.id} />
+                                                <input type="hidden" name="userId" value={review.profile?.id} />
+                                                <button
+                                                    type="submit"
+                                                    className={styles.deleteButton}
+                                                    onClick={(e) => {
+                                                        if (!window.confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+                                                            e.preventDefault();
+                                                        }
+                                                    }}
+                                                >
+                                                    삭제
+                                                </button>
+                                            </form>
+                                    </div>
+                                </div>
                             )}
-                            <form action={deleteAction} style={{ display: 'inline' }}>
-                                <input type="hidden" name="reviewId" value={review.id} />
-                                <input type="hidden" name="userId" value={review.profile?.id} />
-                                <button
-                                    type="submit"
-                                    className={styles.deleteButton}
-                                    onClick={(e) => {
-                                        if (!window.confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
-                                            e.preventDefault();
-                                        }
-                                    }}
-                                >
-                                    삭제
-                                </button>
-                            </form>
                         </div>
                     )}
                 </div>
@@ -78,25 +111,17 @@ export default function ReviewItem({ review, currentUserId, style, onRefresh }: 
                 {updateState.error && renderActionError(updateState.error)}
 
                 {isEditing ? (
-                    <form onSubmit={handleSubmit} className={styles.editForm}>
+                    <form id="editForm" onSubmit={handleSubmit}>
                         <textarea
                             name="content"
                             value={editContent}
                             onChange={(e) => setEditContent(e.target.value)}
-                            className={styles.editInput}
+                            className={styles.reviewTextArea}
                             required
+                            autoFocus
                         />
                         <input type="hidden" name="reviewId" value={review.id} />
                         <input type="hidden" name="userId" value={review.profile?.id || ''} />
-                        <div className={styles.editActions}>
-                            <button type="submit">저장</button>
-                            <button type="button" onClick={() => {
-                                setIsEditing(false);
-                                setEditContent(review.content);
-                            }}>
-                                취소
-                            </button>
-                        </div>
                     </form>
                 ) : (
                         <p className={styles.reviewText}>{review.content}</p>
