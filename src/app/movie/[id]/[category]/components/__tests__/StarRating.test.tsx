@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { StarRating } from '../StarRating';
 import { RATING_MESSAGES } from '@/constants/rating';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import styles from '../components.module.css';
+import styles from '../styles/ratings.module.css';
 
 describe('StarRating 컴포넌트', () => {
     const mockSetRating = vi.fn();

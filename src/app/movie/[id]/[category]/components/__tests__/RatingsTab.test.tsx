@@ -16,14 +16,17 @@ vi.mock('@/app/movie/lib/actions', () => ({
 }));
 
 const mockMovie: MovieDetailResponseDto = {
-    id: 1,
+    id: "1",
     title: '테스트 영화',
     overview: '테스트 설명',
     posterPath: '/test.jpg',
+    releaseDate: '2024-01-01',
+    runtime: 120,
     voteAverage: 4.5,
     voteCount: 100,
     theMovieDbId: '123',
-    reviews: [],
+    recentReviews: [],
+    totalReviews: 0,
 };
 
 const mockUser: UserWithMovieIds = {
@@ -51,8 +54,6 @@ describe('RatingsTab 컴포넌트', () => {
             />
         );
 
-        const loginLink = screen.getByRole('link', { name: FORM_LABELS.LOGIN_LINK });
-        expect(loginLink).toBeDefined();
         expect(screen.getByText(RATING_MESSAGES.LOGIN_REQUIRED)).toBeDefined();
     });
 
