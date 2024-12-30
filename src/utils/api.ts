@@ -1,11 +1,15 @@
 import { Movie } from '@/types/movie';
-import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
+import { MovieDetailResponseDto, Review } from '@/types/movie-detail-response-dto';
 import { supabase } from '@/utils/supabase/client'
 
 const API_BASE_URL = process.env.MOVIE_API;
 const API_KEY = process.env.MOVIE_API_KEY;
 
-async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+async function fetchAPI<T>(
+  endpoint: string,
+  params: Record<string, string> = {},
+  options?: { cache?: 'no-store' | 'force-cache' }
+): Promise<T> {
   const url = new URL(`${API_BASE_URL}${endpoint}`);
   Object.entries(params).forEach(([key, value]) => 
     url.searchParams.append(key, value)
@@ -15,7 +19,8 @@ async function fetchAPI<T>(endpoint: string, params: Record<string, string> = {}
     headers: {
       'X-API-KEY': API_KEY as string
     },
-    next: { revalidate: 3600 },
+    ...(!options?.cache && { next: { revalidate: 3600 } }),
+    ...(options?.cache && { cache: options.cache })
   });
 
   if (!response.ok) {
@@ -40,8 +45,22 @@ export async function fetchTotalPages(provider: string): Promise<{ totalPages: n
 
 export async function fetchMovieDetail(category: string, id: string): Promise<MovieDetailResponseDto> {
   const endpoint = getMovieEndpoint(category, id);
+  const movieData = await fetchAPI<MovieDetailResponseDto>(endpoint, { cache: 'no-store' });
+  return movieData;
+}
 
-  return fetchAPI<MovieDetailResponseDto>(endpoint);
+export async function fetchMovieReviews(category: string, id: string, page: number): Promise<Review[]> {
+  const response = await fetch(
+    `/api/reviews?category=${category}&movieId=${id}&page=${page}`,
+    { cache: 'no-store' }
+  );
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || '리뷰를 불러오는데 실패했습니다.');
+  }
+
+  return response.json();
 }
 
 function getMovieEndpoint(category: string, id: string): string {
@@ -115,3 +134,4 @@ function getProviderId(provider: string): number {
       default: return 0; // 'all' 또는 알 수 없는 제공자의 경우
   }
 }
+
