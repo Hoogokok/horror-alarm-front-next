@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
+import { MovieDetailResponseDto, Review } from '@/types/movie-detail-response-dto';
 import { UserWithMovieIds } from '@/types/user';
 import { review, ReviewState, updateReview, deleteReview } from '@/app/movie/lib/actions';
 import { usePagination } from '@/hooks/usePagination';
@@ -11,6 +11,7 @@ import { useActionState } from 'react';
 import styles from './styles/reviews.module.css';
 import commonStyles from './styles/common.module.css';
 import { useRouter } from 'next/navigation';
+import { fetchMovieReviews } from '@/utils/api';
 
 interface ReviewsTabProps {
   movie: MovieDetailResponseDto;
@@ -19,14 +20,13 @@ interface ReviewsTabProps {
 }
 
 interface ReviewItemProps {
-  review: MovieDetailResponseDto['reviews'][0];
+  review: Review;
   currentUserId?: string;
   style: React.CSSProperties;
 }
 
 const ReviewItem = ({ review, currentUserId, style }: ReviewItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const router = useRouter();
   const isAuthor = currentUserId === review.profile?.id;
   const [updateState, updateAction] = useActionState(updateReview, { error: '', message: '' });
   const [deleteState, deleteAction] = useActionState(deleteReview, { error: '', message: '' });
@@ -79,7 +79,7 @@ const ReviewItem = ({ review, currentUserId, style }: ReviewItemProps) => {
             <input type="hidden" name="userId" value={review.profile?.id} />
             <textarea
               name="content"
-              defaultValue={review.content}
+              defaultValue={review.review_content}
               className={styles.reviewInput}
               required
             />
@@ -97,7 +97,7 @@ const ReviewItem = ({ review, currentUserId, style }: ReviewItemProps) => {
             </div>
           </form>
         ) : (
-          <p className={styles.reviewText}>{review.content}</p>
+            <p className={styles.reviewText}>{review.review_content}</p>
         )}
       </div>
     </div>
@@ -113,10 +113,20 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
   const isLogin = user !== null;
   const isReviewed = review_movieIds.includes(Number(movie.theMovieDbId));
   const [reviewState, reviewAction] = useActionState(review, initialState);
-  const { currentItems: currentReviews, currentPage, nextPage, prevPage, totalPages } = usePagination(movie.reviews);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [reviews, setReviews] = useState<Review[]>(movie.recentReviews || []);
   const parentRef = useRef<HTMLDivElement>(null);
-  const reviews = movie.reviews || [];
-  const hasReviews = reviews.length > 0;
+  const hasReviews = movie.totalReviews > 0;
+
+  const handlePageChange = async (newPage: number) => {
+    try {
+      const newReviews = await fetchMovieReviews(category, movie.id, newPage);
+      setReviews(newReviews);
+      setCurrentPage(newPage);
+    } catch (error) {
+      console.error('리뷰 로딩 중 오류:', error);
+    }
+  };
 
   const rowVirtualizer = useVirtualizer({
     count: reviews.length,
@@ -180,14 +190,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
       {hasReviews ? (
         <>
-          <div
-            ref={parentRef}
-            className={styles.reviewList}
-            style={{
-              height: '400px',
-              overflow: 'auto',
-            }}
-          >
+          <div ref={parentRef} className={styles.reviewList} style={{ height: '400px', overflow: 'auto' }}>
             <div
               style={{
                 height: `${rowVirtualizer.getTotalSize()}px`,
@@ -218,15 +221,15 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
           <div className={commonStyles.pagination}>
             <button
-              onClick={prevPage}
+              onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
               이전
             </button>
             <span>{currentPage}</span>
             <button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage * 10 >= movie.totalReviews}
             >
               다음
             </button>

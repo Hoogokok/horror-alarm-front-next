@@ -1,18 +1,19 @@
 export interface MovieDetailResponseDto {
   id: string;
   title: string;
-    posterPath: string;
+  posterPath: string;
   overview: string;
   releaseDate: string;
   runtime: number;
-    voteAverage: number;
+  voteAverage: number;
   voteCount: number;
-    theMovieDbId: string;
+  theMovieDbId: string;
   providers?: {
     id: number;
     name: string;
   }[];
-  reviews?: Review[];
+  recentReviews?: Review[];
+  totalReviews: number;
   ratings?: {
     id: string;
     score: number;
@@ -27,13 +28,13 @@ export interface MovieDetailResponseDto {
 }
 
 export interface Review {
-    id: string;
+  id: string;
   review_content: string;
   review_user_id: string;
   review_movie_id: string;
   created_at: string;
-    profile?: {
-      id: string;
-      name: string;
-    };
+  profile?: {
+    id: string;
+    name: string;
+  };
 }
