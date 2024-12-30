@@ -20,7 +20,7 @@ export default async function MovieDetail({
   searchParams: { tab?: string }
 }) {
   const movie: MovieDetailResponseDto = await fetchMovieDetail(params.category, params.id);
-  const result = await getUser();
+  const result = await getUser()
   console.log(movie)
   return (
     <div className={styles.main}>

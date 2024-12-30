@@ -22,12 +22,11 @@ interface ReviewItemProps {
   style: React.CSSProperties;
   movie: MovieDetailResponseDto;
   category: string;
+  onRefresh?: () => void;
 }
 
-const ReviewItem = ({ review, currentUserId, style, movie, category }: ReviewItemProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+const ReviewItem = ({ review, currentUserId, style, movie, category, onRefresh }: ReviewItemProps) => {
   const isAuthor = currentUserId === review.profile?.id;
-  const [updateState, updateAction] = useActionState(updateReview, { error: '', message: '' });
   const [deleteState, deleteAction] = useActionState(deleteReview, { error: '', message: '' });
 
   const renderActionError = (error: string | Record<string, string[]>) => {
@@ -46,12 +45,6 @@ const ReviewItem = ({ review, currentUserId, style, movie, category }: ReviewIte
           </div>
           {isAuthor && (
             <div className={styles.reviewActions}>
-              <button
-                onClick={() => setIsEditing(true)}
-                className={styles.editButton}
-              >
-                수정
-              </button>
               <form action={deleteAction} style={{ display: 'inline' }}>
                 <input type="hidden" name="reviewId" value={review.id} />
                 <input type="hidden" name="userId" value={review.profile?.id} />
@@ -70,36 +63,8 @@ const ReviewItem = ({ review, currentUserId, style, movie, category }: ReviewIte
             </div>
           )}
         </div>
-        {updateState.error && renderActionError(updateState.error)}
         {deleteState.error && renderActionError(deleteState.error)}
-        {isEditing ? (
-          <form action={updateAction} className={styles.editForm}>
-            <input type="hidden" name="reviewId" value={review.id} />
-            <input type="hidden" name="userId" value={review.profile?.id} />
-            <input type="hidden" name="movie_id" value={movie.id} />
-            <input type="hidden" name="category" value={category} />
-            <textarea
-              name="content"
-              defaultValue={review.content}
-              className={styles.reviewInput}
-              required
-            />
-            <div className={styles.editActions}>
-              <button type="submit" className={styles.saveButton}>
-                저장
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsEditing(false)}
-                className={styles.cancelButton}
-              >
-                취소
-              </button>
-            </div>
-          </form>
-        ) : (
-            <p className={styles.reviewText}>{review.content}</p>
-        )}
+        <p className={styles.reviewText}>{review.content}</p>
       </div>
     </div>
   );
@@ -209,6 +174,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
                       height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
                     }}
+                    onRefresh={() => handlePageChange(currentPage)}
                   />
                 );
               })}

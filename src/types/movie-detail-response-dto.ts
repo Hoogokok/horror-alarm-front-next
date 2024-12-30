@@ -4,6 +4,7 @@ export interface MovieDetailResponseDto {
   posterPath: string;
   overview: string;
   releaseDate: string;
+  expiringDate?: string;
   runtime: number;
   voteAverage: number;
   voteCount: number;
@@ -29,7 +30,7 @@ export interface MovieDetailResponseDto {
 
 export interface Review {
   id: string;
-  review_content: string;
+  content: string;
   review_user_id: string;
   review_movie_id: string;
   created_at: string;
