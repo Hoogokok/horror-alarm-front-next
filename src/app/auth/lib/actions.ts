@@ -130,8 +130,16 @@ export async function getUser(): Promise<UserWithMovieIds> {
                 review_movieIds: [],
             }
         }
-        const { data: rateData, error: rateError } = await supabase.from('rate').select('rate_movie_id')
-        const { data: reviewData, error: reviewError } = await supabase.from('reviews').select('review_movie_id')
+      const { data: rateData, error: rateError } = await supabase
+        .from('rate')
+        .select('rate_movie_id')
+        .eq('rate_user_id', data.user.id)  // 현재 사용자의 평점만 필터링
+
+      const { data: reviewData, error: reviewError } = await supabase
+        .from('reviews')
+        .select('review_movie_id')
+        .eq('review_user_id', data.user.id)
+
         if (rateError) {
             console.log(rateError)
         }
