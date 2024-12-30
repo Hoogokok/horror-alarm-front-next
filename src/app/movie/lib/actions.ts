@@ -191,14 +191,7 @@ const updateReviewSchema = z.object({
 
 export async function updateReview(prevState: UpdateReviewState, formData: FormData): Promise<UpdateReviewState> {
     try {
-        const supabase = createClient();
-
-        // 받은 데이터 로깅
-        console.log('Received data:', {
-            reviewId: formData.get('reviewId'),
-            userId: formData.get('userId'),
-            content: formData.get('content')
-        });
+        const supabase = createClient()
 
         const validation = updateReviewSchema.safeParse({
             reviewId: formData.get('reviewId') as string,
@@ -215,9 +208,6 @@ export async function updateReview(prevState: UpdateReviewState, formData: FormD
         }
 
         const { reviewId, userId, content } = validation.data;
-
-        // 리뷰 업데이트 전 데이터 확인
-        console.log('Updating review:', { reviewId, userId, content });
 
         const { error: updateError } = await supabase
             .from('reviews')
