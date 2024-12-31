@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod';
 import { createClient } from '@/utils/supabase/server'
+import { ReviewService } from './services/reviewService';
 
 const rateSchema = z.object({
     movie_id: z.string(),
@@ -81,69 +82,37 @@ export type ReviewState = {
 }
 
 export async function review(prevState: ReviewState, formData: FormData) {
-    const supabase = createClient()
-    const validation = reviewSchema.safeParse({
-        movie_id: formData.get('movie_id') as string,
-        user_id: formData.get('user_id') as string,
-        the_movie_db_id: formData.get('the_movie_db_id') as string,
-        category: formData.get('category') as string,
-        review: formData.get('review') as string,
-    })
+    try {
+        const reviewData = {
+            review_content: formData.get('review') as string,
+            review_movie_id: formData.get('the_movie_db_id') as string,
+            review_user_id: formData.get('user_id') as string,
+            review_user_name: formData.get('user_name') as string,
+            category: formData.get('category') as string,
+            the_movie_db_id: formData.get('the_movie_db_id') as string
+        };
 
-    if (!validation.success) {
-        const error = validation.error.flatten().fieldErrors
-        console.log(error)
+        const review = await ReviewService.createReview(reviewData);
+
+        const url = `/movie/${formData.get('movie_id')}/${formData.get('category')}`;
+        revalidatePath(url);
+
+        return { 
+            message: "리뷰가 등록되었습니다.",
+            data: review
+        };
+    } catch (error) {
+        if (error instanceof Error) {
+            return {
+                error: error.cause || error.message,
+                message: "리뷰 등록 실패"
+            };
+        }
         return {
-            error: error,
+            error: "알 수 없는 오류가 발생했습니다.",
             message: "리뷰 등록 실패"
-        }
+        };
     }
-
-    const { movie_id, user_id, the_movie_db_id, category, review } = validation.data
-
-    // 먼저 유저 이름 조회
-    const { data: profile, error: profileError } = await supabase
-        .from('profiles')
-        .select('name')
-        .eq('id', user_id)
-        .single();
-
-    if (profileError) {
-        console.log(profileError)
-        return {
-            error: profileError.message,
-            message: "유저 정보 조회 실패"
-        }
-    }
-
-    // 리뷰 생성 시 유저 이름도 함께 저장
-    const { data, error } = await supabase
-        .from('reviews')
-        .insert([{
-            review_movie_id: the_movie_db_id,
-            review_user_id: user_id,
-            review_content: review,
-            review_user_name: profile.name
-        }])
-        .select()
-        .single();
-
-    if (error) {
-        return {
-            error: error.message,
-            message: "리뷰 등록 실패"
-        }
-    }
-
-    const url = `/movie/${movie_id}/${category}`
-    revalidatePath(url)
-    return {
-        message: "리뷰가 등록되었습니다.",
-        data: {
-            id: data.id,
-            userName: profile.name
-        }
-    };
 }
 
 interface UpdateReviewState {

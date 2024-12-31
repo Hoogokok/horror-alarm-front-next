@@ -38,6 +38,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
       {hasReviews ? (
         <ReviewList
           reviews={reviews}
+          userName={user?.user_metadata?.name}
           currentUserId={user?.id}
           movie={movie}
           category={category}

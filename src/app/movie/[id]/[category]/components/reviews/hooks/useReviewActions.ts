@@ -1,3 +1,5 @@
+'use client';
+
 import { deleteReview, updateReview, review, ReviewState } from '@/app/movie/lib/actions';
 import { useActionState } from 'react';
 

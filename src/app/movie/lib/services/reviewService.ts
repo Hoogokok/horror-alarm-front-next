@@ -1,5 +1,4 @@
 import { createClient } from '@/utils/supabase/server';
-import { Review } from '@/types/movie-detail-response-dto';
 import { z } from 'zod';
 
 interface ReviewCreateData {
@@ -30,13 +29,19 @@ export class ReviewService {
     private static supabase = createClient();
 
     static async createReview(data: ReviewCreateData) {
+        console.log('ReviewService.createReview - Input data:', data);
+
         const validationResult = await this.validateReviewData(data);
+        console.log('Validation result:', validationResult);
+
         if (validationResult?.error) {
+            console.log('Validation failed:', validationResult.error);
             throw new Error('Validation failed', {
-                cause: validationResult.error
+                cause: validationResult.error 
             });
         }
 
+        console.log('Attempting to insert review into DB');
         const { data: review, error } = await this.supabase
             .from('reviews')
             .insert([{
@@ -49,16 +54,20 @@ export class ReviewService {
             .single();
 
         if (error) {
-            throw new Error('Failed to create review', {
-                cause: error.message
+            console.log('DB error:', error);
+            throw new Error('Failed to create review', { 
+                cause: error.message || '알 수 없는 오류가 발생했습니다.' 
             });
         }
 
+        console.log('Review created successfully:', review);
         return review;
     }
 
     static async validateReviewData(data: ReviewCreateData) {
+        console.log('Validating review data:', data);
         const validation = reviewSchema.safeParse(data);
+        console.log('Validation schema result:', validation);
 
         if (!validation.success) {
             return {

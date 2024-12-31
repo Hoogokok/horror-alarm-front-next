@@ -20,6 +20,7 @@ interface ReviewListProps {
     isLogin: boolean;
     isReviewed: boolean;
     onReviewCreate: (newReview: Review) => void;
+    userName?: string;
 }
 
 export default function ReviewList({
@@ -33,7 +34,8 @@ export default function ReviewList({
     onPageChange,
     isLogin,
     isReviewed,
-    onReviewCreate
+    onReviewCreate,
+    userName
 }: ReviewListProps) {
     const [localReviews, setLocalReviews] = useState(reviews);
     const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
@@ -75,6 +77,7 @@ export default function ReviewList({
                 isReviewed={isReviewed}
                 movieId={movie.id}
                 userId={currentUserId || ''}
+                userName={userName || ''}
                 theMovieDbId={movie.theMovieDbId}
                 category={category}
                 onSuccess={handleReviewCreate}
