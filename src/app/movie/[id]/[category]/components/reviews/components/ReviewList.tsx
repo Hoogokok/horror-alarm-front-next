@@ -3,7 +3,7 @@
 import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import styles from '../styles/reviews.module.css';
 import commonStyles from '../../styles/common.module.css';
-import ReviewItem from './ReviewItem';
+import { ReviewItemContainer } from '../containers/ReviewItemContainer';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { RefObject } from 'react';
 import ReviewForm from './ReviewForm';
@@ -81,7 +81,7 @@ export default function ReviewList({
                     {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                         const review = reviews[virtualRow.index];
                         return (
-                            <ReviewItem
+                            <ReviewItemContainer
                                 key={review.id}
                                 review={review}
                                 currentUserId={currentUserId}
