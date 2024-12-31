@@ -4,6 +4,7 @@ import ReviewItem from '../ReviewItem';
 import { Review } from '@/types/movie-detail-response-dto';
 import { Profile } from '@/types/profile';
 import { deleteReview, updateReview } from '@/app/movie/lib/actions';
+import { useReviewActions } from '../hooks/useReviewActions';
 
 // 상태 타입 정의
 type ActionState = {
@@ -58,12 +59,14 @@ vi.mock('@/app/movie/lib/actions', () => ({
 }));
 
 vi.mock('../hooks/useReviewActions', () => ({
-    useReviewActions: () => ({
+    useReviewActions: vi.fn().mockImplementation(() => ({
         deleteState: { error: '', message: '' },
-        updateState: { error: '', message: '' },
+        updateState: { error: '', message: '수정 성공' },
+        reviewState: { error: '', message: '' },
         deleteAction: vi.fn(),
-        updateAction: vi.fn()
-    })
+        updateAction: vi.fn(),
+        reviewAction: vi.fn()
+    }))
 }));
 
 const mockReview: Review = {
@@ -96,6 +99,8 @@ describe('ReviewItem 컴포넌트', () => {
     const mockOnRefresh = vi.fn();
     const mockOnEditStart = vi.fn();
     const mockOnEditEnd = vi.fn();
+    const mockOnUpdate = vi.fn();
+    const mockOnDelete = vi.fn();
 
     beforeEach(() => {
         vi.clearAllMocks();
@@ -117,6 +122,8 @@ describe('ReviewItem 컴포넌트', () => {
                 isEditing={false}
                 onEditStart={mockOnEditStart}
                 onEditEnd={mockOnEditEnd}
+                onUpdate={mockOnUpdate}
+                onDelete={mockOnDelete}
             />
         );
 
@@ -136,6 +143,8 @@ describe('ReviewItem 컴포넌트', () => {
                 isEditing={false}
                 onEditStart={mockOnEditStart}
                 onEditEnd={mockOnEditEnd}
+                onUpdate={mockOnUpdate}
+                onDelete={mockOnDelete}
             />
         );
 
@@ -157,6 +166,8 @@ describe('ReviewItem 컴포넌트', () => {
                 isEditing={false}
                 onEditStart={mockOnEditStart}
                 onEditEnd={mockOnEditEnd}
+                onUpdate={mockOnUpdate}
+                onDelete={mockOnDelete}
             />
         );
 
@@ -176,6 +187,8 @@ describe('ReviewItem 컴포넌트', () => {
                 isEditing={true}
                 onEditStart={mockOnEditStart}
                 onEditEnd={mockOnEditEnd}
+                onUpdate={mockOnUpdate}
+                onDelete={mockOnDelete}
             />
         );
 
@@ -200,6 +213,8 @@ describe('ReviewItem 컴포넌트', () => {
                 isEditing={false}
                 onEditStart={mockOnEditStart}
                 onEditEnd={mockOnEditEnd}
+                onUpdate={mockOnUpdate}
+                onDelete={mockOnDelete}
             />
         );
 
@@ -221,6 +236,8 @@ describe('ReviewItem 컴포넌트', () => {
                 isEditing={false}
                 onEditStart={mockOnEditStart}
                 onEditEnd={mockOnEditEnd}
+                onUpdate={mockOnUpdate}
+                onDelete={mockOnDelete}
             />
         );
 
@@ -228,5 +245,39 @@ describe('ReviewItem 컴포넌트', () => {
         fireEvent.click(editButton);
 
         expect(mockOnEditStart).toHaveBeenCalled();
+    });
+
+    it('수정 성공 시 onUpdate가 호출되어야 함', async () => {
+        const mockUpdateAction = vi.fn();
+        (useReviewActions as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => ({
+            updateState: { error: '', message: '수정 성공' },
+            updateAction: mockUpdateAction,
+            deleteState: { error: '', message: '' },
+            deleteAction: vi.fn(),
+            reviewState: { error: '', message: '' },
+            reviewAction: vi.fn()
+        }));
+
+        render(
+            <ReviewItem
+                review={mockReview}
+                currentUserId="user1"
+                style={{}}
+                movie={mockMovie}
+                category="streaming"
+                onRefresh={mockOnRefresh}
+                isEditing={true}
+                onEditStart={mockOnEditStart}
+                onEditEnd={mockOnEditEnd}
+                onUpdate={mockOnUpdate}
+                onDelete={mockOnDelete}
+            />
+        );
+
+        const form = screen.getByRole('form');
+        await fireEvent.submit(form);
+
+        expect(mockUpdateAction).toHaveBeenCalled();
+        expect(mockOnUpdate).toHaveBeenCalled();
     });
 });
