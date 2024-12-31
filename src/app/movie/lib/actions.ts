@@ -122,49 +122,31 @@ interface UpdateReviewState {
 }
 
 interface DeleteReviewState {
-    error?: string;
+    error?: string | Record<string, string[]>;
     message?: string;
     success?: boolean;
 }
 
 export async function deleteReview(prevState: DeleteReviewState, formData: FormData): Promise<DeleteReviewState> {
-    try {
-        const supabase = createClient()
-        const reviewId = formData.get('reviewId') as string;
-        const userId = formData.get('userId') as string;
-        const movie_id = formData.get('movie_id') as string;
-        const category = formData.get('category') as string;
+    const reviewId = formData.get('reviewId') as string;
+    const userId = formData.get('userId') as string;
 
-        const { data: review, error: reviewError } = await supabase
-            .from('reviews')
-            .select('review_user_id')
-            .eq('id', reviewId)
-            .single();
+    const result = await ReviewService.deleteReview(reviewId, userId);
 
-        if (reviewError) {
-            return { error: '리뷰를 찾을 수 없습니다.' };
-        }
-
-        // 권한 체크
-        if (review.review_user_id !== userId) {
-            return { error: '리뷰를 삭제할 권한이 없습니다.' };
-        }
-
-        const { error: deleteError } = await supabase
-            .from('reviews')
-            .delete()
-            .eq('id', reviewId);
-
-        if (deleteError) {
-            return { error: '리뷰 삭제에 실패했습니다.' };
-        }
-
-        const url = `/movie/${movie_id}/${category}`;
-        revalidatePath(url);
-        return { message: '리뷰가 삭제되었습니다.', success: true };
-    } catch (error) {
-        return { error: '리뷰 삭제 중 오류가 발생했습니다.' };
+    if (result.error) {
+        return {
+            error: result.error,
+            message: "리뷰 삭제 실패"
+        };
     }
+
+    const url = `/movie/${formData.get('movie_id')}/${formData.get('category')}`;
+    revalidatePath(url);
+
+    return {
+        message: '리뷰가 삭제되었습니다.',
+        success: true
+    };
 }
 
 const updateReviewSchema = z.object({

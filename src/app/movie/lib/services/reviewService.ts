@@ -128,4 +128,32 @@ export class ReviewService {
 
         return { data: review };
     }
+
+    static async deleteReview(reviewId: string, userId: string): Promise<ServiceResult<boolean>> {
+        // 권한 체크
+        const { data: existingReview, error: checkError } = await this.supabase
+            .from('reviews')
+            .select('review_user_id')
+            .eq('id', reviewId)
+            .single();
+
+        if (checkError) {
+            return { error: '리뷰를 찾을 수 없습니다.' };
+        }
+
+        if (existingReview.review_user_id !== userId) {
+            return { error: '리뷰를 삭제할 권한이 없습니다.' };
+        }
+
+        const { error } = await this.supabase
+            .from('reviews')
+            .delete()
+            .eq('id', reviewId);
+
+        if (error) {
+            return { error: '리뷰 삭제에 실패했습니다.' };
+        }
+
+        return { data: true };
+    }
 } 
