@@ -1,39 +1,41 @@
 'use client';
 
-import { review, ReviewState } from '@/app/movie/lib/actions';
-import { useActionState } from 'react';
+import { useReviewActions } from './hooks/useReviewActions';
 import Link from 'next/link';
 import styles from '../styles/reviews.module.css';
 import commonStyles from '../styles/common.module.css';
+import { Review } from '@/types/movie-detail-response-dto';
 
 interface ReviewFormProps {
     isLogin: boolean;
     isReviewed: boolean;
     movieId: string;
     userId: string;
+    userName: string;
     theMovieDbId: string;
     category: string;
+    onSuccess?: (newReview: Review) => void;
 }
 
-export default function ReviewForm({ isLogin, isReviewed, movieId, userId, theMovieDbId, category }: ReviewFormProps) {
-    const initialState: ReviewState = { error: {}, message: "" };
-    const [reviewState, reviewAction] = useActionState(review, initialState);
+export default function ReviewForm({ isLogin, isReviewed, movieId, userId, userName, theMovieDbId, category, onSuccess }: ReviewFormProps) {
+    const { reviewState, reviewAction } = useReviewActions();
 
     const renderError = () => {
+        if (!reviewState.error) return null;
+
         if (typeof reviewState.error === 'string') {
             return <p className={commonStyles.error}>{reviewState.error}</p>;
-        } else if (reviewState.error) {
-            return (
-                <ul className={styles.errorList}>
-                    {Object.entries(reviewState.error).map(([key, errors]) => (
-                        errors && errors.map((error, index) => (
-                            <li key={`${key}-${index}`} className={styles.errorItem}>{error}</li>
-                        ))
-                    ))}
-                </ul>
-            );
         }
-        return null;
+
+        return (
+            <ul className={styles.errorList}>
+                {Object.entries(reviewState.error).map(([key, errors]) => (
+                    Array.isArray(errors) && errors.map((error: string, index: number) => (
+                        <li key={`${key}-${index}`} className={styles.errorItem}>{error}</li>
+                    ))
+                ))}
+            </ul>
+        );
     };
 
     if (!isLogin) {
@@ -48,10 +50,27 @@ export default function ReviewForm({ isLogin, isReviewed, movieId, userId, theMo
         return <p className={styles.rated}>이미 리뷰를 작성했습니다.</p>;
     }
 
+    const handleAction = async (formData: FormData) => {
+        await reviewAction(formData);
+        if (!reviewState.error && reviewState.data) {
+            onSuccess?.({
+                id: reviewState.data.id,
+                content: formData.get('review') as string,
+                review_user_id: userId,
+                review_movie_id: theMovieDbId,
+                created_at: new Date().toISOString(),
+                profile: {
+                    id: userId,
+                    name: reviewState.data.userName
+                }
+            });
+        }
+    };
+
     return (
         <div className={styles.reviewForm}>
             <h3 className={styles.reviewTitle}>리뷰 작성하기</h3>
-            <form action={reviewAction} role='form'>
+            <form action={handleAction} role='form'>
                 <textarea
                     name='review'
                     placeholder="이 영화에 대한 리뷰를 작성해주세요..."
@@ -59,6 +78,7 @@ export default function ReviewForm({ isLogin, isReviewed, movieId, userId, theMo
                     required
                 />
                 <input type="hidden" name="movie_id" value={movieId} />
+                <input type="hidden" name="user_name" value={userName} />
                 <input type="hidden" name="user_id" value={userId} />
                 <input type="hidden" name="the_movie_db_id" value={theMovieDbId} />
                 <input type="hidden" name="category" value={category} />
