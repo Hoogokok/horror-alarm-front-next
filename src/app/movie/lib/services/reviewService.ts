@@ -1,5 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { z } from 'zod';
+import { Review } from '@/types/movie-detail-response-dto';
 
 interface ReviewCreateData {
     review_content: string;
@@ -14,6 +15,11 @@ interface ReviewUpdateData {
     userId: string;
 }
 
+interface ServiceResult<T> {
+    data?: T;
+    error?: string | Record<string, string[]>;
+}
+
 const reviewSchema = z.object({
     review_content: z.string()
         .min(1, "리뷰는 1자 이상이어야 합니다")
@@ -23,6 +29,14 @@ const reviewSchema = z.object({
     review_user_name: z.string(),
     category: z.string(),
     the_movie_db_id: z.string()
+});
+
+const updateReviewSchema = z.object({
+    id: z.string(),
+    content: z.string()
+        .min(1, "리뷰는 1자 이상이어야 합니다")
+        .max(1000, "리뷰는 1000자 이하이어야 합니다"),
+    userId: z.string()
 });
 
 export class ReviewService {
@@ -76,5 +90,42 @@ export class ReviewService {
         }
 
         return null;
+    }
+
+    static async updateReview(data: ReviewUpdateData): Promise<ServiceResult<Review>> {
+        // 권한 체크
+        const { data: existingReview, error: checkError } = await this.supabase
+            .from('reviews')
+            .select('review_user_id')
+            .eq('id', data.id)
+            .single();
+
+        if (checkError) {
+            return { error: '리뷰를 찾을 수 없습니다.' };
+        }
+
+        if (existingReview.review_user_id !== data.userId) {
+            return { error: '리뷰를 수정할 권한이 없습니다.' };
+        }
+
+        // 유효성 검사
+        const validation = updateReviewSchema.safeParse(data);
+        if (!validation.success) {
+            return { error: validation.error.flatten().fieldErrors };
+        }
+
+        // 업데이트 수행
+        const { data: review, error } = await this.supabase
+            .from('reviews')
+            .update({ review_content: data.content })
+            .eq('id', data.id)
+            .select()
+            .single();
+
+        if (error) {
+            return { error: '리뷰 수정에 실패했습니다.' };
+        }
+
+        return { data: review };
     }
 } 

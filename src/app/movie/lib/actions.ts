@@ -176,40 +176,26 @@ const updateReviewSchema = z.object({
 });
 
 export async function updateReview(prevState: UpdateReviewState, formData: FormData): Promise<UpdateReviewState> {
-    try {
-        const supabase = createClient()
+    const reviewData = {
+        id: formData.get('reviewId') as string,
+        content: formData.get('content') as string,
+        userId: formData.get('userId') as string,
+    };
 
-        const validation = updateReviewSchema.safeParse({
-            reviewId: formData.get('reviewId') as string,
-            userId: formData.get('userId') as string,
-            content: formData.get('content') as string,
-            movie_id: formData.get('movie_id') as string,
-            category: formData.get('category') as string,
-        });
+    const result = await ReviewService.updateReview(reviewData);
 
-        if (!validation.success) {
-            return {
-                error: validation.error.flatten().fieldErrors,
-                message: "리뷰 수정 실패"
-            };
-        }
-
-        const { reviewId, userId, content, movie_id, category } = validation.data;
-
-        const { error: updateError } = await supabase
-            .from('reviews')
-            .update({ review_content: content })
-            .eq('id', reviewId)
-            .select();
-
-        if (updateError) {
-            return { error: '리뷰 수정에 실패했습니다.' };
-        }
-
-        const url = `/movie/${movie_id}/${category}`;
-        revalidatePath(url);
-        return { message: '리뷰가 수정되었습니다.', success: true };
-    } catch (error) {
-        return { error: '리뷰 수정 중 오류가 발생했습니다.' };
+    if (result.error) {
+        return {
+            error: result.error,
+            message: "리뷰 수정 실패"
+        };
     }
+
+    const url = `/movie/${formData.get('movie_id')}/${formData.get('category')}`;
+    revalidatePath(url);
+
+    return {
+        message: '리뷰가 수정되었습니다.',
+        success: true
+    };
 }
