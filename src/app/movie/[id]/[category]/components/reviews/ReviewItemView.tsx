@@ -13,6 +13,8 @@ interface ReviewItemViewProps {
     onDeleteClick: (e: React.MouseEvent) => void;
     error?: string;
     style?: React.CSSProperties;
+    movie: any;
+    category: string;
 }
 
 export function ReviewItemView({
@@ -26,7 +28,9 @@ export function ReviewItemView({
     onEditSubmit,
     onDeleteClick,
     error,
-    style
+    style,
+    movie,
+    category
 }: ReviewItemViewProps) {
     const showActions = isAuthor === true;
 
@@ -80,6 +84,8 @@ export function ReviewItemView({
                         />
                         <input type="hidden" name="reviewId" value={review.id} />
                         <input type="hidden" name="userId" value={review.profile?.id || ''} />
+                        <input type="hidden" name="movie_id" value={movie.id} />
+                        <input type="hidden" name="category" value={category} />
                     </form>
                 ) : (
                     <p className={styles.reviewText}>{review.content}</p>

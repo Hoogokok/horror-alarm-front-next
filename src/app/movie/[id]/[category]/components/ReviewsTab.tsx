@@ -5,7 +5,6 @@ import { UserWithMovieIds } from '@/types/user';
 import { fetchMovieReviews } from '@/utils/api';
 import { useRef, useState } from 'react';
 import styles from './styles/reviews.module.css';
-import ReviewForm from './reviews/ReviewForm';
 import ReviewList from './reviews/ReviewList';
 
 interface ReviewsTabProps {
@@ -36,15 +35,6 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
   return (
     <div className={styles.review}>
-      <ReviewForm
-        isLogin={isLogin}
-        isReviewed={isReviewed}
-        movieId={movie.id}
-        userId={user?.id || ''}
-        theMovieDbId={movie.theMovieDbId}
-        category={category}
-      />
-
       {hasReviews ? (
         <ReviewList
           reviews={reviews}
@@ -55,6 +45,11 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
           currentPage={currentPage}
           totalReviews={movie.totalReviews}
           onPageChange={handlePageChange}
+          isLogin={isLogin}
+          isReviewed={isReviewed}
+          onReviewCreate={(newReview) => {
+            setReviews(prev => [newReview, ...prev]);
+          }}
         />
       ) : (
           <div className={styles.noReviews}>

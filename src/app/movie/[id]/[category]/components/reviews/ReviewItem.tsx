@@ -15,6 +15,8 @@ interface ReviewItemProps {
     isEditing: boolean;
     onEditStart: () => void;
     onEditEnd: () => void;
+    onUpdate: (updatedReview: Review) => void;
+    onDelete: (deletedReviewId: string) => void;
 }
 
 export default function ReviewItem({
@@ -24,21 +26,29 @@ export default function ReviewItem({
     onRefresh,
     isEditing,
     onEditStart,
-    onEditEnd
+    onEditEnd,
+    movie,
+    category,
+    onUpdate,
+    onDelete
 }: ReviewItemProps) {
     const isAuthor = currentUserId === review.profile?.id;
     const { deleteState, deleteAction, updateState, updateAction } = useReviewActions();
     const [editContent, setEditContent] = useState(review.content);
 
     const handleSubmit = async (e: React.FormEvent) => {
-        console.log('Submit called');
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
 
+        formData.append('movie_id', movie.id);
+        formData.append('category', category);
+
         await updateAction(formData);
-        onEditEnd();
-        onRefresh?.();
+        if (!updateState.error) {
+            onUpdate({ ...review, content: formData.get('content') as string });
+            onEditEnd();
+        }
     };
 
     const handleDelete = async (e: React.MouseEvent) => {
@@ -49,9 +59,13 @@ export default function ReviewItem({
         const formData = new FormData();
         formData.append('reviewId', review.id);
         formData.append('userId', review.profile?.id || '');
+        formData.append('movie_id', movie.id);
+        formData.append('category', category);
 
         await deleteAction(formData);
-        onRefresh?.();
+        if (!deleteState.error) {
+            onDelete(review.id);
+        }
     };
 
     const error = deleteState.error || updateState.error;
@@ -69,6 +83,8 @@ export default function ReviewItem({
             onDeleteClick={handleDelete}
             error={typeof error === 'string' ? error : undefined}
             style={style}
+            movie={movie}
+            category={category}
         />
     );
 } 
