@@ -1,10 +1,10 @@
 'use client';
 
-import { review, ReviewState } from '@/app/movie/lib/actions';
-import { useActionState } from 'react';
+import { useReviewActions } from './hooks/useReviewActions';
 import Link from 'next/link';
 import styles from '../styles/reviews.module.css';
 import commonStyles from '../styles/common.module.css';
+import { Review } from '@/types/movie-detail-response-dto';
 
 interface ReviewFormProps {
     isLogin: boolean;
@@ -13,11 +13,11 @@ interface ReviewFormProps {
     userId: string;
     theMovieDbId: string;
     category: string;
+    onSuccess?: (newReview: Review) => void;
 }
 
-export default function ReviewForm({ isLogin, isReviewed, movieId, userId, theMovieDbId, category }: ReviewFormProps) {
-    const initialState: ReviewState = { error: {}, message: "" };
-    const [reviewState, reviewAction] = useActionState(review, initialState);
+export default function ReviewForm({ isLogin, isReviewed, movieId, userId, theMovieDbId, category, onSuccess }: ReviewFormProps) {
+    const { reviewState, reviewAction } = useReviewActions();
 
     const renderError = () => {
         if (typeof reviewState.error === 'string') {
@@ -48,10 +48,27 @@ export default function ReviewForm({ isLogin, isReviewed, movieId, userId, theMo
         return <p className={styles.rated}>이미 리뷰를 작성했습니다.</p>;
     }
 
+    const handleAction = async (formData: FormData) => {
+        await reviewAction(formData);
+        if (!reviewState.error && reviewState.data) {
+            onSuccess?.({
+                id: reviewState.data.id,
+                content: formData.get('review') as string,
+                review_user_id: userId,
+                review_movie_id: theMovieDbId,
+                created_at: new Date().toISOString(),
+                profile: {
+                    id: userId,
+                    name: reviewState.data.userName
+                }
+            });
+        }
+    };
+
     return (
         <div className={styles.reviewForm}>
             <h3 className={styles.reviewTitle}>리뷰 작성하기</h3>
-            <form action={reviewAction} role='form'>
+            <form action={handleAction} role='form'>
                 <textarea
                     name='review'
                     placeholder="이 영화에 대한 리뷰를 작성해주세요..."

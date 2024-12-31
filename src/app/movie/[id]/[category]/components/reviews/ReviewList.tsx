@@ -5,7 +5,8 @@ import styles from '../styles/reviews.module.css';
 import commonStyles from '../styles/common.module.css';
 import ReviewItem from './ReviewItem';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { RefObject, useState } from 'react';
+import { RefObject, useState, useCallback, useEffect } from 'react';
+import ReviewForm from './ReviewForm';
 
 interface ReviewListProps {
     reviews: Review[];
@@ -16,6 +17,9 @@ interface ReviewListProps {
     currentPage: number;
     totalReviews: number;
     onPageChange: (page: number) => void;
+    isLogin: boolean;
+    isReviewed: boolean;
+    onReviewCreate: (newReview: Review) => void;
 }
 
 export default function ReviewList({
@@ -26,12 +30,36 @@ export default function ReviewList({
     parentRef,
     currentPage,
     totalReviews,
-    onPageChange
+    onPageChange,
+    isLogin,
+    isReviewed,
+    onReviewCreate
 }: ReviewListProps) {
+    const [localReviews, setLocalReviews] = useState(reviews);
     const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
 
+    useEffect(() => {
+        setLocalReviews(reviews);
+    }, [reviews]);
+
+    const handleReviewUpdate = useCallback((updatedReview: Review) => {
+        setLocalReviews(prev =>
+            prev.map(review =>
+                review.id === updatedReview.id ? updatedReview : review
+            )
+        );
+    }, []);
+
+    const handleReviewDelete = useCallback((deletedReviewId: string) => {
+        setLocalReviews(prev => prev.filter(review => review.id !== deletedReviewId));
+    }, []);
+
+    const handleReviewCreate = useCallback((newReview: Review) => {
+        setLocalReviews(prev => [newReview, ...prev]);
+    }, []);
+
     const rowVirtualizer = useVirtualizer({
-        count: reviews.length,
+        count: localReviews.length,
         getScrollElement: () => parentRef.current,
         estimateSize: () => 190,
         overscan: 5,
@@ -42,6 +70,15 @@ export default function ReviewList({
 
     return (
         <>
+            <ReviewForm
+                isLogin={isLogin}
+                isReviewed={isReviewed}
+                movieId={movie.id}
+                userId={currentUserId || ''}
+                theMovieDbId={movie.theMovieDbId}
+                category={category}
+                onSuccess={handleReviewCreate}
+            />
             <div ref={parentRef} className={styles.reviewList} style={{ height: '400px', overflow: 'auto' }}>
                 <div
                     style={{
@@ -52,7 +89,7 @@ export default function ReviewList({
                     }}
                 >
                     {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                        const review = reviews[virtualRow.index];
+                        const review = localReviews[virtualRow.index];
                         return (
                             <ReviewItem
                                 key={review.id}
@@ -71,6 +108,8 @@ export default function ReviewList({
                                 isEditing={editingReviewId === review.id}
                                 onEditStart={() => setEditingReviewId(review.id)}
                                 onEditEnd={() => setEditingReviewId(null)}
+                                onUpdate={handleReviewUpdate}
+                                onDelete={handleReviewDelete}
                             />
                         );
                     })}
