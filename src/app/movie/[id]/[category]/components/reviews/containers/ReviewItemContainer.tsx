@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
-import { useReviewActions } from './hooks/useReviewActions';
-import { ReviewItemView } from './ReviewItemView';
+import { useReviewActions } from '../hooks/useReviewActions';
+import ReviewItem from '../components/ReviewItem';
 
-interface ReviewItemProps {
+interface ReviewItemContainerProps {
     review: Review;
     currentUserId?: string;
     style: React.CSSProperties;
@@ -19,20 +19,19 @@ interface ReviewItemProps {
     onDelete: (deletedReviewId: string) => void;
 }
 
-export default function ReviewItem({
+export function ReviewItemContainer({
     review,
     currentUserId,
     style,
+    movie,
+    category,
     onRefresh,
     isEditing,
     onEditStart,
     onEditEnd,
-    movie,
-    category,
     onUpdate,
     onDelete
-}: ReviewItemProps) {
-    const isAuthor = currentUserId === review.profile?.id;
+}: ReviewItemContainerProps) {
     const { deleteState, deleteAction, updateState, updateAction } = useReviewActions();
     const [editContent, setEditContent] = useState(review.content);
 
@@ -68,28 +67,23 @@ export default function ReviewItem({
         }
     };
 
-    const handleEditStart = () => {
-        console.log('Edit Start clicked');
-        onEditStart();
-    };
-
     const error = deleteState.error || updateState.error;
 
     return (
-        <ReviewItemView
+        <ReviewItem
             review={review}
-            isAuthor={isAuthor}
-            isEditing={isEditing}
-            editContent={editContent}
-            onEditContentChange={setEditContent}
-            onEditStart={handleEditStart}
-            onEditEnd={onEditEnd}
-            onEditSubmit={handleSubmit}
-            onDeleteClick={handleDelete}
-            error={typeof error === 'string' ? error : undefined}
+            currentUserId={currentUserId}
             style={style}
             movie={movie}
             category={category}
+            isEditing={isEditing}
+            editContent={editContent}
+            onEditContentChange={setEditContent}
+            onEditStart={onEditStart}
+            onEditEnd={onEditEnd}
+            onSubmit={handleSubmit}
+            onDelete={handleDelete}
+            error={typeof error === 'string' ? error : undefined}
         />
     );
 } 

@@ -29,6 +29,7 @@ export function ReviewItemView({
     onDeleteClick,
     movie,
     category,
+    error,
 }: ReviewItemViewProps) {
     return (
         <div className={styles.reviewItem}>
@@ -74,6 +75,11 @@ export function ReviewItemView({
                         </div>
                         <p className={styles.reviewText}>{review.content}</p>
                     </div>
+            )}
+            {error && (
+                <div className={styles.error} data-testid="error-message">
+                    {error}
+                </div>
             )}
         </div>
     );
