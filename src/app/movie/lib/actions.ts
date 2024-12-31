@@ -74,9 +74,13 @@ export type ReviewState = {
         review?: string[]
     } | string
     message?: string
+    data?: {
+        id: string;
+        userName: string;
+    }
 }
 
-export async function review(prevState: ReviewState, formData: FormData): Promise<ReviewState> {
+export async function review(prevState: ReviewState, formData: FormData) {
     const supabase = createClient()
     const validation = reviewSchema.safeParse({
         movie_id: formData.get('movie_id') as string,
@@ -121,9 +125,10 @@ export async function review(prevState: ReviewState, formData: FormData): Promis
             review_content: review,
             review_user_name: profile.name
         }])
+        .select()
+        .single();
 
     if (error) {
-        console.log(error)
         return {
             error: error.message,
             message: "리뷰 등록 실패"
@@ -131,18 +136,26 @@ export async function review(prevState: ReviewState, formData: FormData): Promis
     }
 
     const url = `/movie/${movie_id}/${category}`
-    revalidatePath(url, 'page')
-    redirect(url)
+    revalidatePath(url)
+    return {
+        message: "리뷰가 등록되었습니다.",
+        data: {
+            id: data.id,
+            userName: profile.name
+        }
+    };
 }
 
 interface UpdateReviewState {
     error?: string | Record<string, string[]>;
     message?: string;
+    success?: boolean;
 }
 
 interface DeleteReviewState {
     error?: string;
     message?: string;
+    success?: boolean;
 }
 
 export async function deleteReview(prevState: DeleteReviewState, formData: FormData): Promise<DeleteReviewState> {
@@ -150,6 +163,8 @@ export async function deleteReview(prevState: DeleteReviewState, formData: FormD
         const supabase = createClient()
         const reviewId = formData.get('reviewId') as string;
         const userId = formData.get('userId') as string;
+        const movie_id = formData.get('movie_id') as string;
+        const category = formData.get('category') as string;
 
         const { data: review, error: reviewError } = await supabase
             .from('reviews')
@@ -175,10 +190,10 @@ export async function deleteReview(prevState: DeleteReviewState, formData: FormD
             return { error: '리뷰 삭제에 실패했습니다.' };
         }
 
-        revalidatePath('/movie/[id]/[category]', 'page');
-        return { message: '리뷰가 삭제되었습니다.' };
+        const url = `/movie/${movie_id}/${category}`;
+        revalidatePath(url);
+        return { message: '리뷰가 삭제되었습니다.', success: true };
     } catch (error) {
-        console.error('리뷰 삭제 중 오류:', error);
         return { error: '리뷰 삭제 중 오류가 발생했습니다.' };
     }
 }
@@ -187,6 +202,8 @@ const updateReviewSchema = z.object({
     reviewId: z.string(),
     userId: z.string(),
     content: z.string().min(1, "리뷰는 1자 이상이어야 합니다").max(1000, "리뷰는 1000자 이하이어야 합니다"),
+    movie_id: z.string(),
+    category: z.string(),
 });
 
 export async function updateReview(prevState: UpdateReviewState, formData: FormData): Promise<UpdateReviewState> {
@@ -197,17 +214,18 @@ export async function updateReview(prevState: UpdateReviewState, formData: FormD
             reviewId: formData.get('reviewId') as string,
             userId: formData.get('userId') as string,
             content: formData.get('content') as string,
+            movie_id: formData.get('movie_id') as string,
+            category: formData.get('category') as string,
         });
 
         if (!validation.success) {
-            console.error('Validation failed:', validation.error);
             return {
                 error: validation.error.flatten().fieldErrors,
                 message: "리뷰 수정 실패"
             };
         }
 
-        const { reviewId, userId, content } = validation.data;
+        const { reviewId, userId, content, movie_id, category } = validation.data;
 
         const { error: updateError } = await supabase
             .from('reviews')
@@ -216,14 +234,13 @@ export async function updateReview(prevState: UpdateReviewState, formData: FormD
             .select();
 
         if (updateError) {
-            console.error('Update error:', updateError);
             return { error: '리뷰 수정에 실패했습니다.' };
         }
 
-        revalidatePath('/movie/[id]/[category]', 'page');
-        return { message: '리뷰가 수정되었습니다.' };
+        const url = `/movie/${movie_id}/${category}`;
+        revalidatePath(url);
+        return { message: '리뷰가 수정되었습니다.', success: true };
     } catch (error) {
-        console.error('Review update error:', error);
         return { error: '리뷰 수정 중 오류가 발생했습니다.' };
     }
 }
