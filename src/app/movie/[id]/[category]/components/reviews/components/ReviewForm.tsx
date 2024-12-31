@@ -1,6 +1,6 @@
 'use client';
 
-import { useReviewActions } from './hooks/useReviewActions';
+import { useReviewActions } from '../hooks/useReviewActions';
 import Link from 'next/link';
 import styles from '../styles/reviews.module.css';
 import commonStyles from '../styles/common.module.css';

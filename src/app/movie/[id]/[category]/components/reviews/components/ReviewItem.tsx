@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
-import { useReviewActions } from './hooks/useReviewActions';
+import { useReviewActions } from '../hooks/useReviewActions';
 import { ReviewItemView } from './ReviewItemView';
 
 interface ReviewItemProps {

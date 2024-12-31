@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { ReviewItemView } from '../ReviewItemView';
+import { ReviewItemView } from '../components/ReviewItemView';
 import { Review } from '@/types/movie-detail-response-dto';
 
 describe('ReviewItemView', () => {

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import ReviewItem from '../ReviewItem';
+import ReviewItem from '../components/ReviewItem';
 import { Review } from '@/types/movie-detail-response-dto';
 import { Profile } from '@/types/profile';
 import { deleteReview, updateReview } from '@/app/movie/lib/actions';

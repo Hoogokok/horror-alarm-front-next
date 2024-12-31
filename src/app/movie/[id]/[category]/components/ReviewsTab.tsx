@@ -5,7 +5,7 @@ import { UserWithMovieIds } from '@/types/user';
 import { fetchMovieReviews } from '@/utils/api';
 import { useRef, useState } from 'react';
 import styles from './styles/reviews.module.css';
-import ReviewList from './reviews/ReviewList';
+import ReviewList from './reviews/components/ReviewList';
 
 interface ReviewsTabProps {
   movie: MovieDetailResponseDto;
