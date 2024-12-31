@@ -2,10 +2,10 @@
 
 import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import styles from '../styles/reviews.module.css';
-import commonStyles from '../styles/common.module.css';
+import commonStyles from '../../styles/common.module.css';
 import ReviewItem from './ReviewItem';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { RefObject, useState, useCallback, useEffect } from 'react';
+import { RefObject } from 'react';
 import ReviewForm from './ReviewForm';
 
 interface ReviewListProps {
@@ -19,8 +19,15 @@ interface ReviewListProps {
     onPageChange: (page: number) => void;
     isLogin: boolean;
     isReviewed: boolean;
-    onReviewCreate: (newReview: Review) => void;
     userName?: string;
+    // CRUD 관련 props
+    onReviewCreate: (newReview: Review) => void;
+    onReviewUpdate: (updatedReview: Review) => void;
+    onReviewDelete: (deletedReviewId: string) => void;
+    // 수정 모드 관련 props
+    editingReviewId: string | null;
+    onEditStart: (reviewId: string) => void;
+    onEditEnd: () => void;
 }
 
 export default function ReviewList({
@@ -34,40 +41,20 @@ export default function ReviewList({
     onPageChange,
     isLogin,
     isReviewed,
+    userName,
     onReviewCreate,
-    userName
+    onReviewUpdate,
+    onReviewDelete,
+    editingReviewId,
+    onEditStart,
+    onEditEnd
 }: ReviewListProps) {
-    const [localReviews, setLocalReviews] = useState(reviews);
-    const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
-
-    useEffect(() => {
-        setLocalReviews(reviews);
-    }, [reviews]);
-
-    const handleReviewUpdate = useCallback((updatedReview: Review) => {
-        setLocalReviews(prev =>
-            prev.map(review =>
-                review.id === updatedReview.id ? updatedReview : review
-            )
-        );
-    }, []);
-
-    const handleReviewDelete = useCallback((deletedReviewId: string) => {
-        setLocalReviews(prev => prev.filter(review => review.id !== deletedReviewId));
-    }, []);
-
-    const handleReviewCreate = useCallback((newReview: Review) => {
-        setLocalReviews(prev => [newReview, ...prev]);
-    }, []);
-
     const rowVirtualizer = useVirtualizer({
-        count: localReviews.length,
+        count: reviews.length,
         getScrollElement: () => parentRef.current,
         estimateSize: () => 190,
         overscan: 5,
-        measureElement: (element) => {
-            return element.getBoundingClientRect().height;
-        }
+        measureElement: (element) => element.getBoundingClientRect().height
     });
 
     return (
@@ -80,7 +67,7 @@ export default function ReviewList({
                 userName={userName || ''}
                 theMovieDbId={movie.theMovieDbId}
                 category={category}
-                onSuccess={handleReviewCreate}
+                onSuccess={onReviewCreate}
             />
             <div ref={parentRef} className={styles.reviewList} style={{ height: '400px', overflow: 'auto' }}>
                 <div
@@ -92,7 +79,7 @@ export default function ReviewList({
                     }}
                 >
                     {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                        const review = localReviews[virtualRow.index];
+                        const review = reviews[virtualRow.index];
                         return (
                             <ReviewItem
                                 key={review.id}
@@ -109,10 +96,10 @@ export default function ReviewList({
                                 }}
                                 onRefresh={() => onPageChange(currentPage)}
                                 isEditing={editingReviewId === review.id}
-                                onEditStart={() => setEditingReviewId(review.id)}
-                                onEditEnd={() => setEditingReviewId(null)}
-                                onUpdate={handleReviewUpdate}
-                                onDelete={handleReviewDelete}
+                                onEditStart={() => onEditStart(review.id)}
+                                onEditEnd={onEditEnd}
+                                onUpdate={onReviewUpdate}
+                                onDelete={onReviewDelete}
                             />
                         );
                     })}
