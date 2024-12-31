@@ -32,29 +32,20 @@ export function ReviewItemView({
 }: ReviewItemViewProps) {
     return (
         <div className={styles.reviewItem}>
-            <div className={styles.reviewContent}>
-                <div className={styles.reviewHeader}>
-                    <div className={styles.authorInfo}>
-                        <div className={styles.authorName}>{review.profile?.name}</div>
-                    </div>
-                    {isAuthor && (
-                        <div className={styles.reviewActions}>
-                            {isEditing ? (
-                                <>
-                                    <button type="submit" form="editForm" className={styles.editButton}>저장</button>
+            {isEditing ? (
+                <form id="editForm" role="form" onSubmit={onEditSubmit}>
+                    <div className={styles.reviewContent}>
+                        <div className={styles.reviewHeader}>
+                            <div className={styles.authorInfo}>
+                                <div className={styles.authorName}>{review.profile?.name}</div>
+                            </div>
+                            {isAuthor && (
+                                <div className={styles.reviewActions}>
+                                    <button type="submit" className={styles.editButton}>저장</button>
                                     <button type="button" onClick={onEditEnd} className={styles.deleteButton}>취소</button>
-                                </>
-                            ) : (
-                                <>
-                                        <button type="button" onClick={onEditStart} className={styles.editButton}>수정</button>
-                                        <button type="button" onClick={onDeleteClick} className={styles.deleteButton}>삭제</button>
-                                </>
+                                </div>
                             )}
                         </div>
-                    )}
-                </div>
-                {isEditing ? (
-                    <form id="editForm" role="form" onSubmit={onEditSubmit}>
                         <textarea
                             name="content"
                             value={editContent}
@@ -66,11 +57,24 @@ export function ReviewItemView({
                         <input type="hidden" name="userId" value={review.profile?.id || ''} />
                         <input type="hidden" name="movie_id" value={movie.id} />
                         <input type="hidden" name="category" value={category} />
-                    </form>
-                ) : (
+                    </div>
+                </form>
+            ) : (
+                    <div className={styles.reviewContent}>
+                        <div className={styles.reviewHeader}>
+                            <div className={styles.authorInfo}>
+                                <div className={styles.authorName}>{review.profile?.name}</div>
+                            </div>
+                            {isAuthor && (
+                                <div className={styles.reviewActions}>
+                                    <button className={styles.editButton} onClick={onEditStart}>수정</button>
+                                    <button type="button" onClick={onDeleteClick} className={styles.deleteButton}>삭제</button>
+                                </div>
+                            )}
+                        </div>
                         <p className={styles.reviewText}>{review.content}</p>
-                )}
-            </div>
+                    </div>
+            )}
         </div>
     );
 } 

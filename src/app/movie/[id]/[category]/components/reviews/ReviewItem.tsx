@@ -68,6 +68,11 @@ export default function ReviewItem({
         }
     };
 
+    const handleEditStart = () => {
+        console.log('Edit Start clicked');
+        onEditStart();
+    };
+
     const error = deleteState.error || updateState.error;
 
     return (
@@ -77,7 +82,7 @@ export default function ReviewItem({
             isEditing={isEditing}
             editContent={editContent}
             onEditContentChange={setEditContent}
-            onEditStart={onEditStart}
+            onEditStart={handleEditStart}
             onEditEnd={onEditEnd}
             onEditSubmit={handleSubmit}
             onDeleteClick={handleDelete}
