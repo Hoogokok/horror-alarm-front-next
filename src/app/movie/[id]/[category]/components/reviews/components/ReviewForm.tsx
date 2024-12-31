@@ -3,7 +3,7 @@
 import { useReviewActions } from '../hooks/useReviewActions';
 import Link from 'next/link';
 import styles from '../styles/reviews.module.css';
-import commonStyles from '../styles/common.module.css';
+import commonStyles from '../../styles/common.module.css';
 import { Review } from '@/types/movie-detail-response-dto';
 
 interface ReviewFormProps {
