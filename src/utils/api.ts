@@ -45,7 +45,7 @@ export async function fetchTotalPages(provider: string): Promise<{ totalPages: n
 
 export async function fetchMovieDetail(category: string, id: string): Promise<MovieDetailResponseDto> {
   const endpoint = getMovieEndpoint(category, id);
-  const movieData = await fetchAPI<MovieDetailResponseDto>(endpoint, { cache: 'no-store' });
+  const movieData = await fetchAPI<MovieDetailResponseDto>(endpoint);
   return movieData;
 }
 
