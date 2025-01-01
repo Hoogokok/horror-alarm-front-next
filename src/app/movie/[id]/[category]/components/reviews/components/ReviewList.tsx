@@ -6,7 +6,7 @@ import commonStyles from '../../styles/common.module.css';
 import { ReviewItemContainer } from '../containers/ReviewItemContainer';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { RefObject } from 'react';
-import ReviewForm from './ReviewForm';
+import { ReviewFormContainer } from '../containers/ReviewFormContainer';
 
 interface ReviewListProps {
     reviews: Review[];
@@ -59,7 +59,7 @@ export default function ReviewList({
 
     return (
         <>
-            <ReviewForm
+            <ReviewFormContainer
                 isLogin={isLogin}
                 isReviewed={isReviewed}
                 movieId={movie.id}

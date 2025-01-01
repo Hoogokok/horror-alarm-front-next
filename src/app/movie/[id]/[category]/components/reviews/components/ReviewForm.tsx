@@ -1,11 +1,10 @@
 'use client';
 
-import { useReviewActions } from '../hooks/useReviewActions';
 import Link from 'next/link';
 import styles from '../styles/reviews.module.css';
-import commonStyles from '../../styles/common.module.css';
-import { Review } from '@/types/movie-detail-response-dto';
-import { OptimisticReview } from '../types/review-props';
+import { ErrorType } from '@/types/error';
+import { FormEventHandler } from 'react';
+import { ReviewError } from './ReviewError';
 
 interface ReviewFormProps {
     isLogin: boolean;
@@ -15,30 +14,23 @@ interface ReviewFormProps {
     userName: string;
     theMovieDbId: string;
     category: string;
-    onSuccess?: (newReview: OptimisticReview) => (() => void) | void;
+    error?: ErrorType;
+    message?: string;
+    onSubmit: FormEventHandler<HTMLFormElement>;
 }
 
-export default function ReviewForm({ isLogin, isReviewed, movieId, userId, userName, theMovieDbId, category, onSuccess }: ReviewFormProps) {
-    const { reviewState, reviewAction } = useReviewActions();
-
-    const renderError = () => {
-        if (!reviewState.error) return null;
-
-        if (typeof reviewState.error === 'string') {
-            return <p className={commonStyles.error}>{reviewState.error}</p>;
-        }
-
-        return (
-            <ul className={styles.errorList}>
-                {Object.entries(reviewState.error).map(([key, errors]) => (
-                    Array.isArray(errors) && errors.map((error: string, index: number) => (
-                        <li key={`${key}-${index}`} className={styles.errorItem}>{error}</li>
-                    ))
-                ))}
-            </ul>
-        );
-    };
-
+export function ReviewForm({
+    isLogin,
+    isReviewed,
+    movieId,
+    userId,
+    userName,
+    theMovieDbId,
+    category,
+    error,
+    message,
+    onSubmit
+}: ReviewFormProps) {
     if (!isLogin) {
         return (
             <p className={styles.loginPrompt}>
@@ -51,39 +43,10 @@ export default function ReviewForm({ isLogin, isReviewed, movieId, userId, userN
         return <p className={styles.rated}>이미 리뷰를 작성했습니다.</p>;
     }
 
-    const handleAction = async (formData: FormData) => {
-        // 낙관적 업데이트를 위한 임시 리뷰
-        const optimisticReview: OptimisticReview = {
-            id: `temp-${Date.now()}`,
-            content: formData.get('review') as string,
-            review_user_id: userId,
-            review_movie_id: theMovieDbId,
-            created_at: new Date().toISOString(),
-            profile: {
-                id: userId,
-                name: userName
-            },
-            isOptimistic: true
-        };
-
-        // 낙관적 업데이트 실행 및 롤백 함수 받기
-        const rollback = onSuccess?.(optimisticReview);
-
-        try {
-            await reviewAction(formData);
-            if (reviewState.error) {
-                rollback?.();
-                return;
-            }
-        } catch (error) {
-            rollback?.();
-        }
-    };
-
     return (
         <div className={styles.reviewForm}>
             <h3 className={styles.reviewTitle}>리뷰 작성하기</h3>
-            <form action={handleAction} role='form'>
+            <form onSubmit={onSubmit} role='form'>
                 <textarea
                     name='review'
                     placeholder="이 영화에 대한 리뷰를 작성해주세요..."
@@ -97,8 +60,8 @@ export default function ReviewForm({ isLogin, isReviewed, movieId, userId, userN
                 <input type="hidden" name="category" value={category} />
                 <button type="submit">리뷰 제출</button>
             </form>
-            {renderError()}
-            {reviewState.message && <p className={styles.message}>{reviewState.message}</p>}
+            <ReviewError error={error} />
+            {message && <p className={styles.message}>{message}</p>}
         </div>
     );
 } 
