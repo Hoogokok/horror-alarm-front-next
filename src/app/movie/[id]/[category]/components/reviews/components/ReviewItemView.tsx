@@ -1,21 +1,6 @@
-import { Review } from '@/types/movie-detail-response-dto';
+import { ReviewItemViewProps } from '../types/review-props';
+import { ReviewError } from './ReviewError';
 import styles from '../styles/reviews.module.css';
-
-interface ReviewItemViewProps {
-    review: Review;
-    isAuthor: boolean;
-    isEditing: boolean;
-    editContent: string;
-    onEditContentChange: (content: string) => void;
-    onEditStart: () => void;
-    onEditEnd: () => void;
-    onEditSubmit: (e: React.FormEvent) => void;
-    onDeleteClick: (e: React.MouseEvent) => void;
-    error?: string;
-    style?: React.CSSProperties;
-    movie: any;
-    category: string;
-}
 
 export function ReviewItemView({ 
     review,
@@ -30,9 +15,10 @@ export function ReviewItemView({
     movie,
     category,
     error,
+    style
 }: ReviewItemViewProps) {
     return (
-        <div className={styles.reviewItem}>
+        <div className={styles.reviewItem} style={style}>
             {isEditing ? (
                 <form id="editForm" role="form" onSubmit={onEditSubmit}>
                     <div className={styles.reviewContent}>
@@ -76,11 +62,7 @@ export function ReviewItemView({
                         <p className={styles.reviewText}>{review.content}</p>
                     </div>
             )}
-            {error && (
-                <div className={styles.error} data-testid="error-message">
-                    {error}
-                </div>
-            )}
+            {error && <ReviewError error={error} />}
         </div>
     );
 } 

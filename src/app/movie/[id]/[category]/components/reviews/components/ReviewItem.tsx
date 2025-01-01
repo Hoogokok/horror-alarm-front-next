@@ -1,23 +1,7 @@
 'use client';
 
-import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
+import { ReviewItemProps } from '../types/review-props';
 import { ReviewItemView } from './ReviewItemView';
-
-interface ReviewItemProps {
-    review: Review;
-    currentUserId?: string;
-    style: React.CSSProperties;
-    movie: MovieDetailResponseDto;
-    category: string;
-    isEditing: boolean;
-    editContent: string;
-    onEditContentChange: (content: string) => void;
-    onEditStart: () => void;
-    onEditEnd: () => void;
-    onSubmit: (e: React.FormEvent) => void;
-    onDelete: (e: React.MouseEvent) => void;
-    error?: string;
-}
 
 export default function ReviewItem({
     review,

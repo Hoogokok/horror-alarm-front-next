@@ -2,6 +2,8 @@ import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { ReviewItemView } from '../components/ReviewItemView';
 import { Review } from '@/types/movie-detail-response-dto';
+import { ErrorType } from '@/types/error';
+import { ValidationError } from '@/types/error';
 
 describe('ReviewItemView', () => {
     afterEach(() => {
@@ -111,7 +113,16 @@ describe('ReviewItemView', () => {
     });
 
     it('에러가 있을 경우 에러 메시지를 표시해야 함', () => {
-        render(<ReviewItemView {...defaultProps} error="테스트 에러 메시지" />);
+        const error: ErrorType = "테스트 에러 메시지";
+        render(<ReviewItemView {...defaultProps} error={error} />);
         expect(screen.getByText('테스트 에러 메시지')).toBeDefined();
+    });
+
+    it('객체 형태의 에러를 올바르게 표시해야 함', () => {
+        const error: ValidationError = {
+            content: ['필수 항목입니다.']
+        };
+        render(<ReviewItemView {...defaultProps} error={error} />);
+        expect(screen.getByText('필수 항목입니다.')).toBeDefined();
     });
 }); 

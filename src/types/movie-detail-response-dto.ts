@@ -13,7 +13,7 @@ export interface MovieDetailResponseDto {
     id: number;
     name: string;
   }[];
-  recentReviews?: Review[];
+  reviews?: Review[];
   totalReviews: number;
   ratings?: {
     id: string;

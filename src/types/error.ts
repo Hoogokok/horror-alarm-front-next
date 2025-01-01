@@ -9,7 +9,12 @@ export interface ErrorState {
     message?: string;
 }
 
+export interface ReviewErrorState extends ErrorState {
+    error: ErrorType;
+    message: string;
+}
+
 export interface RateErrorState extends ErrorState {
     error: ErrorType;
     message: string;
-} 
+}
