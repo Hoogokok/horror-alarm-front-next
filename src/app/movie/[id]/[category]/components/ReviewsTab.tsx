@@ -20,7 +20,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
   const isLogin = user !== null;
   const isReviewed = review_movieIds.includes(Number(movie.theMovieDbId));
   const hasReviews = movie.reviews && movie.reviews.length > 0;
-
+  
   const handlePageChange = async (newPage: number) => {
     try {
       const newReviews = await fetchMovieReviews(category, movie.id, newPage);
