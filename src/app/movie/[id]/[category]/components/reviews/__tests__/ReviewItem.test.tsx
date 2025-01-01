@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import ReviewItem from '../components/ReviewItem';
 import { Review } from '@/types/movie-detail-response-dto';
 import { Profile } from '@/types/profile';
+import { ErrorType } from '@/types/error';
 
 const mockReview: Review = {
     id: '1',
@@ -36,6 +37,21 @@ describe('ReviewItem 컴포넌트', () => {
     const mockOnEditEnd = vi.fn();
     const mockOnSubmit = vi.fn();
     const mockOnDelete = vi.fn();
+
+    const defaultProps = {
+        review: mockReview,
+        currentUserId: 'user1',
+        style: {},
+        movie: mockMovie,
+        category: 'streaming',
+        isEditing: false,
+        editContent: mockReview.content,
+        onEditContentChange: mockOnEditContentChange,
+        onEditStart: mockOnEditStart,
+        onEditEnd: mockOnEditEnd,
+        onSubmit: mockOnSubmit,
+        onDelete: mockOnDelete
+    };
 
     it('리뷰 내용과 작성자 이름이 올바르게 표시되어야 함', () => {
         render(
@@ -106,5 +122,16 @@ describe('ReviewItem 컴포넌트', () => {
         expect(textarea.value).toBe('테스트 리뷰 내용입니다.');
         expect(screen.getByRole('button', { name: '저장' })).toBeDefined();
         expect(screen.getByRole('button', { name: '취소' })).toBeDefined();
+    });
+
+    it('에러가 있을 경우 에러 메시지를 표시해야 함', () => {
+        const error: ErrorType = "테스트 에러 메시지";
+        render(
+            <ReviewItem
+                {...defaultProps}
+                error={error}
+            />
+        );
+        expect(screen.getByText('테스트 에러 메시지')).toBeDefined();
     });
 });

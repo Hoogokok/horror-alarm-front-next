@@ -24,6 +24,13 @@ export interface ReviewItemProps extends ReviewBaseProps {
     currentUserId?: string;
     style: CSSProperties;
     error?: string;
+    isEditing: boolean;
+    editContent: string;
+    onEditContentChange: (content: string) => void;
+    onEditStart: () => void;
+    onEditEnd: () => void;
+    onSubmit: (e: React.FormEvent) => void;
+    onDelete: (e: React.MouseEvent) => void;
 }
 
 export interface ReviewFormProps {
@@ -46,7 +53,7 @@ export interface ReviewItemViewProps extends ReviewBaseProps {
     onEditEnd: () => void;
     onEditSubmit: (e: React.FormEvent) => void;
     onDeleteClick: (e: React.MouseEvent) => void;
-    error?: string;
+    error?: ErrorType;
     style?: CSSProperties;
 }
 
