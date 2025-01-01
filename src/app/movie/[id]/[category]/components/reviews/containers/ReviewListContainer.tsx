@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import ReviewList from '../components/ReviewList';
+import { OptimisticReview } from '../types/review-props';
 
 interface ReviewListContainerProps {
     initialReviews: Review[];
@@ -46,9 +47,12 @@ export function ReviewListContainer({
         setReviews(prev => prev.filter(review => review.id !== deletedReviewId));
     }, []);
 
-    const handleReviewCreate = useCallback((newReview: Review) => {
+    const handleReviewCreate = (newReview: OptimisticReview) => {
+        const previousReviews = [...reviews];
         setReviews(prev => [newReview, ...prev]);
-    }, []);
+
+        return () => setReviews(previousReviews);
+    };
 
     const handlePageChange = async (newPage: number) => {
         setCurrentPage(newPage);

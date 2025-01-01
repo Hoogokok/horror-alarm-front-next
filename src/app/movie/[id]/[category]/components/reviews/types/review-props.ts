@@ -71,4 +71,9 @@ export interface ReviewListProps extends Pick<ReviewFormProps, 'isLogin' | 'isRe
     editingReviewId: string | null;
     onEditStart: (reviewId: string) => void;
     onEditEnd: () => void;
+}
+
+export interface OptimisticReview extends Review {
+    isOptimistic?: boolean;
+    rollback?: () => void;
 } 
