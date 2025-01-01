@@ -15,10 +15,11 @@ interface ReviewsTabProps {
 
 export default function ReviewsTab({ movie, userWithMovieIds, category }: ReviewsTabProps) {
   const { user, review_movieIds } = userWithMovieIds;
-  const [reviews, setReviews] = useState(movie.recentReviews || []);
+  const [reviews, setReviews] = useState(movie.reviews || []);
+
   const isLogin = user !== null;
   const isReviewed = review_movieIds.includes(Number(movie.theMovieDbId));
-  const hasReviews = movie.totalReviews > 0;
+  const hasReviews = movie.reviews && movie.reviews.length > 0;
 
   const handlePageChange = async (newPage: number) => {
     try {
