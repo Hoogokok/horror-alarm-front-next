@@ -41,7 +41,7 @@ export interface ReviewFormProps {
     userName: string;
     theMovieDbId: string;
     category: string;
-    onSuccess?: (newReview: Review) => void;
+    onSuccess?: (newReview: OptimisticReview) => (() => void) | void;
 }
 
 export interface ReviewItemViewProps extends ReviewBaseProps {
@@ -65,7 +65,7 @@ export interface ReviewListProps extends Pick<ReviewFormProps, 'isLogin' | 'isRe
     currentPage: number;
     totalReviews: number;
     onPageChange: (page: number) => void;
-    onReviewCreate: (newReview: Review) => void;
+    onReviewCreate: (newReview: OptimisticReview) => (() => void) | void;
     onReviewUpdate: (updatedReview: Review) => void;
     onReviewDelete: (deletedReviewId: string) => void;
     editingReviewId: string | null;

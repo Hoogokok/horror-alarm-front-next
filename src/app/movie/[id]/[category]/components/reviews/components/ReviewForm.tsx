@@ -5,6 +5,7 @@ import Link from 'next/link';
 import styles from '../styles/reviews.module.css';
 import commonStyles from '../../styles/common.module.css';
 import { Review } from '@/types/movie-detail-response-dto';
+import { OptimisticReview } from '../types/review-props';
 
 interface ReviewFormProps {
     isLogin: boolean;
@@ -14,7 +15,7 @@ interface ReviewFormProps {
     userName: string;
     theMovieDbId: string;
     category: string;
-    onSuccess?: (newReview: Review) => void;
+    onSuccess?: (newReview: OptimisticReview) => (() => void) | void;
 }
 
 export default function ReviewForm({ isLogin, isReviewed, movieId, userId, userName, theMovieDbId, category, onSuccess }: ReviewFormProps) {
@@ -51,19 +52,31 @@ export default function ReviewForm({ isLogin, isReviewed, movieId, userId, userN
     }
 
     const handleAction = async (formData: FormData) => {
-        await reviewAction(formData);
-        if (!reviewState.error && reviewState.data) {
-            onSuccess?.({
-                id: reviewState.data.id,
-                content: formData.get('review') as string,
-                review_user_id: userId,
-                review_movie_id: theMovieDbId,
-                created_at: new Date().toISOString(),
-                profile: {
-                    id: userId,
-                    name: reviewState.data.userName
-                }
-            });
+        // 낙관적 업데이트를 위한 임시 리뷰
+        const optimisticReview: OptimisticReview = {
+            id: `temp-${Date.now()}`,
+            content: formData.get('review') as string,
+            review_user_id: userId,
+            review_movie_id: theMovieDbId,
+            created_at: new Date().toISOString(),
+            profile: {
+                id: userId,
+                name: userName
+            },
+            isOptimistic: true
+        };
+
+        // 낙관적 업데이트 실행 및 롤백 함수 받기
+        const rollback = onSuccess?.(optimisticReview);
+
+        try {
+            await reviewAction(formData);
+            if (reviewState.error) {
+                rollback?.();
+                return;
+            }
+        } catch (error) {
+            rollback?.();
         }
     };
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Review, MovieDetailResponseDto } from '@/types/movie-detail-response-dto';
 import { useReviewActions } from '../hooks/useReviewActions';
 import ReviewItem from '../components/ReviewItem';
+import { OptimisticReview } from '../types/review-props';
 
 interface ReviewItemContainerProps {
     review: Review;
@@ -69,11 +70,16 @@ export function ReviewItemContainer({
 
     const error = deleteState.error || updateState.error;
 
+    const containerStyle = {
+        ...style,
+        opacity: (review as OptimisticReview).isOptimistic ? 0.7 : 1
+    };
+
     return (
         <ReviewItem
             review={review}
             currentUserId={currentUserId}
-            style={style}
+            style={containerStyle}
             movie={movie}
             category={category}
             isEditing={isEditing}
