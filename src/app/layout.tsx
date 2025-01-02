@@ -1,4 +1,4 @@
-import { getProfile } from '@/app/auth/lib/actions';
+import { getProfile } from './auth/lib/actions/profile' 
 import type { Metadata } from "next";
 import { Black_Han_Sans, Inter } from "next/font/google";
 import MobileNav from './components/MobileNav';

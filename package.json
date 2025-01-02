@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "scan": "next dev & npx react-scan@latest localhost:3000",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
@@ -26,6 +27,7 @@
     "node-cache": "^5.1.2",
     "react": "19.0.0-rc-4f604941-20240830",
     "react-dom": "19.0.0-rc-4f604941-20240830",
+    "react-scan": "^0.0.54",
     "use-debounce": "^10.0.3",
     "zod": "^3.23.8"
   },

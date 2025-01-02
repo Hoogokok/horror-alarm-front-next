@@ -1,4 +1,4 @@
-import { logout } from '@/app/auth/lib/actions';
+import { logout } from '@/app/auth/lib/actions/login'
 
 export const profileMenuItems = [
     { href: "/profile", label: "프로필 편집", action: null },
