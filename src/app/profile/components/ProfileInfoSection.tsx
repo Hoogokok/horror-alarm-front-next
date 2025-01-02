@@ -1,8 +1,8 @@
 'use client';
 
 import styles from '@/app/profile/profile.module.css';
-import Link from 'next/link';
 import FormField from './FormField';
+import FormButton from './FormButton';
 
 interface ProfileInfoSectionProps {
     name?: string;
@@ -27,16 +27,19 @@ export default function ProfileInfoSection({
                 description="이름은 최소 2자, 최대 20자까지 입력이 가능해요&#13;수정한 정보는 다른 서비스에도 동일하게 표시돼요"
             />
             <div className={styles.buttonGroup}>
-                <Link href="/profile" className={styles.cancelButton}>
+                <FormButton
+                    variant="secondary"
+                    href="/profile"
+                >
                     취소
-                </Link>
-                <button
+                </FormButton>
+                <FormButton
                     type="submit"
-                    className={styles.saveButton}
+                    variant="primary"
                     disabled={isPending}
                 >
                     {isPending ? '저장 중...' : '변경 저장'}
-                </button>
+                </FormButton>
             </div>
         </div>
     );
