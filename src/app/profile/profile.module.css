@@ -144,6 +144,34 @@
     display: none;
 }
 
+.passwordSection {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.togglePasswordButton {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+}
+
+.togglePasswordButton:hover {
+    color: #fb2d64;
+}
+
+.passwordForm {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
 @media (min-width: 768px) {
     .profileContainer {
         max-width: 600px;
@@ -195,6 +223,15 @@
 
     .label {
         font-size: 15px;
+    }
+
+    .passwordSection {
+        max-width: 600px;
+        margin: 2rem auto 0;
+    }
+    
+    .passwordForm {
+        padding: 2rem;
     }
 }
 

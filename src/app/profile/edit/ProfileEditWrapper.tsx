@@ -18,6 +18,12 @@ interface ProfileEditProps {
   id: string;
 }
 
+interface PasswordSection {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
   const initialState: UploadProfileImageState = {
     error: '',
@@ -30,6 +36,8 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
   const [state, formAction] = useActionState(updateProfile, initialState);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [passwordError, setPasswordError] = useState<string>('');
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -115,6 +123,76 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
             </div>
           </div>
         </form>
+
+        <div className={styles.passwordSection}>
+          <button
+            type="button"
+            onClick={() => setShowPasswordSection(!showPasswordSection)}
+            className={styles.togglePasswordButton}
+          >
+            비밀번호 변경 {showPasswordSection ? '그만하기' : '하기'}
+          </button>
+
+          {showPasswordSection && (
+            <form className={styles.passwordForm}>
+              <div className={styles.inputGroup}>
+                <label htmlFor="currentPassword" className={styles.label}>
+                  현재 비밀번호
+                </label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  name="currentPassword"
+                  className={styles.input}
+                  placeholder="현재 비밀번호를 입력하세요"
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label htmlFor="newPassword" className={styles.label}>
+                  새 비밀번호
+                </label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  name="newPassword"
+                  className={styles.input}
+                  placeholder="새 비밀번호를 입력하세요"
+                />
+                <p className={styles.inputDescription}>
+                  비밀번호는 최소 8자 이상이며, 특수문자를 포함해야 합니다
+                </p>
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label htmlFor="confirmPassword" className={styles.label}>
+                  새 비밀번호 확인
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  className={styles.input}
+                  placeholder="새 비밀번호를 다시 입력하세요"
+                />
+              </div>
+
+              <div className={styles.buttonGroup}>
+                <button
+                  type="submit"
+                  className={`${styles.saveButton} ${doHyeon.className}`}
+                >
+                  비밀번호 변경
+                </button>
+              </div>
+
+              {passwordError && (
+                <p className={styles.error}>{passwordError}</p>
+              )}
+            </form>
+          )}
+        </div>
+
         {state?.message && <p className={styles.message}>{state.message}</p>}
       </div>
     </div>
