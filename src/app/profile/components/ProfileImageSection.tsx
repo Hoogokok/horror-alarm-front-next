@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
 import styles from '@/app/profile/profile.module.css';
+import { useProfileImage } from '../hooks/useProfileImage';
 
 interface ProfileImageSectionProps {
     imageUrl?: string;
@@ -14,28 +14,12 @@ export default function ProfileImageSection({
     name,
     onImageChange
 }: ProfileImageSectionProps) {
-    const [previewImage, setPreviewImage] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreviewImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-            onImageChange(file);
-        }
-    };
-
-    const handleImageDelete = () => {
-        setPreviewImage(null);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-        onImageChange(null);
-    };
+    const {
+        previewImage,
+        fileInputRef,
+        handleImageChange,
+        handleImageDelete
+    } = useProfileImage({ onImageChange });
 
     return (
         <div className={styles.imageSection}>
