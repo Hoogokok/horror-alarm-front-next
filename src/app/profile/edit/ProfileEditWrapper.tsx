@@ -13,6 +13,7 @@ import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
 import { useState, useRef, useCallback} from 'react';
 import localFont from 'next/font/local';
+import ProfileImageSection from '../components/ProfileImageSection';
 
 const doHyeon = localFont({
   src: '../../fonts/DoHyeon-Regular.ttf',
@@ -54,21 +55,11 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
 
   const [passwordState, passwordFormAction] = useActionState(updatePassword, initialPasswordState);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleImageUpdate = (file: File | null) => {
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleImageDelete = () => {
-    setPreviewImage(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      const formData = new FormData();
+      formData.append('image', file);
+      formAction(formData);
     }
   };
 
@@ -84,38 +75,11 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
       <div className={styles.profileContent}>
         <form className={styles.form} action={handleSubmit}>
           <div className={styles.profileLayout}>
-            <div className={styles.imageSection}>
-              <input type="hidden" name="id" value={state.id} />
-              {previewImage || state?.imageUrl ? (
-                <Image
-                  src={previewImage || state.imageUrl || ''}
-                  alt="프로필 이미지"
-                  width={200}
-                  height={200}
-                  unoptimized
-                  className={styles.profileImage}
-                />
-              ) : (
-                <div className={styles.profileImagePlaceholder}>
-                  {state.name ? state.name[0].toUpperCase() : '?'}
-                </div>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                name="image"
-                id="image"
-                className={styles.imageInput}
-                onChange={handleImageChange}
-                ref={fileInputRef}
-              />
-              <label htmlFor="image" className={styles.changeImageButton}>이미지 변경</label>
-              {previewImage && (
-                <button type="button" onClick={handleImageDelete} className={styles.deleteImageButton}>
-                  이미지 삭제
-                </button>
-              )}
-            </div>
+            <ProfileImageSection
+              imageUrl={state.imageUrl}
+              name={state.name}
+              onImageChange={handleImageUpdate}
+            />
             <div className={styles.infoSection}>
               <div className={styles.inputGroup}>
                 <label htmlFor="name" className={styles.label}>이름</label>
