@@ -19,19 +19,18 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
   const isLogin = user !== null;
   const isReviewed = review_movieIds.includes(Number(movie.theMovieDbId));
-  const hasReviews = movie.reviews && movie.reviews.length > 0;
 
   const handlePageChange = async (newPage: number) => {
     try {
-      const newReviews = await fetchMovieReviews(category, movie.id, newPage);
-      setReviews(newReviews);
+      const response = await fetchMovieReviews(category, movie.id, newPage);
+      setReviews(response.reviews);
     } catch (error) {
       console.error('리뷰 로딩 중 오류:', error);
     }
   };
 
   return (
-    <div className={styles.review}>
+    <div className={styles.reviewsTabContainer}>
       <ReviewListContainer
         initialReviews={reviews}
         movie={movie}
@@ -42,14 +41,6 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
         userName={user?.user_metadata?.name}
         onPageChange={handlePageChange}
       />
-      {!hasReviews && (
-        <div className={styles.noReviews}>
-          <p>아직 작성된 리뷰가 없습니다.</p>
-          {!isReviewed && isLogin && (
-            <p>첫 번째 리뷰를 작성해보세요!</p>
-          )}
-        </div>
-      )}
     </div>
   );
 }

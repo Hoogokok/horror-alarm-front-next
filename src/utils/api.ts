@@ -1,5 +1,5 @@
 import { Movie } from '@/types/movie';
-import { MovieDetailResponseDto, Review } from '@/types/movie-detail-response-dto';
+import { MovieDetailResponseDto, Review, ReviewsResponse } from '@/types/movie-detail-response-dto';
 import { supabase } from '@/utils/supabase/client'
 
 const API_BASE_URL = process.env.MOVIE_API;
@@ -49,18 +49,8 @@ export async function fetchMovieDetail(category: string, id: string): Promise<Mo
   return movieData;
 }
 
-export async function fetchMovieReviews(category: string, id: string, page: number): Promise<Review[]> {
-  const response = await fetch(
-    `/api/reviews?category=${category}&movieId=${id}&page=${page}`,
-    { cache: 'no-store' }
-  );
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || '리뷰를 불러오는데 실패했습니다.');
-  }
-
-  return response.json();
+export async function fetchMovieReviews(category: string, id: string, page: number): Promise<ReviewsResponse> {
+  return fetchAPI<ReviewsResponse>(`/movies/${category}/${id}/reviews`, { page: page.toString() });
 }
 
 function getMovieEndpoint(category: string, id: string): string {

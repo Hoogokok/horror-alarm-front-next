@@ -33,14 +33,15 @@ export function ReviewForm({
 }: ReviewFormProps) {
     if (!isLogin) {
         return (
-            <p className={styles.loginPrompt}>
-                <Link href="/login">로그인</Link>하고 리뷰를 작성해보세요!
-            </p>
+            <div className={styles.loginPrompt}>
+                <p>영화에 대한 의견을 들려주세요!</p>
+                <p><Link href="/login">로그인</Link>하고 리뷰를 작성해보세요!</p>
+            </div>
         );
     }
 
     if (isReviewed) {
-        return <p className={styles.rated}>이미 리뷰를 작성했습니다.</p>;
+        return <div className={styles.rated}>이미 리뷰를 작성했습니다.</div>;
     }
 
     return (
@@ -58,7 +59,7 @@ export function ReviewForm({
                 <input type="hidden" name="user_id" value={userId} />
                 <input type="hidden" name="the_movie_db_id" value={theMovieDbId} />
                 <input type="hidden" name="category" value={category} />
-                <button type="submit">리뷰 제출</button>
+                <button type="submit">리뷰 작성</button>
             </form>
             <ReviewError error={error} />
             {message && <p className={styles.message}>{message}</p>}

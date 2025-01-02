@@ -1,17 +1,40 @@
-.review {
+.reviewsTabContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-  }
-  
-  .reviewList {
+}
+
+.reviewContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+}
+
+.reviewListSection {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    min-height: 200px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reviewList {
     width: 100%;
     border-radius: 12px;
-    background-color: rgba(0, 0, 0, 0.2);
-    margin-bottom: 32px;
-  }
-  
-  .reviewItem {
+    background-color: transparent;
+    transition: height 0.3s ease;
+}
+
+.reviewItem {
     padding: 24px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background-color 0.2s ease;
@@ -20,93 +43,96 @@
     border-radius: 8px;
     position: relative;
     z-index: 1;
-  }
-  
-  .reviewItem:hover {
+}
+
+.reviewItem:hover {
     background-color: rgba(255, 255, 255, 0.02);
-  }
-  
-  .reviewContent {
+}
+
+.reviewContent {
     display: flex;
     flex-direction: column;
     gap: 16px;
-  }
-  
-  .reviewHeader {
+}
+
+.reviewHeader {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 8px;
-  }
-  
-  .authorInfo {
+}
+
+.authorInfo {
     flex: 1;
-  }
-  
-  .authorName {
+}
+
+.authorName {
     font-weight: 600;
     color: #fff;
     font-size: 1.1em;
     margin-bottom: 4px;
-  }
-  
-  .reviewDate {
+}
+
+.reviewDate {
     font-size: 0.9em;
     color: rgba(255, 255, 255, 0.6);
-  }
-  
-  .reviewText {
+}
+
+.reviewText {
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.9);
     white-space: pre-wrap;
     margin-bottom: 16px;
-  }
-  
-  /* 리뷰 작성 폼 스타일 개선 */
-  .reviewForm {
+}
+
+/* 리뷰 작성 폼 스타일 개선 */
+.reviewForm {
     margin-top: 32px;
     margin-bottom: 48px;
-    padding: 24px;
-    background-color: transparent;
+    padding: 32px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     width: 100%;
     max-width: 800px;
-  }
-  
-  .reviewTitle {
-    font-size: 1.2em;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reviewTitle {
+    font-size: 1.4em;
     color: #fff;
-    margin-bottom: 16px;
-    font-weight: 500;
-    opacity: 0.9;
-  }
-  
-  .reviewInput {
+    margin-bottom: 24px;
+    font-weight: 600;
+    opacity: 1;
+}
+
+.reviewInput {
     width: 100%;
-    min-height: 120px;
-    padding: 16px;
+    min-height: 150px;
+    padding: 20px;
     background-color: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     color: #fff;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 1.1rem;
+    line-height: 1.6;
     resize: vertical;
-    margin-bottom: 20px;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-  }
-  
-  .reviewInput:focus {
+    margin-bottom: 24px;
+    transition: all 0.2s ease;
+}
+
+.reviewInput:focus {
     background-color: rgba(0, 0, 0, 0.3);
     border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
-  }
-  
-  .reviewInput::placeholder {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.reviewInput::placeholder {
     color: rgba(255, 255, 255, 0.4);
-  }
-  
-  .reviewForm button {
+}
+
+.reviewForm button {
     padding: 12px 24px;
     background-color: #e50914;
     color: white;
@@ -116,60 +142,195 @@
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s ease;
-  }
-  
-  .reviewForm button:hover {
+}
+
+.reviewForm button:hover {
     background-color: #f40612;
-  }
-  
-  .reviewForm button:disabled {
+}
+
+.reviewForm button:disabled {
     background-color: rgba(229, 9, 20, 0.5);
     cursor: not-allowed;
-  }
-  
-  /* 반응형 디자인 */
-  @media (max-width: 768px) {
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .reviewsTabContainer {
+        padding: 0 16px;
+    }
+
     .reviewForm {
-      padding: 16px;
-      margin-top: 24px;
+        padding: 20px;
+        margin-top: 16px;
+        margin-bottom: 32px;
     }
-    
+
+    .reviewListSection {
+        padding: 16px;
+    }
+
     .reviewInput {
-      min-height: 100px;
-      padding: 12px;
+        min-height: 120px;
+        padding: 16px;
     }
-    
+}
+
+/* 모바일 환경 최적화 */
+@media (max-width: 480px) {
+    .reviewsTabContainer {
+        padding: 0 12px;
+    }
+
+    .reviewForm {
+        padding: 16px;
+        margin-top: 12px;
+        margin-bottom: 24px;
+    }
+
+    .reviewListSection {
+        padding: 12px;
+    }
+
+    .reviewTitle {
+        font-size: 1.2em;
+        margin-bottom: 16px;
+    }
+
+    /* 리뷰 아이템 헤더 레이아웃 수정 */
+    .reviewHeader {
+        flex-direction: row; /* 가로 배치 유지 */
+        flex-wrap: wrap; /* 필요시 줄바꿈 */
+        gap: 8px; /* 간격 축소 */
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .authorInfo {
+        min-width: 0; /* 텍스트 오버플로우 방지 */
+        flex-shrink: 1; /* 공간이 부족할 때 축소 허용 */
+    }
+
+    .authorName {
+        font-size: 1em; /* 폰트 크기 축소 */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* 버튼 크기와 위치 조정 */
+    .reviewForm button,
+    .editButton,
+    .deleteButton,
+    .editActions button {
+        padding: 6px 12px; /* 패딩 더 축소 */
+        font-size: 0.85rem; /* 폰트 크기 축소 */
+        height: 32px; /* 높이 더 축소 */
+        min-width: 60px; /* 최소 너비 설정 */
+    }
+
+    /* 버튼 컨테이너 조정 */
+    .reviewActions {
+        gap: 4px; /* 버튼 간격 더 축소 */
+        margin-top: 8px; /* 상단 여백 추가 */
+    }
+
+    .editActions {
+        gap: 8px; /* 수정 버튼 간격 조정 */
+    }
+
+    /* 리뷰 폼 버튼 조정 */
     .reviewForm button {
-      width: 100%;
-      padding: 10px 20px;
+        padding: 8px 16px; /* 리뷰 작성 버튼은 조금 더 크게 */
+        width: auto; /* 전체 너비 사용 안 함 */
     }
-  }  
-  
-  .noReviews {
+
+    /* 리뷰 아이템 패딩 조정 */
+    .reviewItem {
+        padding: 16px;
+        margin: 12px 0;
+    }
+
+    /* 날짜 텍스트 크기 조정 */
+    .reviewDate {
+        font-size: 0.8em;
+    }
+}
+
+/* iPhone SE 및 더 작은 화면 대응 */
+@media (max-width: 375px) {
+    /* 버튼 크기와 위치 조정 */
+    .reviewForm button,
+    .editButton,
+    .deleteButton,
+    .editActions button {
+        padding: 4px 8px; /* 패딩 최소화 */
+        font-size: 0.8rem; /* 폰트 크기 더 축소 */
+        height: 28px; /* 높이 더 축소 */
+        min-width: 48px; /* 최소 너비 축소 */
+    }
+
+    /* 버튼 컨테이너 조정 */
+    .reviewActions {
+        gap: 4px;
+        flex-wrap: wrap; /* 필요시 줄바꿈 허용 */
+    }
+
+    /* 리뷰 아이템 패딩 조정 */
+    .reviewItem {
+        padding: 12px;
+        margin: 8px 0;
+    }
+
+    /* 리뷰 폼 여백 조정 */
+    .reviewForm {
+        padding: 12px;
+    }
+
+    .reviewListSection {
+        padding: 8px;
+    }
+
+    /* 작성자 정보 조정 */
+    .authorName {
+        font-size: 0.9em;
+    }
+
+    .reviewDate {
+        font-size: 0.75em;
+    }
+}
+
+.noReviews {
     text-align: center;
     padding: 32px;
     color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    margin-top: 20px;
-  }
-  
-  .noReviews p {
-    margin: 8px 0;
-  }
-  
-  .noReviews p:first-child {
-    font-size: 1.1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 100%;
+    min-height: 120px;
+}
+
+.noReviews p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.noReviews p:first-child {
+    font-size: 1.2em;
     color: rgba(255, 255, 255, 0.9);
-  }  
-  
-  .reviewActions {
+    margin-bottom: 8px;
+}
+
+.reviewActions {
     display: flex;
     gap: 8px;
     justify-content: flex-end;
-  }
-  
-  .editButton {
+}
+
+.editButton {
     background-color: #4CAF50;
     color: white;
     padding: 6px 12px;
@@ -179,13 +340,13 @@
     margin-right: 10px;
     font-size: 0.9rem;
     transition: background-color 0.2s ease;
-  }
-  
-  .editButton:hover {
+}
+
+.editButton:hover {
     background-color: #45a049;
-  }
-  
-  .deleteButton {
+}
+
+.deleteButton {
     background-color: #e50914;
     color: white;
     padding: 6px 12px;
@@ -194,22 +355,22 @@
     font-size: 0.9rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
-  }
-  
-  .deleteButton:hover {
+}
+
+.deleteButton:hover {
     background-color: #f40612;
-  }
-  
-  .editForm {
+}
+
+.editForm {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.4);
     padding: 16px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
-  }
-  
-  .editInput {
+}
+
+.editInput {
     width: 100%;
     min-height: 100px;
     padding: 12px;
@@ -220,60 +381,60 @@
     resize: vertical;
     color: white;
     font-size: 0.95rem;
-  }
-  
-  .editInput:focus {
+}
+
+.editInput:focus {
     background-color: rgba(0, 0, 0, 0.5);
     border-color: rgba(255, 255, 255, 0.3);
     outline: none;
-  }
-  
-  .editActions {
+}
+
+.editActions {
     display: flex;
     gap: 12px;
     justify-content: flex-end;
-  }
-  
-  .editActions button {
+}
+
+.editActions button {
     padding: 8px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.2s ease;
-  }
-  
-  .editActions button[type="submit"] {
+}
+
+.editActions button[type="submit"] {
     background-color: #4CAF50;
     color: white;
-  }
-  
-  .editActions button[type="button"] {
+}
+
+.editActions button[type="button"] {
     background-color: #f44336;
     color: white;
-  }  
-  
-  /* 수정/삭제 버튼과 저장/취소 버튼의 스타일을 통일 */
-  .editButton, .deleteButton, .editActions button {
+}
+
+/* 수정/삭제 버튼과 저장/취소 버튼의 스타일을 통일 */
+.editButton, .deleteButton, .editActions button {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.2s ease;
-  }
-  
-  .editButton, .editActions button[type="submit"] {
+}
+
+.editButton, .editActions button[type="submit"] {
     background-color: #4CAF50;
     color: white;
-  }
-  
-  .deleteButton, .editActions button[type="button"] {
+}
+
+.deleteButton, .editActions button[type="button"] {
     background-color: #e50914;
     color: white;
-  }  
-  
-  .reviewTextArea {
+}
+
+.reviewTextArea {
     width: 100%;
     min-height: 100px;
     padding: 12px;
@@ -285,16 +446,57 @@
     background-color: transparent;
     color: inherit;
     font-family: inherit;
-  }
-  
-  .reviewTextArea:focus {
+}
+
+.reviewTextArea:focus {
     outline: none;
     border-color: #4a5568;
     box-shadow: 0 0 0 1px #4a5568;
-  }
-  
-  .reviewText {
+}
+
+.reviewText {
     white-space: pre-wrap;
     word-break: break-word;
     line-height: 1.5;
-  }  
+}
+
+/* 로그인 프롬프트와 이미 리뷰 작성 메시지 스타일 개선 */
+.loginPrompt, .rated {
+    text-align: center;
+    padding: 32px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin: 32px 0;
+    backdrop-filter: blur(8px);
+}
+
+.loginPrompt a {
+    color: #e50914;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 4px;
+}
+
+.loginPrompt a:hover {
+    text-decoration: underline;
+}
+
+/* 빈 상태 메시지 통합 */
+.noReviews {
+    text-align: center;
+    padding: 24px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.noReviews p {
+    margin: 8px 0;
+}
+
+.noReviews p:first-child {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.9);
+}
+  

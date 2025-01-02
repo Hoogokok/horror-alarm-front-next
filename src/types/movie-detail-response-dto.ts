@@ -39,3 +39,10 @@ export interface Review {
     name: string;
   };
 }
+
+export interface ReviewsResponse {
+  reviews: Review[];
+  totalPages: number;
+  currentPage: number;
+  hasNext: boolean;
+}
