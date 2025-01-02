@@ -1,4 +1,4 @@
-import { getProfile } from "@/app/auth/lib/actions";
+import { getProfile } from '../auth/lib/actions/profile'
 import ProfileEdit from "./edit/ProfileEditWrapper";
 import styles from '@/app/profile/profile.module.css';
 
