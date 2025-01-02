@@ -1,6 +1,5 @@
 'use client';
-import { useActionState } from 'react';
-import { updateProfile, type UploadProfileImageState } from '@/app/auth/lib/actions/profile';
+
 import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
 
@@ -8,14 +7,12 @@ interface ProfileInfoSectionProps {
     name?: string;
     id?: string;
     isPending?: boolean;
-    onSubmit: (formData: FormData) => void;
 }
 
 export default function ProfileInfoSection({
     name,
     id,
     isPending,
-    onSubmit
 }: ProfileInfoSectionProps) {
     return (
         <div className={styles.infoSection}>

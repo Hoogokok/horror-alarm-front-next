@@ -64,7 +64,6 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
               name={state.name}
               id={state.id}
               isPending={state.isPending}
-              onSubmit={handleSubmit}
             />
           </div>
         </form>
