@@ -56,20 +56,24 @@ export async function login(prevState: LoginState, formData: FormData) {
       message: "로그인 실패"
     }
   }
+
   const { email, password } = validation.data
-  const data = {
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
-  }
-
-  const { error } = await supabase.auth.signInWithPassword(data)
+  })
 
   if (error) {
-    redirect('/login')
+    return {
+      error: {},
+      message: "이메일 또는 비밀번호가 일치하지 않습니다"
+    }
   }
 
+  const redirectTo = formData.get('redirectTo') as string || '/'
+
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect(redirectTo)
 }
 
 export type SignupState = {
