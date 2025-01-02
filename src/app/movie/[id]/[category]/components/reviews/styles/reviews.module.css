@@ -66,40 +66,43 @@
   .reviewForm {
     margin-top: 32px;
     margin-bottom: 48px;
-    padding: 24px;
-    background-color: transparent;
+    padding: 32px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     width: 100%;
     max-width: 800px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .reviewTitle {
-    font-size: 1.2em;
+    font-size: 1.4em;
     color: #fff;
-    margin-bottom: 16px;
-    font-weight: 500;
-    opacity: 0.9;
+    margin-bottom: 24px;
+    font-weight: 600;
+    opacity: 1;
   }
   
   .reviewInput {
     width: 100%;
-    min-height: 120px;
-    padding: 16px;
+    min-height: 150px;
+    padding: 20px;
     background-color: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     color: #fff;
-    font-size: 1rem;
-    line-height: 1.5;
+    font-size: 1.1rem;
+    line-height: 1.6;
     resize: vertical;
-    margin-bottom: 20px;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
+    margin-bottom: 24px;
+    transition: all 0.2s ease;
   }
   
   .reviewInput:focus {
     background-color: rgba(0, 0, 0, 0.3);
     border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
   }
   
   .reviewInput::placeholder {
@@ -147,11 +150,10 @@
   
   .noReviews {
     text-align: center;
-    padding: 32px;
+    padding: 24px;
     color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    margin-top: 20px;
+    margin-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   .noReviews p {
@@ -297,4 +299,44 @@
     white-space: pre-wrap;
     word-break: break-word;
     line-height: 1.5;
+  }  
+  
+  /* 로그인 프롬프트와 이미 리뷰 작성 메시지 스타일 개선 */
+  .loginPrompt, .rated {
+    text-align: center;
+    padding: 32px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin: 32px 0;
+    backdrop-filter: blur(8px);
+  }
+  
+  .loginPrompt a {
+    color: #e50914;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 4px;
+  }
+  
+  .loginPrompt a:hover {
+    text-decoration: underline;
+  }
+  
+  /* 빈 상태 메시지 통합 */
+  .noReviews {
+    text-align: center;
+    padding: 24px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .noReviews p {
+    margin: 8px 0;
+  }
+  
+  .noReviews p:first-child {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.9);
   }  
