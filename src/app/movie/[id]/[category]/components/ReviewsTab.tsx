@@ -31,7 +31,7 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
   };
 
   return (
-    <div className={styles.review}>
+    <div className={styles.reviewsTabContainer}>
       <ReviewListContainer
         initialReviews={reviews}
         movie={movie}
@@ -42,14 +42,6 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
         userName={user?.user_metadata?.name}
         onPageChange={handlePageChange}
       />
-      {!hasReviews && (
-        <div className={styles.noReviews}>
-          <p>아직 작성된 리뷰가 없습니다.</p>
-          {!isReviewed && isLogin && (
-            <p>첫 번째 리뷰를 작성해보세요!</p>
-          )}
-        </div>
-      )}
     </div>
   );
 }

@@ -58,7 +58,7 @@ export default function ReviewList({
     });
 
     return (
-        <>
+        <div className={styles.reviewContainer}>
             <ReviewFormContainer
                 isLogin={isLogin}
                 isReviewed={isReviewed}
@@ -69,58 +69,72 @@ export default function ReviewList({
                 category={category}
                 onSuccess={onReviewCreate}
             />
-            <div ref={parentRef} className={styles.reviewList} style={{ height: '400px', overflow: 'auto' }}>
-                <div
-                    style={{
-                        height: `${rowVirtualizer.getTotalSize()}px`,
-                        width: '100%',
-                        position: 'relative',
-                        gap: '16px',
-                    }}
-                >
-                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                        const review = reviews[virtualRow.index];
-                        return (
-                            <ReviewItemContainer
-                                key={review.id}
-                                review={review}
-                                currentUserId={currentUserId}
-                                movie={movie}
-                                category={category}
-                                style={{
-                                    position: 'absolute',
-                                    top: `${virtualRow.start}px`,
-                                    left: 0,
-                                    width: '100%',
-                                    height: 'auto',
-                                }}
-                                onRefresh={() => onPageChange(currentPage)}
-                                isEditing={editingReviewId === review.id}
-                                onEditStart={() => onEditStart(review.id)}
-                                onEditEnd={onEditEnd}
-                                onUpdate={onReviewUpdate}
-                                onDelete={onReviewDelete}
-                            />
-                        );
-                    })}
-                </div>
-            </div>
 
-            <div className={commonStyles.pagination}>
-                <button
-                    onClick={() => onPageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
-                    이전
-                </button>
-                <span>{currentPage}</span>
-                <button
-                    onClick={() => onPageChange(currentPage + 1)}
-                    disabled={currentPage * 10 >= totalReviews}
-                >
-                    다음
-                </button>
-            </div>
-        </>
+            {reviews.length > 0 ? (
+                <div className={styles.reviewListSection}>
+                    <div
+                        ref={parentRef}
+                        className={styles.reviewList}
+                        style={{ height: '400px', overflow: 'auto' }}
+                    >
+                        <div
+                            style={{
+                                height: `${rowVirtualizer.getTotalSize()}px`,
+                                width: '100%',
+                                position: 'relative',
+                                gap: '16px',
+                            }}
+                        >
+                            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                                const review = reviews[virtualRow.index];
+                                return (
+                                    <ReviewItemContainer
+                                        key={review.id}
+                                        review={review}
+                                        currentUserId={currentUserId}
+                                        movie={movie}
+                                        category={category}
+                                        style={{
+                                            position: 'absolute',
+                                            top: `${virtualRow.start}px`,
+                                            left: 0,
+                                            width: '100%',
+                                            height: 'auto',
+                                        }}
+                                        onRefresh={() => onPageChange(currentPage)}
+                                        isEditing={editingReviewId === review.id}
+                                        onEditStart={() => onEditStart(review.id)}
+                                        onEditEnd={onEditEnd}
+                                        onUpdate={onReviewUpdate}
+                                        onDelete={onReviewDelete}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className={commonStyles.pagination}>
+                        <button
+                            onClick={() => onPageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            이전
+                        </button>
+                        <span>{currentPage}</span>
+                        <button
+                            onClick={() => onPageChange(currentPage + 1)}
+                            disabled={currentPage * 10 >= totalReviews}
+                        >
+                            다음
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div className={styles.noReviews}>
+                    <p>아직 작성된 리뷰가 없습니다.</p>
+                    <p>첫 번째 리뷰를 작성해보세요!</p>
+                </div>
+            )}
+        </div>
     );
 } 
