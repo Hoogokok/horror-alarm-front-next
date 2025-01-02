@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useActionState } from 'react';
-import { updateProfile, UploadProfileImageState } from '@/app/auth/lib/actions';
+import { updateProfile, updatePassword, UploadProfileImageState, PasswordUpdateState } from '@/app/auth/lib/actions';
 import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
 import { useState, useRef, useCallback} from 'react';
@@ -38,6 +38,13 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showPasswordSection, setShowPasswordSection] = useState(false);
   const [passwordError, setPasswordError] = useState<string>('');
+
+  const initialPasswordState: PasswordUpdateState = {
+    error: {},
+    message: '',
+    isPending: false,
+  }
+  const [passwordState, passwordFormAction] = useActionState(updatePassword, initialPasswordState);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -134,7 +141,10 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
           </button>
 
           {showPasswordSection && (
-            <form className={styles.passwordForm}>
+            <form
+              className={styles.passwordForm}
+              action={passwordFormAction}
+            >
               <div className={styles.inputGroup}>
                 <label htmlFor="currentPassword" className={styles.label}>
                   현재 비밀번호
@@ -146,6 +156,9 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
                   className={styles.input}
                   placeholder="현재 비밀번호를 입력하세요"
                 />
+                {passwordState?.error?.currentPassword && (
+                  <p className={styles.error}>{passwordState.error.currentPassword[0]}</p>
+                )}
               </div>
 
               <div className={styles.inputGroup}>
@@ -159,6 +172,9 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
                   className={styles.input}
                   placeholder="새 비밀번호를 입력하세요"
                 />
+                {passwordState?.error?.newPassword && (
+                  <p className={styles.error}>{passwordState.error.newPassword[0]}</p>
+                )}
                 <p className={styles.inputDescription}>
                   비밀번호는 최소 8자 이상이며, 특수문자를 포함해야 합니다
                 </p>
@@ -175,19 +191,25 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
                   className={styles.input}
                   placeholder="새 비밀번호를 다시 입력하세요"
                 />
+                {passwordState?.error?.confirmPassword && (
+                  <p className={styles.error}>{passwordState.error.confirmPassword[0]}</p>
+                )}
               </div>
 
               <div className={styles.buttonGroup}>
                 <button
-                  type="submit"
+                  type="submit" 
                   className={`${styles.saveButton} ${doHyeon.className}`}
+                  disabled={passwordState?.isPending}
                 >
-                  비밀번호 변경
+                  {passwordState?.isPending ? '변경 중...' : '비밀번호 변경'}
                 </button>
               </div>
 
-              {passwordError && (
-                <p className={styles.error}>{passwordError}</p>
+              {passwordState?.message && (
+                <p className={passwordState.error ? styles.error : styles.message}>
+                  {passwordState.message}
+                </p>
               )}
             </form>
           )}
