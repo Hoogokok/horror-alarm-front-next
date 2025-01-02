@@ -5,11 +5,11 @@ import {
   type UploadProfileImageState 
 } from '@/app/auth/lib/actions/profile'
 import styles from '@/app/profile/profile.module.css';
-import Link from 'next/link';
 import { useState, useRef, useCallback} from 'react';
 import localFont from 'next/font/local';
 import ProfileImageSection from '../components/ProfileImageSection';
 import PasswordSection from '../components/PasswordSection';
+import ProfileInfoSection from '../components/ProfileInfoSection';
 
 const doHyeon = localFont({
   src: '../../fonts/DoHyeon-Regular.ttf',
@@ -60,26 +60,12 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
               name={state.name}
               onImageChange={handleImageUpdate}
             />
-            <div className={styles.infoSection}>
-              <div className={styles.inputGroup}>
-                <label htmlFor="name" className={styles.label}>이름</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className={styles.input}
-                  defaultValue={state.name}
-                  placeholder="이름을 입력하세요"
-                />
-                <p className={styles.inputDescription}>이름은 최소 2자, 최대 20자까지 입력이 가능해요<br />수정한 정보는 다른 서비스에도 동일하게 표시돼요</p>
-              </div>
-              <div className={styles.buttonGroup}>
-                <Link href="/profile" className={styles.cancelButton}>취소</Link>
-                <button type="submit" className={`${styles.saveButton} ${doHyeon.className}`} disabled={state?.isPending}>
-                  {state?.isPending ? '저장 중...' : '변경 저장'}
-                </button>
-              </div>
-            </div>
+            <ProfileInfoSection
+              name={state.name}
+              id={state.id}
+              isPending={state.isPending}
+              onSubmit={handleSubmit}
+            />
           </div>
         </form>
 
