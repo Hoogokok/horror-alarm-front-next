@@ -2,6 +2,7 @@
 
 import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
+import FormField from './FormField';
 
 interface ProfileInfoSectionProps {
     name?: string;
@@ -17,21 +18,14 @@ export default function ProfileInfoSection({
     return (
         <div className={styles.infoSection}>
             <input type="hidden" name="id" value={id} />
-            <div className={styles.inputGroup}>
-                <label htmlFor="name" className={styles.label}>이름</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className={styles.input}
-                    defaultValue={name}
-                    placeholder="이름을 입력하세요"
-                />
-                <p className={styles.inputDescription}>
-                    이름은 최소 2자, 최대 20자까지 입력이 가능해요<br />
-                    수정한 정보는 다른 서비스에도 동일하게 표시돼요
-                </p>
-            </div>
+            <FormField
+                label="이름"
+                name="name"
+                type="text"
+                value={name}
+                placeholder="이름을 입력하세요"
+                description="이름은 최소 2자, 최대 20자까지 입력이 가능해요&#13;수정한 정보는 다른 서비스에도 동일하게 표시돼요"
+            />
             <div className={styles.buttonGroup}>
                 <Link href="/profile" className={styles.cancelButton}>
                     취소
