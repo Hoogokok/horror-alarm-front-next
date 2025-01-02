@@ -1,12 +1,11 @@
 .profileContainer {
-    width: 100%;
     max-width: 100%;
-    margin: 1rem auto;
+    margin: 0 auto;
     padding: 1rem;
     color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0;
     box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
 .title {
@@ -16,7 +15,6 @@
 }
 
 .profileContent {
-    width: 100%;
     max-width: 100%;
     margin: 0 auto;
     padding: 0.5rem;
@@ -108,6 +106,10 @@
     padding: 8px;
     font-size: 15px;
     box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #fff;
 }
 
 .inputDescription {
@@ -145,8 +147,8 @@
 }
 
 .passwordSection {
-    margin-top: 2rem;
-    padding-top: 2rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -166,26 +168,26 @@
 }
 
 .passwordForm {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 1.5rem;
-    border-radius: 8px;
     margin-top: 1rem;
 }
 
 @media (min-width: 768px) {
     .profileContainer {
-        max-width: 600px;
-        margin: 3rem auto 0;
+        max-width: 800px;
+        margin: 2rem auto;
         padding: 2rem;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.03);
     }
 
     .profileContent {
-        padding: 2rem;
+        padding: 1rem;
     }
 
     .profileLayout {
         flex-direction: row;
         gap: 2rem;
+        align-items: flex-start;
     }
 
     .imageSection {
@@ -200,19 +202,19 @@
 
     .changeImageButton, .deleteImageButton, .cancelButton, .saveButton {
         width: auto;
-        min-width: 200px;  /* 이미지 변경 버튼과 동일한 크기로 설정 */
-        padding: 12px 20px;  /* 버튼 크기를 약간 키움 */
-        font-size: 16px;  /* 폰트 크기도 약간 키움 */
+        min-width: 200px;
+        padding: 12px 20px;
+        font-size: 16px;
     }
 
     .buttonGroup {
         flex-direction: row;
         justify-content: flex-end;
-        gap: 1rem;  /* 버튼 사이의 간격을 조금 늘림 */
+        gap: 1rem;
     }
 
     .infoSection .buttonGroup {
-        justify-content: flex-start;  /* 정보 섹션의 버튼 그룹은 왼쪽 정렬 */
+        justify-content: flex-start;
     }
 
     .message, .error {
@@ -232,6 +234,11 @@
     
     .passwordForm {
         padding: 2rem;
+    }
+
+    .infoSection {
+        flex: 1;
+        min-width: 0;
     }
 }
 
