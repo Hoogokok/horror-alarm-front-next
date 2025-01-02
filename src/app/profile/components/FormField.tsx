@@ -1,5 +1,6 @@
 'use client';
 import styles from '@/app/profile/profile.module.css';
+import FormMessage from './FormMessage';
 
 interface FormFieldProps {
     label: string;
@@ -34,14 +35,14 @@ export default function FormField({
                 placeholder={placeholder}
             />
             {description && (
-                <p className={styles.inputDescription}>
+                <FormMessage type="description">
                     {description}
-                </p>
+                </FormMessage>
             )}
             {error && (
-                <p className={styles.error}>
+                <FormMessage type="error">
                     {error}
-                </p>
+                </FormMessage>
             )}
         </div>
     );
