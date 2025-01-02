@@ -2,6 +2,8 @@
 import styles from '@/app/profile/profile.module.css';
 import { usePasswordForm } from '../hooks/usePasswordForm';
 import FormField from './FormField';
+import FormButton from './FormButton';
+import FormMessage from './FormMessage';
 
 export default function PasswordSection() {
     const {
@@ -13,13 +15,12 @@ export default function PasswordSection() {
 
     return (
         <div className={styles.passwordSection}>
-            <button
-                type="button"
+            <FormButton
+                variant="toggle"
                 onClick={togglePasswordSection}
-                className={styles.togglePasswordButton}
             >
                 비밀번호 변경 {showPasswordSection ? '그만하기' : '하기'}
-            </button>
+            </FormButton>
 
             {showPasswordSection && (
                 <form
@@ -50,19 +51,19 @@ export default function PasswordSection() {
                     />
 
                     <div className={styles.buttonGroup}>
-                        <button
+                        <FormButton
                             type="submit"
-                            className={styles.saveButton}
+                            variant="primary"
                             disabled={passwordState?.isPending}
                         >
                             {passwordState?.isPending ? '변경 중...' : '비밀번호 변경'}
-                        </button>
+                        </FormButton>
                     </div>
 
                     {passwordState?.message && (
-                        <p className={passwordState.error ? styles.error : styles.message}>
+                        <FormMessage type={passwordState.error ? 'error' : 'success'}>
                             {passwordState.message}
-                        </p>
+                        </FormMessage>
                     )}
                 </form>
             )}
