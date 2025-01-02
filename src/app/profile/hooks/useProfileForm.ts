@@ -1,7 +1,7 @@
 'use client';
 import { useActionState } from 'react';
 import { updateProfile, type UploadProfileImageState } from '@/app/auth/lib/actions/profile';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 interface UseProfileFormProps {
     name: string;
@@ -16,6 +16,8 @@ interface UseProfileFormReturn {
 }
 
 export function useProfileForm({ name, image_url, id }: UseProfileFormProps): UseProfileFormReturn {
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
     const initialState: UploadProfileImageState = {
         error: '',
         message: '',
@@ -28,16 +30,15 @@ export function useProfileForm({ name, image_url, id }: UseProfileFormProps): Us
     const [state, formAction] = useActionState(updateProfile, initialState);
 
     const handleImageUpdate = (file: File | null) => {
-        if (file) {
-            const formData = new FormData();
-            formData.append('image', file);
-            formAction(formData);
-        }
+        setSelectedImage(file);
     };
 
     const handleSubmit = useCallback((formData: FormData) => {
+        if (selectedImage) {
+            formData.set('image', selectedImage);
+        }
         formAction(formData);
-    }, [formAction]);
+    }, [formAction, selectedImage]);
 
     return {
         state,
