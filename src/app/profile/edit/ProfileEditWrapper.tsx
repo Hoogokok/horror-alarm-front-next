@@ -44,6 +44,7 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
     message: '',
     isPending: false,
   }
+
   const [passwordState, passwordFormAction] = useActionState(updatePassword, initialPasswordState);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

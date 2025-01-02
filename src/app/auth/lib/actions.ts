@@ -328,16 +328,16 @@ export async function refreshSession() {
 }
 
 export type PasswordUpdateState = {
-  error?: {
+  error: {
     currentPassword?: string[]
     newPassword?: string[]
     confirmPassword?: string[]
   }
-  message?: string
-  isPending?: boolean
+  message: string
+  isPending: boolean
 }
 
-export async function updatePassword(prevState: PasswordUpdateState, formData: FormData) {
+export async function updatePassword(prevState: PasswordUpdateState, formData: FormData): Promise<PasswordUpdateState> {
   const supabase = createClient()
 
   // 현재 사용자 확인
@@ -399,9 +399,10 @@ export async function updatePassword(prevState: PasswordUpdateState, formData: F
     }
   }
 
-  revalidatePath('/profile')
-  return {
-    message: "비밀번호가 성공적으로 변경되었습니다",
-    isPending: false,
-  }
+  // 모든 세션 종료 및 로그아웃
+  await supabase.auth.signOut({ scope: 'global' })
+
+  // 전체 레이아웃 캐시 무효화 후 로그인 페이지로 리다이렉트
+  revalidatePath('/', 'layout')
+  redirect('/login?message=' + encodeURIComponent("비밀번호가 변경되었습니다. 새 비밀번호로 다시 로그인해주세요."))
 }
