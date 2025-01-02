@@ -7,6 +7,7 @@ import { ReviewItemContainer } from '../containers/ReviewItemContainer';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { RefObject } from 'react';
 import { ReviewFormContainer } from '../containers/ReviewFormContainer';
+import { calculateTotalPages, isLastPage } from '@/utils/pagination';
 
 interface ReviewListProps {
     reviews: Review[];
@@ -123,7 +124,7 @@ export default function ReviewList({
                         <span>{currentPage}</span>
                         <button
                             onClick={() => onPageChange(currentPage + 1)}
-                            disabled={currentPage * 10 >= totalReviews}
+                            disabled={isLastPage(currentPage, totalReviews)}
                         >
                             다음
                         </button>
