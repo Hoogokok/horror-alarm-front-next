@@ -106,8 +106,8 @@
   }
 
   .content {
-    padding-top: 70px; /* 모바일 헤더의 높이만큼 상단 패딩 추가 */
-    padding-bottom: 70px;
+    padding-top: 70px;
+    padding-bottom: 100px;
   }
 
   .mobileNav {
@@ -120,6 +120,8 @@
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
   }
 
   .mobileNav a,
@@ -132,7 +134,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 20%; /* 5개 항목을 균등하게 배치 */
+    width: 20%;
   }
 
   .mobileProfileButton {
@@ -260,11 +262,11 @@
     padding: 5px 0;
     background-color: transparent;
     border-radius: 3px;
-    color: #ffffff; /* 여기를 변경 */
+    color: #ffffff;
   }
 
   .mobileDropdownMenu a:hover, .mobileDropdownMenu button:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* 호버 시 약간의 흰색 배경 */
+    background-color: rgba(255, 255, 255, 0.1);
   }
 
   @media (max-width: 768px) {
@@ -344,7 +346,7 @@
   width: 100%;
   text-align: left;
   padding: 5px 0;
-  font-family: inherit; /* 부모 요소로부터 폰트 상속 */
+  font-family: inherit;
 }
 
 .dropdownMenu a:hover, .dropdownMenu button:hover,
@@ -360,14 +362,14 @@
   .mobileDropdownMenu a, .mobileDropdownMenu button {
     font-size: 14px;
     text-align: center;
-    background-color: transparent; /* 여기를 변경 */
+    background-color: transparent;
     border-radius: 3px;
     padding: 8px 0;
     margin-bottom: 5px;
-    color: #ffffff; /* 텍스트 색상을 흰색으로 변경 */
+    color: #ffffff;
   }
 
   .mobileDropdownMenu a:hover, .mobileDropdownMenu button:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* 호버 시 약간의 흰색 배경 */
+    background-color: rgba(255, 255, 255, 0.1);
   }
 }
