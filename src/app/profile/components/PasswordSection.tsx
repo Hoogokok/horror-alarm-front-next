@@ -1,25 +1,20 @@
 'use client';
-import { useActionState } from 'react';
-import { updatePassword, type PasswordUpdateState } from '@/app/auth/lib/actions/password';
 import styles from '@/app/profile/profile.module.css';
-import { useState } from 'react';
+import { usePasswordForm } from '../hooks/usePasswordForm';
 
 export default function PasswordSection() {
-    const [showPasswordSection, setShowPasswordSection] = useState(false);
-
-    const initialPasswordState: PasswordUpdateState = {
-        error: {},
-        message: '',
-        isPending: false,
-    }
-
-    const [passwordState, passwordFormAction] = useActionState(updatePassword, initialPasswordState);
+    const {
+        showPasswordSection,
+        togglePasswordSection,
+        passwordState,
+        passwordFormAction
+    } = usePasswordForm();
 
     return (
         <div className={styles.passwordSection}>
             <button
                 type="button"
-                onClick={() => setShowPasswordSection(!showPasswordSection)}
+                onClick={togglePasswordSection}
                 className={styles.togglePasswordButton}
             >
                 비밀번호 변경 {showPasswordSection ? '그만하기' : '하기'}
@@ -84,7 +79,7 @@ export default function PasswordSection() {
                     <div className={styles.buttonGroup}>
                         <button
                             type="submit"
-                            className={`${styles.saveButton}`}
+                            className={styles.saveButton}
                             disabled={passwordState?.isPending}
                         >
                             {passwordState?.isPending ? '변경 중...' : '비밀번호 변경'}
