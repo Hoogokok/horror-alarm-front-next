@@ -1,7 +1,14 @@
 'use client';
 import Image from 'next/image';
 import { useActionState } from 'react';
-import { updateProfile, updatePassword, UploadProfileImageState, PasswordUpdateState } from '@/app/auth/lib/actions';
+import { 
+  updateProfile, 
+  type UploadProfileImageState 
+} from '@/app/auth/lib/actions/profile'
+import { 
+  updatePassword, 
+  type PasswordUpdateState 
+} from '@/app/auth/lib/actions/password'
 import styles from '@/app/profile/profile.module.css';
 import Link from 'next/link';
 import { useState, useRef, useCallback} from 'react';
