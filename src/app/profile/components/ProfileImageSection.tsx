@@ -25,7 +25,7 @@ export default function ProfileImageSection({
         <div className={styles.imageSection}>
             {previewImage || imageUrl ? (
                 <Image
-                    src={previewImage || imageUrl || ''}
+                    src={previewImage || imageUrl || '/default-profile.jpg'}
                     alt="프로필 이미지"
                     width={200}
                     height={200}

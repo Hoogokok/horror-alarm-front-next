@@ -5,6 +5,7 @@ import ProfileImageSection from '../components/ProfileImageSection';
 import PasswordSection from '../components/PasswordSection';
 import ProfileInfoSection from '../components/ProfileInfoSection';
 import { useProfileForm } from '../hooks/useProfileForm';
+import FormMessage from '../components/FormMessage';
 
 const doHyeon = localFont({
   src: '../../fonts/DoHyeon-Regular.ttf',
@@ -44,7 +45,11 @@ export default function ProfileEdit({ name, image_url, id }: ProfileEditProps) {
 
         <PasswordSection />
 
-        {state?.message && <p className={styles.message}>{state.message}</p>}
+        {state?.message && (
+          <FormMessage type={state.error ? 'error' : 'success'}>
+            {state.message}
+          </FormMessage>
+        )}
       </div>
     </div>
   );
