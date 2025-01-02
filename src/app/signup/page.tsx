@@ -1,6 +1,6 @@
 'use client'
 
-import { signup } from '@/app/auth/lib/actions'
+import { signup } from '../auth/lib/actions'
 import { useActionState } from 'react';
 import styles from './signup.module.css'
 
