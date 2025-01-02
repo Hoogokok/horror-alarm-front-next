@@ -22,8 +22,8 @@ export default function ReviewsTab({ movie, userWithMovieIds, category }: Review
 
   const handlePageChange = async (newPage: number) => {
     try {
-      const newReviews = await fetchMovieReviews(category, movie.id, newPage);
-      setReviews(newReviews);
+      const response = await fetchMovieReviews(category, movie.id, newPage);
+      setReviews(response.reviews);
     } catch (error) {
       console.error('리뷰 로딩 중 오류:', error);
     }
